@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import type { Reclamacion } from "@/lib/types/database";
 import { formatDateTime } from "@/lib/utils";
@@ -8,7 +9,7 @@ export default async function ReclamacionesPage() {
     .from("reclamaciones")
     .select("*")
     .order("fecha", { ascending: false })
-    .limit(100);
+    .limit(200);
   const list = (data as Reclamacion[]) || [];
 
   return (
@@ -16,7 +17,7 @@ export default async function ReclamacionesPage() {
       <div>
         <h1 className="text-2xl font-semibold text-ink-900">Libro de reclamaciones</h1>
         <p className="text-sm text-ink-600">
-          {list.length} registros · plazo de respuesta legal: 30 días calendario.
+          {list.length} registros · plazo legal de respuesta: 30 días calendario.
         </p>
       </div>
       <div className="card overflow-hidden">
@@ -34,7 +35,14 @@ export default async function ReclamacionesPage() {
           <tbody className="divide-y divide-ink-100">
             {list.map((r) => (
               <tr key={r.id} className="hover:bg-ink-50">
-                <td className="px-4 py-3 font-mono text-ink-900">#{r.numero_correlativo}</td>
+                <td className="px-4 py-3">
+                  <Link
+                    href={`/admin/reclamaciones/${r.id}`}
+                    className="font-mono text-ink-900 hover:underline"
+                  >
+                    #{r.numero_correlativo}
+                  </Link>
+                </td>
                 <td className="px-4 py-3 text-ink-700">{formatDateTime(r.fecha)}</td>
                 <td className="px-4 py-3 capitalize text-ink-700">{r.tipo}</td>
                 <td className="px-4 py-3 text-ink-700">
@@ -59,7 +67,7 @@ export default async function ReclamacionesPage() {
             ))}
             {list.length === 0 && (
               <tr>
-                <td colSpan={6} className="px-4 py-8 text-center text-ink-500">
+                <td colSpan={6} className="px-4 py-12 text-center text-ink-500">
                   Sin reclamaciones registradas.
                 </td>
               </tr>
