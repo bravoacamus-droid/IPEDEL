@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Download } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import type { Reclamacion } from "@/lib/types/database";
 import { formatDateTime } from "@/lib/utils";
@@ -23,31 +23,41 @@ export default async function ReclamacionDetail({
 
   return (
     <div className="space-y-6">
-      <div>
-        <Link
-          href="/admin/reclamaciones"
-          className="inline-flex items-center gap-1 text-sm text-ink-500 hover:text-ink-900"
-        >
-          <ArrowLeft className="h-4 w-4" /> Reclamaciones
-        </Link>
-        <h1 className="mt-2 text-2xl font-semibold text-ink-900">
-          Reclamación N° {r.numero_correlativo}
-        </h1>
-        <p className="text-sm text-ink-600">
-          {formatDateTime(r.fecha)} ·
-          <span className="ml-2 capitalize">{r.tipo}</span> ·
-          <span
-            className={`ml-2 badge ${
-              r.estado === "pendiente"
-                ? "bg-rose-100 text-rose-700"
-                : r.estado === "atendido"
-                ? "bg-amber-100 text-amber-800"
-                : "bg-brand-100 text-brand-800"
-            }`}
+      <div className="flex flex-wrap items-end justify-between gap-3">
+        <div>
+          <Link
+            href="/admin/reclamaciones"
+            className="inline-flex items-center gap-1 text-sm text-ink-500 hover:text-ink-900"
           >
-            {r.estado}
-          </span>
-        </p>
+            <ArrowLeft className="h-4 w-4" /> Reclamaciones
+          </Link>
+          <h1 className="mt-2 text-2xl font-semibold text-ink-900">
+            Reclamación N° {r.numero_correlativo}
+          </h1>
+          <p className="text-sm text-ink-600">
+            {formatDateTime(r.fecha)} ·
+            <span className="ml-2 capitalize">{r.tipo}</span> ·
+            <span
+              className={`ml-2 badge ${
+                r.estado === "pendiente"
+                  ? "bg-rose-100 text-rose-700"
+                  : r.estado === "atendido"
+                  ? "bg-amber-100 text-amber-800"
+                  : "bg-brand-100 text-brand-800"
+              }`}
+            >
+              {r.estado}
+            </span>
+          </p>
+        </div>
+        <a
+          href={`/api/reclamaciones/${id}/pdf`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="btn-primary"
+        >
+          <Download className="h-4 w-4" /> Descargar PDF
+        </a>
       </div>
 
       <div className="grid gap-6 lg:grid-cols-3">
