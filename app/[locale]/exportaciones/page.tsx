@@ -329,7 +329,6 @@ function Stat({ value, label }: { value: string; label: string }) {
 }
 
 function Step({
-  n,
   icon: Icon,
   title,
   desc,
@@ -341,14 +340,11 @@ function Step({
 }) {
   return (
     <li className="card relative p-6">
-      <span className="absolute right-5 top-5 text-5xl font-semibold text-brand-100">
-        {String(n).padStart(2, "0")}
-      </span>
-      <span className="relative inline-flex h-11 w-11 items-center justify-center rounded-xl bg-brand-500 text-black">
+      <span className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-brand-500 text-black">
         <Icon className="h-5 w-5" strokeWidth={1.6} />
       </span>
-      <h3 className="relative mt-5 text-lg font-semibold text-ink-900">{title}</h3>
-      <p className="relative mt-2 text-sm text-ink-600">{desc}</p>
+      <h3 className="mt-5 text-lg font-semibold text-ink-900">{title}</h3>
+      <p className="mt-2 text-sm text-ink-600">{desc}</p>
     </li>
   );
 }

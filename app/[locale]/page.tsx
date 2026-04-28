@@ -194,7 +194,6 @@ function StatCard({
 // =============================================================
 type ServiceCard = {
   slug: string;
-  index: string;
   icon: LucideIcon;
   title_es: string;
   title_en: string;
@@ -207,7 +206,6 @@ type ServiceCard = {
 const SERVICE_CARDS: ServiceCard[] = [
   {
     slug: "agenciamiento-de-carga",
-    index: "01",
     icon: Container,
     title_es: "Agenciamiento de carga",
     title_en: "Freight forwarding",
@@ -220,7 +218,6 @@ const SERVICE_CARDS: ServiceCard[] = [
   },
   {
     slug: "almacenamiento",
-    index: "02",
     icon: Warehouse,
     title_es: "Almacenamiento",
     title_en: "Warehousing",
@@ -233,7 +230,6 @@ const SERVICE_CARDS: ServiceCard[] = [
   },
   {
     slug: "especializados",
-    index: "03",
     icon: Layers,
     title_es: "Especializados",
     title_en: "Specialized",
@@ -246,7 +242,6 @@ const SERVICE_CARDS: ServiceCard[] = [
   },
   {
     slug: "internacional",
-    index: "04",
     icon: Globe2,
     title_es: "Internacional",
     title_en: "International",
@@ -341,14 +336,6 @@ function ServiceCardItem({
         aria-hidden="true"
         className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-brand-300 via-brand-500 to-brand-700 opacity-60 transition-opacity group-hover:opacity-100"
       />
-
-      {/* Index number */}
-      <span
-        aria-hidden="true"
-        className="absolute right-6 top-6 select-none text-5xl font-semibold leading-none text-brand-100 transition-colors group-hover:text-brand-200"
-      >
-        {card.index}
-      </span>
 
       {/* Icon */}
       <span className="relative inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-400 to-brand-600 text-black shadow-lg shadow-brand-500/30 transition-transform group-hover:scale-105">

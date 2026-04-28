@@ -207,7 +207,6 @@ export default async function ServiciosPage({
                       <Icon className="h-5 w-5" strokeWidth={1.6} />
                     </span>
                     <span className="text-xs font-semibold uppercase tracking-[0.18em] text-brand-600">
-                      {String(idx + 1).padStart(2, "0")} ·{" "}
                       {isEs ? "Servicio" : "Service"}
                     </span>
                   </div>
