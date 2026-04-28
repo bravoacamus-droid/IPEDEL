@@ -60,6 +60,11 @@
   100% { transform: translateY(0);   opacity: 0.9; }
 }
 
+@keyframes ipedel-loader {
+  0%   { transform: translateX(-150%); }
+  100% { transform: translateX(450%); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   video[autoplay] {
     /* Respeta usuarios con sensibilidad al movimiento */

@@ -50,17 +50,6 @@ export default async function AdminDashboard() {
           </Link>
         ))}
       </div>
-      <div className="card p-6 text-sm text-ink-700">
-        <h2 className="text-base font-semibold text-ink-900">Sprints en progreso</h2>
-        <ul className="mt-3 space-y-1.5 list-disc pl-5">
-          <li><span className="font-medium">Sprint 1 ✓</span> — Auth admin, schema Supabase, sitio público funcional, paleta verde, ES/EN básico.</li>
-          <li><span className="font-medium">Sprint 2</span> — CRUD completo embarques + edición tarifario en este panel.</li>
-          <li><span className="font-medium">Sprint 3</span> — Generación PDF de reclamaciones, emails SMTP Stellar.</li>
-          <li><span className="font-medium">Sprint 4</span> — Mapa interactivo de agentes (react-simple-maps).</li>
-          <li><span className="font-medium">Sprint 5</span> — CMS de contenido, traducción completa EN.</li>
-          <li><span className="font-medium">Sprint 6</span> — SEO, imágenes IA finales, despliegue Vercel + dominio.</li>
-        </ul>
-      </div>
     </div>
   );
 }

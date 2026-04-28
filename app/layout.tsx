@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { Preloader } from "@/components/public/Preloader";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -46,7 +47,10 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="es" className={`${inter.variable} h-full`}>
-      <body className="min-h-full bg-white text-ink-900">{children}</body>
+      <body className="min-h-full bg-white text-ink-900">
+        <Preloader />
+        {children}
+      </body>
     </html>
   );
 }
