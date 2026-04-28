@@ -77,15 +77,18 @@ export function Navbar({ locale, dict }: { locale: Locale; dict: Dictionary }) {
           <Link href={`/${locale}/nosotros`} className={linkClass()}>
             {dict.nav.about}
           </Link>
+          <Link href={`/${locale}/exportaciones`} className={linkClass()}>
+            {dict.nav.exports}
+          </Link>
           <MegaMenu locale={locale} scrolled={scrolled} label={dict.nav.services} />
+          <Link href={`/${locale}/tarifario`} className={linkClass()}>
+            {dict.nav.tarifario}
+          </Link>
           <Link href={`/${locale}/tracking`} className={linkClass()}>
             {dict.nav.tracking}
           </Link>
           <Link href={`/${locale}/agentes`} className={linkClass()}>
             {dict.nav.agents}
-          </Link>
-          <Link href={`/${locale}/tarifario`} className={linkClass()}>
-            {dict.nav.tarifario}
           </Link>
           <Link href={`/${locale}/contacto`} className={linkClass()}>
             {dict.nav.contact}
@@ -127,10 +130,15 @@ export function Navbar({ locale, dict }: { locale: Locale; dict: Dictionary }) {
             {[
               { href: `/${locale}`, label: dict.nav.home },
               { href: `/${locale}/nosotros`, label: dict.nav.about },
+              { href: `/${locale}/exportaciones`, label: dict.nav.exports },
               { href: `/${locale}/servicios`, label: dict.nav.services },
+              { href: `/${locale}/servicios/agenciamiento-de-carga`, label: "— Agenciamiento de carga" },
+              { href: `/${locale}/servicios/almacenamiento`, label: "— Almacenamiento" },
+              { href: `/${locale}/servicios/especializados`, label: "— Especializados" },
+              { href: `/${locale}/servicios/internacional`, label: "— Internacional" },
+              { href: `/${locale}/tarifario`, label: dict.nav.tarifario },
               { href: `/${locale}/tracking`, label: dict.nav.tracking },
               { href: `/${locale}/agentes`, label: dict.nav.agents },
-              { href: `/${locale}/tarifario`, label: dict.nav.tarifario },
               { href: `/${locale}/contacto`, label: dict.nav.contact },
             ].map((it) => (
               <Link

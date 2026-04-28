@@ -5,19 +5,15 @@ import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   ArrowRight,
-  Boxes,
   ChevronDown,
+  Container,
   Globe2,
-  Package,
-  Plane,
-  Ship,
-  Truck,
+  Layers,
   Warehouse,
 } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import type { Locale } from "@/lib/i18n/config";
 import { cn } from "@/lib/utils";
-
-import type { LucideIcon } from "lucide-react";
 
 type Item = {
   href: string;
@@ -28,54 +24,39 @@ type Item = {
   icon: LucideIcon;
 };
 
+// Servicios oficiales IPE del Perú SAC
 const ITEMS: Item[] = [
   {
     href: "/servicios/agenciamiento-de-carga",
-    icon: Plane,
-    title_es: "Carga aérea",
-    title_en: "Air freight",
-    desc_es: "Express y consolidado con cobertura global 24–72h.",
-    desc_en: "Express and consolidated air with 24–72h global coverage.",
-  },
-  {
-    href: "/servicios/agenciamiento-de-carga",
-    icon: Ship,
-    title_es: "Carga marítima",
-    title_en: "Sea freight",
-    desc_es: "FCL/LCL desde Asia, Europa y América.",
-    desc_en: "FCL/LCL from Asia, Europe and the Americas.",
-  },
-  {
-    href: "/servicios/agenciamiento-de-carga",
-    icon: Truck,
-    title_es: "Transporte terrestre",
-    title_en: "Land transport",
-    desc_es: "Distribución nacional y rutas CAN.",
-    desc_en: "Domestic distribution and CAN routes.",
+    icon: Container,
+    title_es: "Agenciamiento de carga",
+    title_en: "Freight forwarding",
+    desc_es: "Aéreo, marítimo (FCL/LCL), terrestre, multimodal y Door to Door.",
+    desc_en: "Air, sea (FCL/LCL), land, multimodal and Door to Door.",
   },
   {
     href: "/servicios/almacenamiento",
     icon: Warehouse,
     title_es: "Almacenamiento",
     title_en: "Warehousing",
-    desc_es: "Bodegaje, custodia y manejo en Lima/Callao.",
-    desc_en: "Storage, custody and handling in Lima/Callao.",
+    desc_es: "Áreas exclusivas y compartidas con manejo de productos controlados.",
+    desc_en: "Exclusive and shared areas with controlled-product handling.",
   },
   {
     href: "/servicios/especializados",
-    icon: Package,
-    title_es: "Cargas especializadas",
-    title_en: "Specialized cargo",
-    desc_es: "Pesada, sobredimensionada, perecederos y peligrosa.",
-    desc_en: "Heavy, oversized, perishables and dangerous goods.",
+    icon: Layers,
+    title_es: "Especializados",
+    title_en: "Specialized",
+    desc_es: "Operadores logísticos: desaduanaje y consolidaciones aéreas.",
+    desc_en: "Logistics operators: customs clearance and air consolidations.",
   },
   {
     href: "/servicios/internacional",
     icon: Globe2,
-    title_es: "Mudanzas internacionales",
-    title_en: "International moving",
-    desc_es: "Door to Port · Door to Door · Room to Room.",
-    desc_en: "Door to Port · Door to Door · Room to Room.",
+    title_es: "Internacional",
+    title_en: "International",
+    desc_es: "Mudanzas internacionales: Door to Port · Door to Door · Room to Room.",
+    desc_en: "International moving: Door to Port · Door to Door · Room to Room.",
   },
 ];
 
@@ -93,11 +74,11 @@ export function MegaMenu({
   const ref = useRef<HTMLDivElement>(null);
 
   function scheduleClose() {
-    closeTimer.current && clearTimeout(closeTimer.current);
+    if (closeTimer.current) clearTimeout(closeTimer.current);
     closeTimer.current = setTimeout(() => setOpen(false), 120);
   }
   function cancelClose() {
-    closeTimer.current && clearTimeout(closeTimer.current);
+    if (closeTimer.current) clearTimeout(closeTimer.current);
   }
 
   useEffect(() => {
@@ -153,22 +134,22 @@ export function MegaMenu({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -6 }}
             transition={{ duration: 0.18, ease: "easeOut" }}
-            className="absolute left-1/2 top-full z-40 mt-3 w-[min(94vw,920px)] -translate-x-1/2"
+            className="absolute left-1/2 top-full z-40 mt-3 w-[min(94vw,720px)] -translate-x-1/2"
           >
             <div className="overflow-hidden rounded-2xl border border-ink-100 bg-white shadow-2xl shadow-black/10">
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2">
                 {ITEMS.map((it) => {
                   const Icon = it.icon;
                   const title = locale === "es" ? it.title_es : it.title_en;
                   const desc = locale === "es" ? it.desc_es : it.desc_en;
                   return (
                     <Link
-                      key={`${it.href}-${title}`}
+                      key={it.href}
                       href={`/${locale}${it.href}`}
                       onClick={() => setOpen(false)}
-                      className="group flex items-start gap-4 border-b border-r border-ink-100 px-5 py-4 transition-colors last:border-b-0 hover:bg-brand-50/60"
+                      className="group flex items-start gap-4 border-b border-r border-ink-100 px-5 py-5 transition-colors last:border-b-0 hover:bg-brand-50/60"
                     >
-                      <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-brand-50 text-brand-700 transition-colors group-hover:bg-brand-500 group-hover:text-black">
+                      <span className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-brand-50 text-brand-700 transition-colors group-hover:bg-brand-500 group-hover:text-black">
                         <Icon className="h-5 w-5" strokeWidth={1.6} />
                       </span>
                       <div className="min-w-0">

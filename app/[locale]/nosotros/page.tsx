@@ -1,7 +1,22 @@
+import Link from "next/link";
+import {
+  Anchor,
+  Award,
+  CheckCircle2,
+  Compass,
+  Globe2,
+  HeartHandshake,
+  Sparkles,
+  Target,
+  Users,
+} from "lucide-react";
 import { notFound } from "next/navigation";
 import { isLocale } from "@/lib/i18n/config";
 import { getDictionary } from "@/lib/i18n/get-dictionary";
 import { createClient } from "@/lib/supabase/server";
+import { PageBanner } from "@/components/public/PageBanner";
+import { ImageSlot } from "@/components/public/ImageSlot";
+import { SITE } from "@/lib/site";
 
 export default async function NosotrosPage({
   params,
@@ -12,54 +27,329 @@ export default async function NosotrosPage({
   if (!isLocale(locale)) notFound();
   const dict = await getDictionary(locale);
 
+  // Permite al admin editar Misión/Visión desde site_content (CMS), con fallback a textos oficiales.
   const supabase = await createClient();
-  const { data: title } = await supabase
-    .from("site_content")
-    .select("value")
-    .eq("key", "nosotros_title")
-    .eq("locale", locale)
-    .maybeSingle();
-  const { data: body } = await supabase
-    .from("site_content")
-    .select("value")
-    .eq("key", "nosotros_body")
-    .eq("locale", locale)
-    .maybeSingle();
+  const [{ data: cmsTitle }, { data: cmsBody }] = await Promise.all([
+    supabase
+      .from("site_content")
+      .select("value")
+      .eq("key", "nosotros_title")
+      .eq("locale", locale)
+      .maybeSingle(),
+    supabase
+      .from("site_content")
+      .select("value")
+      .eq("key", "nosotros_body")
+      .eq("locale", locale)
+      .maybeSingle(),
+  ]);
+
+  const title =
+    cmsTitle?.value || (locale === "es" ? "Bienvenidos" : "Welcome");
+  const eyebrow =
+    locale === "es" ? "Quiénes somos" : "About us";
 
   return (
     <div className="bg-white">
-      <section className="bg-ink-900 text-white">
-        <div className="container-page pt-32 pb-16">
-          <h1 className="text-4xl font-semibold tracking-tight">
-            {title?.value || (locale === "es" ? "Sobre nosotros" : "About us")}
-          </h1>
+      <PageBanner
+        eyebrow={eyebrow}
+        title={title}
+        subtitle={
+          locale === "es"
+            ? "Más de tres décadas siendo el puente logístico entre el Perú y el mundo, con la confianza de las grandes transnacionales japonesas."
+            : "Over three decades bridging Peru and the world, trusted by leading Japanese multinationals."
+        }
+        breadcrumb={[
+          { href: `/${locale}`, label: locale === "es" ? "Inicio" : "Home" },
+          { href: `/${locale}/nosotros`, label: eyebrow },
+        ]}
+      />
+
+      {/* Bienvenidos — texto oficial */}
+      <section className="container-page py-16 lg:py-24">
+        <div className="grid gap-10 lg:grid-cols-12 lg:gap-16">
+          <div className="lg:col-span-7 space-y-5 text-ink-700">
+            {cmsBody?.value ? (
+              <p className="text-lg leading-relaxed">{cmsBody.value}</p>
+            ) : locale === "es" ? (
+              <>
+                <p className="text-lg leading-relaxed">
+                  <span className="font-semibold text-ink-900">
+                    {SITE.legalName}
+                  </span>{" "}
+                  es Consolidador Aéreo y Marítimo, se dedica a la Logística
+                  Nacional e Internacional, tanto para importación como
+                  exportación y tratamientos especiales.
+                </p>
+                <p className="leading-relaxed">
+                  Siendo representante de transnacionales japonesas, ponemos a
+                  su disposición un equipo humano integrado por profesionales
+                  altamente calificados, contando con una red de agentes en{" "}
+                  <strong>más de 40 países</strong> y esforzándonos por brindar
+                  un óptimo servicio de calidad, a precios competitivos en el
+                  mercado.
+                </p>
+                <p className="leading-relaxed">
+                  IPE del Perú SAC cuenta con la capacidad de adaptarse a las
+                  necesidades particulares de cada cliente, para cubrir de
+                  forma individual los requerimientos de cada uno de ellos.
+                </p>
+                <p className="leading-relaxed">
+                  Esperamos tener la oportunidad de brindarle un buen servicio.
+                  La familia de IPE del Perú SAC le estará esperando
+                  gustosamente.
+                </p>
+              </>
+            ) : (
+              <>
+                <p className="text-lg leading-relaxed">
+                  <span className="font-semibold text-ink-900">
+                    {SITE.legalName}
+                  </span>{" "}
+                  is an Air and Maritime Consolidator dedicated to National and
+                  International Logistics, covering imports, exports and
+                  specialized treatments.
+                </p>
+                <p className="leading-relaxed">
+                  As a representative of Japanese multinationals, we put at
+                  your service a team of highly qualified professionals, backed
+                  by a network of agents in <strong>40+ countries</strong>,
+                  committed to delivering top-quality service at competitive
+                  market prices.
+                </p>
+                <p className="leading-relaxed">
+                  IPE del Perú SAC adapts to the particular needs of every
+                  client, covering each requirement individually.
+                </p>
+                <p className="leading-relaxed">
+                  We look forward to providing you with great service. The IPE
+                  del Perú SAC family will be glad to welcome you.
+                </p>
+              </>
+            )}
+
+            <div className="mt-8 grid grid-cols-3 gap-4 border-t border-ink-100 pt-8">
+              <Stat value="30+" label={locale === "es" ? "Años de experiencia" : "Years of experience"} />
+              <Stat value="40+" label={locale === "es" ? "Países en la red" : "Countries in network"} />
+              <Stat value="100%" label={locale === "es" ? "Trazabilidad de carga" : "Cargo traceability"} />
+            </div>
+          </div>
+
+          <div className="lg:col-span-5">
+            <ImageSlot
+              hint={
+                locale === "es"
+                  ? "Equipo IPE del Perú · operación logística"
+                  : "IPE del Perú team · logistics operation"
+              }
+              suggested="/about/equipo.jpg"
+              ratio="aspect-[4/5]"
+              priority
+            />
+            <div className="mt-4 rounded-xl border border-brand-200 bg-brand-50 p-4 text-sm text-brand-900">
+              <p className="font-semibold flex items-center gap-2">
+                <Award className="h-4 w-4" strokeWidth={1.6} />
+                {locale === "es"
+                  ? "Representantes de transnacionales japonesas"
+                  : "Representatives of Japanese multinationals"}
+              </p>
+              <p className="mt-1 text-brand-800">
+                {locale === "es"
+                  ? "Confianza forjada con décadas de operaciones impecables."
+                  : "Trust forged through decades of impeccable operations."}
+              </p>
+            </div>
+          </div>
         </div>
       </section>
-      <section className="container-page py-12 max-w-3xl">
-        <p className="text-lg text-ink-700 leading-relaxed">{body?.value}</p>
-        <div className="mt-10 grid gap-6 sm:grid-cols-2">
-          <div className="card p-6">
-            <h2 className="text-sm font-semibold uppercase tracking-wider text-brand-600">
-              {locale === "es" ? "Misión" : "Mission"}
-            </h2>
-            <p className="mt-2 text-ink-700">
+
+      {/* Misión / Visión / Valores */}
+      <section className="bg-ink-50 py-16 lg:py-24">
+        <div className="container-page">
+          <div className="mx-auto max-w-2xl text-center">
+            <span className="text-xs font-semibold uppercase tracking-[0.18em] text-brand-600">
+              {locale === "es" ? "Nuestro propósito" : "Our purpose"}
+            </span>
+            <h2 className="mt-3 text-3xl font-semibold tracking-tight text-ink-900 sm:text-4xl">
               {locale === "es"
-                ? "Brindar soluciones logísticas internacionales confiables, eficientes y a la medida del cliente, conectando al Perú con el mundo."
-                : "Deliver reliable, efficient and tailored international logistics solutions that connect Peru with the world."}
-            </p>
+                ? "Conectar al Perú con el mundo, una operación a la vez"
+                : "Connecting Peru with the world, one shipment at a time"}
+            </h2>
           </div>
-          <div className="card p-6">
-            <h2 className="text-sm font-semibold uppercase tracking-wider text-brand-600">
-              {locale === "es" ? "Visión" : "Vision"}
-            </h2>
-            <p className="mt-2 text-ink-700">
+
+          <div className="mt-12 grid gap-6 md:grid-cols-3">
+            <PillarCard
+              icon={Target}
+              title={locale === "es" ? "Misión" : "Mission"}
+              body={
+                locale === "es"
+                  ? "Brindar soluciones logísticas internacionales confiables, eficientes y a la medida del cliente, conectando al Perú con el mundo a través de un servicio impecable."
+                  : "Deliver reliable, efficient and tailored international logistics solutions that connect Peru with the world through impeccable service."
+              }
+            />
+            <PillarCard
+              icon={Compass}
+              title={locale === "es" ? "Visión" : "Vision"}
+              body={
+                locale === "es"
+                  ? "Ser el agente de carga referente en el Perú por nuestra trayectoria, compromiso y red internacional de socios estratégicos."
+                  : "Be Peru's reference freight forwarder, recognized for our track record, commitment and global partner network."
+              }
+            />
+            <PillarCard
+              icon={Sparkles}
+              title={locale === "es" ? "Valores" : "Values"}
+              body={
+                locale === "es"
+                  ? "Confianza, excelencia operativa, transparencia, adaptabilidad y compromiso con cada embarque."
+                  : "Trust, operational excellence, transparency, adaptability and commitment to every shipment."
+              }
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* Diferenciadores */}
+      <section className="container-page py-16 lg:py-24">
+        <div className="grid gap-10 lg:grid-cols-12 lg:gap-16">
+          <div className="lg:col-span-5">
+            <ImageSlot
+              hint={
+                locale === "es"
+                  ? "Almacén / contenedor / agentes — imagen institucional"
+                  : "Warehouse / container / agents — institutional"
+              }
+              suggested="/about/operacion.jpg"
+              ratio="aspect-[4/5]"
+            />
+          </div>
+          <div className="lg:col-span-7">
+            <span className="text-xs font-semibold uppercase tracking-[0.18em] text-brand-600">
+              {locale === "es" ? "Por qué elegirnos" : "Why choose us"}
+            </span>
+            <h2 className="mt-3 text-3xl font-semibold tracking-tight text-ink-900">
               {locale === "es"
-                ? "Ser el agente de carga referente en el Perú por nuestra trayectoria, compromiso y red internacional de socios estratégicos."
-                : "Be Peru's reference freight forwarder, recognized for our experience, commitment and global partner network."}
-            </p>
+                ? "Capacidad de adaptarnos a tu operación"
+                : "We adapt to your operation"}
+            </h2>
+            <ul className="mt-8 space-y-5">
+              <Diff
+                icon={HeartHandshake}
+                title={
+                  locale === "es"
+                    ? "Trato directo y personalizado"
+                    : "Direct and personalized service"
+                }
+                desc={
+                  locale === "es"
+                    ? "Cada cliente cuenta con un ejecutivo asignado que conoce su negocio y le acompaña en cada embarque."
+                    : "Every client has a dedicated executive who knows their business and supports each shipment."
+                }
+              />
+              <Diff
+                icon={Globe2}
+                title={
+                  locale === "es"
+                    ? "Red mundial de socios estratégicos"
+                    : "Global strategic partner network"
+                }
+                desc={
+                  locale === "es"
+                    ? "Más de 40 países con agentes acreditados que respaldan cada operación."
+                    : "Over 40 countries with accredited agents backing every operation."
+                }
+              />
+              <Diff
+                icon={Users}
+                title={
+                  locale === "es"
+                    ? "Equipo altamente calificado"
+                    : "Highly qualified team"
+                }
+                desc={
+                  locale === "es"
+                    ? "Profesionales con conocimiento profundo en legislación aduanera y operación internacional."
+                    : "Professionals with deep expertise in customs legislation and international operations."
+                }
+              />
+              <Diff
+                icon={Anchor}
+                title={
+                  locale === "es"
+                    ? "Trazabilidad permanente"
+                    : "Real-time traceability"
+                }
+                desc={
+                  locale === "es"
+                    ? "Sistema de seguimiento desde el primer contacto con el proveedor hasta la entrega de documentos."
+                    : "Tracking system from first supplier contact through document delivery."
+                }
+              />
+            </ul>
+            <Link
+              href={`/${locale}/contacto`}
+              className="mt-10 inline-flex items-center gap-2 rounded-full bg-brand-500 px-6 py-3 text-sm font-semibold text-black hover:bg-brand-400"
+            >
+              {locale === "es" ? "Conversemos sobre tu carga" : "Let's talk about your cargo"}
+            </Link>
           </div>
         </div>
       </section>
     </div>
+  );
+}
+
+function Stat({ value, label }: { value: string; label: string }) {
+  return (
+    <div>
+      <p className="text-2xl font-semibold tracking-tight text-ink-900 sm:text-3xl">
+        {value}
+      </p>
+      <p className="mt-1 text-xs uppercase tracking-[0.16em] text-ink-500">
+        {label}
+      </p>
+    </div>
+  );
+}
+
+function PillarCard({
+  icon: Icon,
+  title,
+  body,
+}: {
+  icon: typeof Target;
+  title: string;
+  body: string;
+}) {
+  return (
+    <div className="card p-6 transition-all hover:shadow-md">
+      <span className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-brand-500 text-black">
+        <Icon className="h-5 w-5" strokeWidth={1.6} />
+      </span>
+      <h3 className="mt-5 text-lg font-semibold text-ink-900">{title}</h3>
+      <p className="mt-2 text-sm leading-relaxed text-ink-600">{body}</p>
+    </div>
+  );
+}
+
+function Diff({
+  icon: Icon,
+  title,
+  desc,
+}: {
+  icon: typeof HeartHandshake;
+  title: string;
+  desc: string;
+}) {
+  return (
+    <li className="flex gap-4">
+      <span className="mt-0.5 inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-brand-50 text-brand-700">
+        <Icon className="h-5 w-5" strokeWidth={1.6} />
+      </span>
+      <div>
+        <p className="font-semibold text-ink-900">{title}</p>
+        <p className="mt-1 text-sm text-ink-600">{desc}</p>
+      </div>
+    </li>
   );
 }

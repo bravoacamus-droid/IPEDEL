@@ -1,8 +1,10 @@
 import Link from "next/link";
 import Image from "next/image";
-import { BookText, Mail, MapPin, Phone } from "lucide-react";
+import { BookText, ExternalLink, Mail, MapPin, Phone } from "lucide-react";
 import type { Locale } from "@/lib/i18n/config";
 import type { Dictionary } from "@/lib/i18n/get-dictionary";
+import { MAPS_URL, SITE } from "@/lib/site";
+import { FacebookIcon } from "./BrandIcons";
 
 export function Footer({ locale, dict }: { locale: Locale; dict: Dictionary }) {
   const explore = [
@@ -35,21 +37,46 @@ export function Footer({ locale, dict }: { locale: Locale; dict: Dictionary }) {
             <p className="mt-4 text-sm text-ink-300 max-w-sm">
               {dict.footer.company} — {dict.footer.ruc}
             </p>
-            <ul className="mt-4 space-y-2 text-sm text-ink-300">
+            <ul className="mt-4 space-y-2.5 text-sm text-ink-300">
               <li className="flex items-start gap-2">
                 <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-brand-500" />
-                <span>{dict.footer.address}</span>
+                <a
+                  href={MAPS_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group inline-flex items-start gap-1.5 hover:text-white"
+                  aria-label={
+                    locale === "es"
+                      ? "Abrir dirección en Google Maps"
+                      : "Open address in Google Maps"
+                  }
+                >
+                  <span>{dict.footer.address}</span>
+                  <ExternalLink className="mt-0.5 h-3 w-3 shrink-0 text-ink-500 group-hover:text-brand-300" />
+                </a>
               </li>
               <li className="flex items-center gap-2">
                 <Phone className="h-4 w-4 shrink-0 text-brand-500" />
-                <a href={`tel:${dict.footer.phone}`} className="hover:text-white">
-                  {dict.footer.phone}
+                <a href={`tel:${SITE.phoneTel}`} className="hover:text-white">
+                  {SITE.phone}
                 </a>
               </li>
               <li className="flex items-center gap-2">
                 <Mail className="h-4 w-4 shrink-0 text-brand-500" />
-                <a href={`mailto:${dict.footer.email}`} className="hover:text-white">
-                  {dict.footer.email}
+                <a href={`mailto:${SITE.email}`} className="hover:text-white">
+                  {SITE.email}
+                </a>
+              </li>
+              <li>
+                <a
+                  href={SITE.social.facebook}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-2 inline-flex items-center gap-2 text-ink-300 hover:text-white"
+                  aria-label="Facebook"
+                >
+                  <FacebookIcon className="h-4 w-4 text-brand-500" />
+                  Facebook
                 </a>
               </li>
             </ul>

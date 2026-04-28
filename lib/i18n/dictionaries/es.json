@@ -1,8 +1,9 @@
 {
   "nav": {
     "home": "Inicio",
-    "about": "Nosotros",
+    "about": "Quiénes somos",
     "services": "Servicios",
+    "exports": "Exportaciones",
     "tracking": "Tracking",
     "agents": "Agentes",
     "tarifario": "Tarifario",
