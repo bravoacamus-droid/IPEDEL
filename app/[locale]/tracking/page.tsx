@@ -48,7 +48,7 @@ export default async function TrackingPage({
   return (
     <div className="bg-ink-50">
       <section className="bg-ink-900 text-white">
-        <div className="container-page py-16">
+        <div className="container-page pt-32 pb-16">
           <h1 className="text-4xl font-semibold tracking-tight">{dict.tracking.title}</h1>
           <p className="mt-3 max-w-2xl text-ink-300">{dict.tracking.subtitle}</p>
           <div className="mt-8 max-w-2xl">

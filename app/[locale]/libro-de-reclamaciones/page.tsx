@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { BookText } from "lucide-react";
 import { isLocale } from "@/lib/i18n/config";
 import { getDictionary } from "@/lib/i18n/get-dictionary";
 import { LibroReclamacionesForm } from "@/components/public/LibroReclamacionesForm";
@@ -19,10 +20,10 @@ export default async function LibroReclamacionesPage({
   return (
     <div className="bg-ink-50">
       <section className="bg-ink-900 text-white">
-        <div className="container-page py-16">
+        <div className="container-page pt-32 pb-16">
           <div className="flex items-start gap-4">
-            <span className="inline-flex h-12 w-12 items-center justify-center rounded-lg bg-brand-500 text-2xl text-black">
-              📒
+            <span className="inline-flex h-12 w-12 items-center justify-center rounded-lg bg-brand-500 text-black">
+              <BookText className="h-6 w-6" strokeWidth={1.6} />
             </span>
             <div>
               <h1 className="text-4xl font-semibold tracking-tight">{dict.ldr.title}</h1>

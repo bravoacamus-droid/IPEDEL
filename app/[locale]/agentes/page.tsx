@@ -26,7 +26,7 @@ export default async function AgentesPage({
   return (
     <div className="bg-white">
       <section className="bg-ink-900 text-white">
-        <div className="container-page py-16">
+        <div className="container-page pt-32 pb-16">
           <h1 className="text-4xl font-semibold tracking-tight">
             {locale === "es" ? "Agentes internacionales" : "International agents"}
           </h1>

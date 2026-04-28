@@ -14,7 +14,7 @@ export default async function PoliticaPrivacidad({
   return (
     <article className="bg-white">
       <section className="bg-ink-900 text-white">
-        <div className="container-page py-12">
+        <div className="container-page pt-32 pb-12">
           <h1 className="text-3xl font-semibold tracking-tight">
             {locale === "es" ? "Política de privacidad" : "Privacy policy"}
           </h1>

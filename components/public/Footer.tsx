@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Mail, MapPin, Phone } from "lucide-react";
+import { BookText, Mail, MapPin, Phone } from "lucide-react";
 import type { Locale } from "@/lib/i18n/config";
 import type { Dictionary } from "@/lib/i18n/get-dictionary";
 
@@ -85,7 +85,8 @@ export function Footer({ locale, dict }: { locale: Locale; dict: Dictionary }) {
               href={`/${locale}/libro-de-reclamaciones`}
               className="mt-4 inline-flex items-center gap-2 rounded-md border border-brand-500 px-4 py-2 text-sm font-medium text-brand-300 hover:bg-brand-500 hover:text-black transition-colors"
             >
-              📒 {dict.footer.ldr}
+              <BookText className="h-4 w-4" strokeWidth={1.6} />
+              {dict.footer.ldr}
             </Link>
           </div>
         </div>

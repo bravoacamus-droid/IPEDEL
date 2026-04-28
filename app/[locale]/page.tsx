@@ -5,13 +5,14 @@ import {
   Truck,
   Globe2,
   Boxes,
-  PackageSearch,
+  Warehouse,
+  Package,
   ArrowRight,
 } from "lucide-react";
-import { isLocale } from "@/lib/i18n/config";
+import { isLocale, type Locale } from "@/lib/i18n/config";
 import { getDictionary } from "@/lib/i18n/get-dictionary";
 import { createClient } from "@/lib/supabase/server";
-import { HBLTracker } from "@/components/public/HBLTracker";
+import { HeroVideo } from "@/components/public/HeroVideo";
 import { notFound } from "next/navigation";
 
 export default async function HomePage({
@@ -52,67 +53,20 @@ export default async function HomePage({
 
   const services = [
     { icon: Boxes, key: "freight" as const },
-    { icon: Globe2, key: "storage" as const },
-    { icon: PackageSearch, key: "special" as const },
-    { icon: Plane, key: "intl" as const },
+    { icon: Warehouse, key: "storage" as const },
+    { icon: Package, key: "special" as const },
+    { icon: Globe2, key: "intl" as const },
   ];
 
   return (
     <>
-      {/* Hero */}
-      <section className="relative overflow-hidden bg-ink-900 text-white">
-        <div
-          aria-hidden="true"
-          className="absolute inset-0 opacity-20"
-          style={{
-            backgroundImage:
-              "radial-gradient(circle at 20% 30%, #96c600 0%, transparent 40%), radial-gradient(circle at 80% 60%, #c2d971 0%, transparent 50%)",
-          }}
-        />
-        <div
-          aria-hidden="true"
-          className="absolute inset-0 opacity-[0.06]"
-          style={{
-            backgroundImage:
-              "linear-gradient(to right, white 1px, transparent 1px), linear-gradient(to bottom, white 1px, transparent 1px)",
-            backgroundSize: "48px 48px",
-          }}
-        />
-        <div className="container-page relative grid items-center gap-10 py-20 md:grid-cols-12 md:py-28">
-          <div className="md:col-span-7">
-            <span className="inline-block rounded-full border border-brand-500 bg-brand-500/10 px-3 py-1 text-xs font-medium uppercase tracking-wider text-brand-300">
-              {dict.home.hero_eyebrow}
-            </span>
-            <h1 className="mt-5 text-balance text-4xl font-semibold leading-tight tracking-tight sm:text-5xl md:text-6xl">
-              {heroTitle}
-            </h1>
-            <p className="mt-5 max-w-xl text-base text-ink-200 sm:text-lg">{heroSubtitle}</p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Link href={`/${locale}/tracking`} className="btn-primary">
-                {heroCta} <ArrowRight className="h-4 w-4" />
-              </Link>
-              <Link
-                href={`/${locale}/contacto`}
-                className="btn border border-white/20 bg-white/10 text-white hover:bg-white hover:text-black px-5 py-2.5"
-              >
-                {dict.home.hero_cta_contact}
-              </Link>
-            </div>
-          </div>
-
-          <div className="md:col-span-5">
-            <div className="rounded-2xl border border-white/10 bg-white p-5 text-ink-900 shadow-2xl">
-              <h2 className="text-sm font-semibold uppercase tracking-wider text-ink-500">
-                {dict.home.tracking_title}
-              </h2>
-              <p className="mt-1 text-sm text-ink-600">{dict.home.tracking_subtitle}</p>
-              <div className="mt-4">
-                <HBLTracker locale={locale} dict={dict} />
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <HeroVideo
+        locale={locale as Locale}
+        dict={dict}
+        heroTitle={heroTitle}
+        heroSubtitle={heroSubtitle}
+        heroCta={heroCta}
+      />
 
       {/* Stats */}
       <section className="bg-white">
@@ -144,7 +98,7 @@ export default async function HomePage({
                   className="card p-6 hover:shadow-md transition-shadow group"
                 >
                   <span className="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-brand-500 text-black">
-                    <Icon className="h-5 w-5" />
+                    <Icon className="h-5 w-5" strokeWidth={1.6} />
                   </span>
                   <h3 className="mt-4 text-lg font-semibold text-ink-900">
                     {dict.home[titleKey]}
@@ -166,9 +120,7 @@ export default async function HomePage({
         <div className="container-page flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">
           <div>
             <h2 className="text-2xl font-semibold tracking-tight text-black sm:text-3xl">
-              {locale === "es"
-                ? "¿Necesitas una cotización?"
-                : "Need a quote?"}
+              {locale === "es" ? "¿Necesitas una cotización?" : "Need a quote?"}
             </h2>
             <p className="mt-2 max-w-xl text-black/80">
               {locale === "es"
@@ -195,9 +147,9 @@ function Stat({ label, value, iconRow }: { label: string; value: string; iconRow
     <div className="rounded-xl border border-ink-100 bg-white p-5">
       {iconRow ? (
         <div className="flex items-center gap-2 text-brand-600">
-          <Plane className="h-6 w-6" />
-          <Ship className="h-6 w-6" />
-          <Truck className="h-6 w-6" />
+          <Plane className="h-6 w-6" strokeWidth={1.6} />
+          <Ship className="h-6 w-6" strokeWidth={1.6} />
+          <Truck className="h-6 w-6" strokeWidth={1.6} />
         </div>
       ) : (
         <div className="text-3xl font-semibold text-ink-900">{value}</div>

@@ -29,7 +29,7 @@ export default async function NosotrosPage({
   return (
     <div className="bg-white">
       <section className="bg-ink-900 text-white">
-        <div className="container-page py-16">
+        <div className="container-page pt-32 pb-16">
           <h1 className="text-4xl font-semibold tracking-tight">
             {title?.value || (locale === "es" ? "Sobre nosotros" : "About us")}
           </h1>

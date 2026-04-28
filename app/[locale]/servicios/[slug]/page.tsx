@@ -125,7 +125,7 @@ export default async function ServiceDetail({
   return (
     <div className="bg-ink-50">
       <section className="bg-ink-900 text-white">
-        <div className="container-page py-16">
+        <div className="container-page pt-32 pb-16">
           <Link
             href={`/${locale}/servicios`}
             className="inline-flex items-center gap-1 text-sm text-ink-300 hover:text-white"

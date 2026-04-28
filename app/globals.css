@@ -36,6 +36,7 @@
   html {
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
+    scroll-behavior: smooth;
   }
   body {
     background: var(--background);
@@ -45,6 +46,24 @@
   ::selection {
     background: var(--color-brand-500);
     color: #000;
+  }
+  video {
+    /* Vercel sirve assets desde su edge CDN. preload="metadata" + object-fit
+       cover hace que el video llene el hero sin layout shift. */
+    will-change: transform;
+  }
+}
+
+@keyframes scroll {
+  0%   { transform: translateY(0);   opacity: 0.9; }
+  50%  { transform: translateY(8px); opacity: 0.4; }
+  100% { transform: translateY(0);   opacity: 0.9; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  video[autoplay] {
+    /* Respeta usuarios con sensibilidad al movimiento */
+    display: none;
   }
 }
 

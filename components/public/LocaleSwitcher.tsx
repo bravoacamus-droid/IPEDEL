@@ -5,7 +5,13 @@ import { usePathname } from "next/navigation";
 import { alternateLocale, locales, type Locale } from "@/lib/i18n/config";
 import { cn } from "@/lib/utils";
 
-export function LocaleSwitcher({ current }: { current: Locale }) {
+export function LocaleSwitcher({
+  current,
+  scrolled = true,
+}: {
+  current: Locale;
+  scrolled?: boolean;
+}) {
   const pathname = usePathname() || "/";
   const other = alternateLocale(current);
 
@@ -20,20 +26,30 @@ export function LocaleSwitcher({ current }: { current: Locale }) {
   }
 
   return (
-    <div className="flex items-center rounded-md border border-ink-200 text-xs font-medium overflow-hidden">
+    <div
+      className={cn(
+        "flex items-center overflow-hidden rounded-full border text-xs font-medium transition-colors",
+        scrolled ? "border-ink-200" : "border-white/30",
+      )}
+    >
       <Link
         href={buildHref(current)}
         aria-current="page"
         className={cn(
           "px-2.5 py-1.5",
-          "bg-ink-900 text-white",
+          scrolled ? "bg-ink-900 text-white" : "bg-white text-black",
         )}
       >
         {current.toUpperCase()}
       </Link>
       <Link
         href={buildHref(other)}
-        className="px-2.5 py-1.5 text-ink-700 hover:bg-ink-100"
+        className={cn(
+          "px-2.5 py-1.5 transition-colors",
+          scrolled
+            ? "text-ink-700 hover:bg-ink-100"
+            : "text-white/80 hover:bg-white/10 hover:text-white",
+        )}
       >
         {other.toUpperCase()}
       </Link>
