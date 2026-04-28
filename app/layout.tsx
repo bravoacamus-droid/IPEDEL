@@ -19,15 +19,28 @@ export const metadata: Metadata = {
   applicationName: "IPE del Perú SAC",
   authors: [{ name: "IPE del Perú SAC" }],
   keywords: [
-    "agente de carga", "freight forwarder Perú", "carga aérea", "carga marítima",
-    "tracking HBL", "VUCE", "agenciamiento aduanero", "Lima", "IPE del Perú",
+    "agente de carga",
+    "freight forwarder Perú",
+    "carga aérea",
+    "carga marítima",
+    "tracking HBL",
+    "VUCE",
+    "agenciamiento aduanero",
+    "Lima",
+    "IPE del Perú",
   ],
   openGraph: {
     type: "website",
     locale: "es_PE",
     siteName: "IPE del Perú SAC",
   },
+  twitter: { card: "summary_large_image" },
   robots: { index: true, follow: true },
+  icons: {
+    icon: [
+      { url: "/logo-vertical.png", sizes: "any" },
+    ],
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
