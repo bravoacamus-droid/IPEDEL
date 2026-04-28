@@ -84,6 +84,12 @@ export type Reclamacion = {
   tipo_documento: string;
   numero_documento: string;
   direccion: string | null;
+  ubigeo_departamento_id: string | null;
+  ubigeo_departamento_nombre: string | null;
+  ubigeo_provincia_id: string | null;
+  ubigeo_provincia_nombre: string | null;
+  ubigeo_distrito_id: string | null;
+  ubigeo_distrito_nombre: string | null;
   email: string;
   telefono: string | null;
   es_menor_edad: boolean;

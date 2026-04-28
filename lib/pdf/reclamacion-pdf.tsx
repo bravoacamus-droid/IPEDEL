@@ -163,6 +163,15 @@ export function ReclamacionPDF({
           <Field label="Nombres y apellidos" value={`${r.nombres} ${r.apellidos}`} />
           <Field label="Documento" value={`${r.tipo_documento} ${r.numero_documento}`} />
           <Field label="Domicilio" value={r.direccion ?? "—"} />
+          {r.ubigeo_distrito_nombre && (
+            <Field
+              label="Ubicación"
+              value={`${r.ubigeo_distrito_nombre}, ${r.ubigeo_provincia_nombre}, ${r.ubigeo_departamento_nombre}`}
+            />
+          )}
+          {r.ubigeo_distrito_id && (
+            <Field label="Ubigeo (INEI)" value={r.ubigeo_distrito_id} />
+          )}
           <Field label="Email" value={r.email} />
           <Field label="Teléfono" value={r.telefono ?? "—"} />
           {r.es_menor_edad && (

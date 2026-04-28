@@ -68,6 +68,14 @@ export default async function ReclamacionDetail({
             <Field label="Email">{r.email}</Field>
             <Field label="Teléfono">{r.telefono || "—"}</Field>
             <Field label="Dirección">{r.direccion || "—"}</Field>
+            <Field label="Departamento">{r.ubigeo_departamento_nombre || "—"}</Field>
+            <Field label="Provincia">{r.ubigeo_provincia_nombre || "—"}</Field>
+            <Field label="Distrito">
+              {r.ubigeo_distrito_nombre || "—"}
+              {r.ubigeo_distrito_id && (
+                <span className="ml-1 text-xs text-ink-500">(ubigeo {r.ubigeo_distrito_id})</span>
+              )}
+            </Field>
             {r.es_menor_edad && (
               <>
                 <Field label="Representante">{r.representante_nombre}</Field>

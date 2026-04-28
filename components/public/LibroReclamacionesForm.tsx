@@ -3,6 +3,7 @@
 import { useActionState, useState } from "react";
 import { submitReclamacion, type ReclamacionState } from "@/app/[locale]/libro-de-reclamaciones/actions";
 import type { Dictionary } from "@/lib/i18n/get-dictionary";
+import { UbigeoSelect } from "./UbigeoSelect";
 
 export function LibroReclamacionesForm({ dict }: { dict: Dictionary }) {
   const [state, action, pending] = useActionState<ReclamacionState, FormData>(
@@ -55,6 +56,16 @@ export function LibroReclamacionesForm({ dict }: { dict: Dictionary }) {
         </div>
         <div className="mt-4">
           <Field name="direccion" label={dict.ldr.address} />
+        </div>
+        <div className="mt-4">
+          <UbigeoSelect
+            required
+            labels={{
+              departamento: "Departamento",
+              provincia: "Provincia",
+              distrito: "Distrito",
+            }}
+          />
         </div>
         <label className="mt-4 flex items-center gap-2 text-sm text-ink-700">
           <input

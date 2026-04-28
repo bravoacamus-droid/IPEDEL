@@ -4,6 +4,7 @@ import { z } from "zod";
 import { headers } from "next/headers";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { sendMail } from "@/lib/email/mail";
+import { resolveUbigeo } from "@/lib/peru/ubigeo";
 
 const ReclamacionSchema = z.object({
   tipo: z.enum(["reclamo", "queja"]),
@@ -12,6 +13,10 @@ const ReclamacionSchema = z.object({
   tipo_documento: z.string().default("DNI"),
   numero_documento: z.string().min(8),
   direccion: z.string().optional().or(z.literal("")),
+  // Ubigeo: required (Indecopi). Distrito implies provincia y departamento.
+  ubigeo_departamento_id: z.string().regex(/^\d{2}$/, "Selecciona un departamento."),
+  ubigeo_provincia_id: z.string().regex(/^\d{4}$/, "Selecciona una provincia."),
+  ubigeo_distrito_id: z.string().regex(/^\d{6}$/, "Selecciona un distrito."),
   email: z.string().email(),
   telefono: z.string().optional().or(z.literal("")),
   es_menor_edad: z.union([z.literal("on"), z.literal(undefined), z.literal("")]).optional(),
@@ -40,6 +45,20 @@ export async function submitReclamacion(
   }
 
   const d = parsed.data;
+
+  // Resolve canonical names from the INEI dataset — never trust client-provided names.
+  const ubigeo = resolveUbigeo(d.ubigeo_distrito_id);
+  if (
+    !ubigeo ||
+    ubigeo.provincia_id !== d.ubigeo_provincia_id ||
+    ubigeo.departamento_id !== d.ubigeo_departamento_id
+  ) {
+    return {
+      ok: false,
+      errors: { ubigeo_distrito_id: ["Ubigeo inválido. Vuelve a seleccionar."] },
+    };
+  }
+
   const ip = (await headers()).get("x-forwarded-for")?.split(",")[0].trim() || null;
 
   const supabase = createAdminClient();
@@ -52,6 +71,12 @@ export async function submitReclamacion(
       tipo_documento: d.tipo_documento || "DNI",
       numero_documento: d.numero_documento,
       direccion: d.direccion || null,
+      ubigeo_departamento_id: ubigeo.departamento_id,
+      ubigeo_departamento_nombre: ubigeo.departamento_nombre,
+      ubigeo_provincia_id: ubigeo.provincia_id,
+      ubigeo_provincia_nombre: ubigeo.provincia_nombre,
+      ubigeo_distrito_id: ubigeo.distrito_id,
+      ubigeo_distrito_nombre: ubigeo.distrito_nombre,
       email: d.email,
       telefono: d.telefono || null,
       es_menor_edad: d.es_menor_edad === "on",
@@ -72,7 +97,8 @@ export async function submitReclamacion(
 
   // Best-effort notifications
   try {
-    const summary = `Reclamación N° ${data.numero_correlativo}\nTipo: ${d.tipo}\nNombre: ${d.nombres} ${d.apellidos}\nDocumento: ${d.tipo_documento} ${d.numero_documento}\nEmail: ${d.email}\nServicio: ${d.bien_servicio}\n\nDetalle:\n${d.detalle}\n\nPedido:\n${d.pedido_consumidor}`;
+    const ubicacion = `${ubigeo.distrito_nombre}, ${ubigeo.provincia_nombre}, ${ubigeo.departamento_nombre}`;
+    const summary = `Reclamación N° ${data.numero_correlativo}\nTipo: ${d.tipo}\nNombre: ${d.nombres} ${d.apellidos}\nDocumento: ${d.tipo_documento} ${d.numero_documento}\nUbicación: ${ubicacion}\nEmail: ${d.email}\nServicio: ${d.bien_servicio}\n\nDetalle:\n${d.detalle}\n\nPedido:\n${d.pedido_consumidor}`;
     await Promise.all([
       sendMail({
         to: process.env.RECLAMOS_NOTIFY_TO || "ventas@ipedelperu.com",
