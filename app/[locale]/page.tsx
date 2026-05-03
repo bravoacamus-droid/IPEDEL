@@ -81,16 +81,9 @@ export default async function HomePage({
           }}
         />
         <div className="container-page relative flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">
-          <div>
-            <h2 className="text-2xl font-semibold tracking-tight text-black sm:text-3xl">
-              {locale === "es" ? "¿Necesitas una cotización?" : "Need a quote?"}
-            </h2>
-            <p className="mt-2 max-w-xl text-black/80">
-              {locale === "es"
-                ? "Conversemos sobre tu carga. Respondemos en menos de 24 horas hábiles."
-                : "Tell us about your shipment. We reply within 24 business hours."}
-            </p>
-          </div>
+          <h2 className="text-2xl font-semibold tracking-tight text-black sm:text-3xl">
+            {locale === "es" ? "¿Necesitas una cotización?" : "Need a quote?"}
+          </h2>
           <div className="flex flex-wrap gap-3">
             <Link
               href={`/${locale}/contacto`}
@@ -100,10 +93,10 @@ export default async function HomePage({
               <ArrowRight className="h-4 w-4" />
             </Link>
             <a
-              href="tel:+5112566135"
+              href="tel:+5113045520"
               className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-black hover:bg-ink-100"
             >
-              +511 256-6135
+              +511 304-5520
             </a>
           </div>
         </div>
@@ -141,7 +134,7 @@ function StatsSection({ locale }: { locale: Locale }) {
           <StatCard
             icon={Award}
             value={3}
-            label={isEs ? "Modos: aéreo · marítimo · terrestre" : "Modes: air · sea · land"}
+            label={isEs ? "Aéreo · Marítimo · Terrestre" : "Air · Sea · Land"}
             footerIcons
           />
         </div>

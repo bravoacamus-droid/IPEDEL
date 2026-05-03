@@ -9,7 +9,7 @@ const STATIC_ROUTES = [
   "/servicios/almacenamiento",
   "/servicios/especializados",
   "/servicios/internacional",
-  "/exportaciones",
+  "/importaciones",
   "/tracking",
   "/agentes",
   "/tarifario",

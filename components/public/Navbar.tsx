@@ -45,16 +45,23 @@ export function Navbar({ locale, dict }: { locale: Locale; dict: Dictionary }) {
       )}
     >
       <div className="container-page flex items-center justify-between py-3">
-        {/* Logo izquierda — crece animadamente al hacer scroll */}
+        {/* Logo izquierda — crece animadamente al hacer scroll, con halo
+            sutil cuando está sobre el hero (en lugar de un cuadro blanco). */}
         <Link href={`/${locale}`} className="group flex items-center gap-3">
-          <div
-            className={cn(
-              "flex items-center justify-center rounded-md transition-all duration-300 ease-out",
-              scrolled
-                ? "h-12 w-auto scale-100"
-                : "h-9 w-auto scale-90 bg-white/85 px-2 py-1 backdrop-blur-md shadow-lg",
-            )}
-          >
+          <div className="relative flex items-center justify-center transition-all duration-300 ease-out">
+            {/* Halo de iluminación detrás del logo cuando está sobre el video */}
+            <span
+              aria-hidden="true"
+              className={cn(
+                "pointer-events-none absolute inset-[-30%] -z-10 rounded-full transition-opacity duration-300",
+                scrolled ? "opacity-0" : "opacity-100",
+              )}
+              style={{
+                background:
+                  "radial-gradient(closest-side, rgba(255,255,255,0.55), rgba(255,255,255,0.15) 55%, transparent 75%)",
+                filter: "blur(8px)",
+              }}
+            />
             <Image
               src="/logo-horizontal.png"
               alt="IPE del Perú SAC"
@@ -62,9 +69,14 @@ export function Navbar({ locale, dict }: { locale: Locale; dict: Dictionary }) {
               height={48}
               priority
               className={cn(
-                "w-auto transition-all duration-300 ease-out",
-                scrolled ? "h-11" : "h-7",
+                "relative w-auto transition-all duration-300 ease-out",
+                scrolled ? "h-11" : "h-9",
               )}
+              style={
+                scrolled
+                  ? undefined
+                  : { filter: "drop-shadow(0 1px 6px rgba(255,255,255,0.55)) brightness(1.05)" }
+              }
             />
           </div>
         </Link>
@@ -77,8 +89,8 @@ export function Navbar({ locale, dict }: { locale: Locale; dict: Dictionary }) {
           <Link href={`/${locale}/nosotros`} className={linkClass()}>
             {dict.nav.about}
           </Link>
-          <Link href={`/${locale}/exportaciones`} className={linkClass()}>
-            {dict.nav.exports}
+          <Link href={`/${locale}/importaciones`} className={linkClass()}>
+            {dict.nav.imports}
           </Link>
           <MegaMenu locale={locale} scrolled={scrolled} label={dict.nav.services} />
           <Link href={`/${locale}/tarifario`} className={linkClass()}>
@@ -130,7 +142,7 @@ export function Navbar({ locale, dict }: { locale: Locale; dict: Dictionary }) {
             {[
               { href: `/${locale}`, label: dict.nav.home },
               { href: `/${locale}/nosotros`, label: dict.nav.about },
-              { href: `/${locale}/exportaciones`, label: dict.nav.exports },
+              { href: `/${locale}/importaciones`, label: dict.nav.imports },
               { href: `/${locale}/servicios`, label: dict.nav.services },
               { href: `/${locale}/servicios/agenciamiento-de-carga`, label: "— Agenciamiento de carga" },
               { href: `/${locale}/servicios/almacenamiento`, label: "— Almacenamiento" },

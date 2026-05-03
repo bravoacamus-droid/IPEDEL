@@ -177,7 +177,7 @@ export default async function TrackingPage({
                 </Link>
               </div>
               <div className="card p-6 text-sm text-ink-700">
-                <p className="font-semibold">📞 +511 256-6135</p>
+                <p className="font-semibold">+511 304-5520</p>
                 <p className="text-ink-500">ventas@ipedelperu.com</p>
               </div>
             </aside>

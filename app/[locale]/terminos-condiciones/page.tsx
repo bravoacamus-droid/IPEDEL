@@ -22,7 +22,7 @@ export default async function TerminosCondiciones({
       <section className="container-page max-w-3xl py-10 text-ink-700 space-y-4">
         <p>El presente documento regula el uso del sitio web ipedelperu.com, operado por IPE del Perú SAC (RUC 20197900378). El acceso al sitio implica la aceptación de estos términos.</p>
         <h2 className="text-lg font-semibold text-ink-900">1. Servicios</h2>
-        <p>La información publicada en este sitio es referencial. Los servicios logísticos se contratan mediante propuesta comercial firmada y/o orden de servicio. Las tarifas publicadas en el tarifario VUCE corresponden a carga general; cargas especiales se cotizan a parte.</p>
+        <p>La información publicada en este sitio es referencial. Los servicios logísticos se contratan mediante propuesta comercial firmada y/o orden de servicio. Las tarifas publicadas son referenciales; para mayor información contáctenos.</p>
         <h2 className="text-lg font-semibold text-ink-900">2. Tracking</h2>
         <p>La información de tracking proviene de los sistemas de los transportistas y agentes; puede sufrir variaciones por causas operativas o de fuerza mayor.</p>
         <h2 className="text-lg font-semibold text-ink-900">3. Limitación de responsabilidad</h2>

@@ -142,7 +142,7 @@ export function ReclamacionPDF({
             <Text>IPE DEL PERU S.A.C.</Text>
             <Text>RUC 20197900378</Text>
             <Text>Calle el Boulevard 182, of. 901, Surco — Lima 33</Text>
-            <Text>+511 256-6135 · ventas@ipedelperu.com</Text>
+            <Text>+511 304-5520 · ventas@ipedelperu.com</Text>
           </View>
         </View>
 

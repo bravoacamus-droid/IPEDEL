@@ -3,7 +3,7 @@
     "home": "Inicio",
     "about": "Quiénes somos",
     "services": "Servicios",
-    "exports": "Exportaciones",
+    "imports": "Importaciones",
     "tracking": "Tracking",
     "agents": "Agentes",
     "tarifario": "Tarifario",
@@ -21,7 +21,7 @@
     "all_rights_reserved": "Todos los derechos reservados"
   },
   "home": {
-    "hero_eyebrow": "Agente de carga internacional · Lima, Perú",
+    "hero_eyebrow": "Aéreo · Marítimo · Terrestre",
     "hero_title_default": "Confianza logística que cruza fronteras",
     "hero_subtitle_default": "Más de 30 años conectando al Perú con el mundo. Servicios aéreos, marítimos y terrestres con una red de socios en más de 40 países.",
     "hero_cta_track": "Rastrear embarque",
@@ -31,7 +31,7 @@
     "stats_agents": "Agentes destacados",
     "stats_modes": "Modos: aéreo · marítimo · terrestre",
     "services_title": "Nuestros servicios",
-    "services_subtitle": "Soluciones logísticas integrales para importadores y exportadores peruanos.",
+    "services_subtitle": "Soluciones logísticas integrales para importaciones y exportaciones.",
     "service_freight_title": "Agenciamiento de carga",
     "service_freight_desc": "Aéreo, marítimo FCL/LCL, terrestre, multimodal y Door to Door.",
     "service_storage_title": "Almacenamiento",
@@ -49,7 +49,7 @@
     "company": "IPE del Perú SAC",
     "ruc": "RUC 20197900378",
     "address": "Calle el Boulevard 182, of. 901, Surco — Lima 33, Perú",
-    "phone": "+511 256-6135",
+    "phone": "+511 304-5520",
     "email": "ventas@ipedelperu.com",
     "explore": "Explorar",
     "legal": "Información legal",
@@ -76,20 +76,20 @@
     "weight": "Peso"
   },
   "tarifario": {
-    "title": "Tarifario VUCE",
-    "subtitle": "Tarifas publicadas conforme al DS 010-2011-MTC. Aplican únicamente para carga general.",
+    "title": "Tarifario",
+    "subtitle": "Tarifas referenciales para carga general.",
     "modality": "Modalidad",
     "service": "Servicio",
-    "price": "Precio",
+    "price": "Precio (con IGV)",
     "currency": "Moneda",
-    "unit": "Unidad",
+    "unit": "Unidad de cobro",
     "air": "Carga aérea",
     "sea": "Carga marítima",
     "last_update": "Última actualización"
   },
   "contact": {
     "title": "Contacto",
-    "subtitle": "Estamos para ayudarte. Escríbenos y te responderemos en menos de 24 horas hábiles.",
+    "subtitle": "Completa el formulario y nos ponemos en contacto contigo.",
     "name": "Nombre completo",
     "company": "Empresa",
     "email": "Correo electrónico",
@@ -98,7 +98,7 @@
     "message": "Mensaje",
     "consent": "Acepto la política de tratamiento de datos personales (Ley 29733).",
     "submit": "Enviar mensaje",
-    "success": "Recibimos tu mensaje. Te contactaremos pronto.",
+    "success": "Recibimos tu mensaje. Nos ponemos en contacto contigo.",
     "error": "No pudimos enviar el mensaje. Inténtalo nuevamente."
   },
   "ldr": {

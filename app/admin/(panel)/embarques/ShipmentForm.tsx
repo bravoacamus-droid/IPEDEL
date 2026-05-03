@@ -3,9 +3,11 @@
 import { useTransition, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createShipment, updateShipment } from "./actions";
-import { SHIPMENT_STATUS_LABELS, type Shipment } from "@/lib/types/database";
-
-const STATUSES = Object.keys(SHIPMENT_STATUS_LABELS) as (keyof typeof SHIPMENT_STATUS_LABELS)[];
+import {
+  ACTIVE_SHIPMENT_STATUSES,
+  SHIPMENT_STATUS_LABELS,
+  type Shipment,
+} from "@/lib/types/database";
 
 export function ShipmentForm({
   mode,
@@ -62,7 +64,7 @@ export function ShipmentForm({
           name="status"
           label="Estado"
           defaultValue={shipment?.status ?? "recibido"}
-          options={STATUSES.map((s) => ({ value: s, label: SHIPMENT_STATUS_LABELS[s].es }))}
+          options={ACTIVE_SHIPMENT_STATUSES.map((s) => ({ value: s, label: SHIPMENT_STATUS_LABELS[s].es }))}
         />
         <Field name="origin" label="Origen" defaultValue={shipment?.origin ?? ""} />
         <Field name="destination" label="Destino" defaultValue={shipment?.destination ?? ""} />

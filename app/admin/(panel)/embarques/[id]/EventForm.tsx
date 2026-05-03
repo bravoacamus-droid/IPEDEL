@@ -3,6 +3,7 @@
 import { useTransition, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { addShipmentEvent } from "../actions";
+import { ACTIVE_SHIPMENT_STATUSES, SHIPMENT_STATUS_LABELS } from "@/lib/types/database";
 
 export function EventForm({ shipmentId }: { shipmentId: string }) {
   const formRef = useRef<HTMLFormElement>(null);
@@ -42,7 +43,14 @@ export function EventForm({ shipmentId }: { shipmentId: string }) {
         </div>
         <div>
           <label className="label" htmlFor="status_label">Estado *</label>
-          <input id="status_label" name="status_label" required className="input" placeholder="Ej. En aduana" />
+          <select id="status_label" name="status_label" required className="input" defaultValue="">
+            <option value="" disabled>Selecciona un estado</option>
+            {ACTIVE_SHIPMENT_STATUSES.map((s) => (
+              <option key={s} value={SHIPMENT_STATUS_LABELS[s].es}>
+                {SHIPMENT_STATUS_LABELS[s].es}
+              </option>
+            ))}
+          </select>
         </div>
       </div>
       <div>

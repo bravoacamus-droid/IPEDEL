@@ -524,10 +524,10 @@ export default async function ServiceDetail({
               <ArrowRight className="h-4 w-4" />
             </Link>
             <a
-              href="tel:+5112566135"
+              href="tel:+5113045520"
               className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-black hover:bg-ink-100"
             >
-              +511 256-6135
+              +511 304-5520
             </a>
           </div>
         </div>

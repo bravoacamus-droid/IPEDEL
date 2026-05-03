@@ -1,10 +1,12 @@
 import Link from "next/link";
-import { Plus } from "lucide-react";
+import { Pencil, Plus } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
-import { SHIPMENT_STATUS_LABELS, type Shipment, type ShipmentStatus } from "@/lib/types/database";
+import {
+  ACTIVE_SHIPMENT_STATUSES,
+  SHIPMENT_STATUS_LABELS,
+  type Shipment,
+} from "@/lib/types/database";
 import { formatDate } from "@/lib/utils";
-
-const STATUSES = Object.keys(SHIPMENT_STATUS_LABELS) as ShipmentStatus[];
 
 export default async function EmbarquesPage({
   searchParams,
@@ -44,7 +46,7 @@ export default async function EmbarquesPage({
           <label className="label" htmlFor="status">Estado</label>
           <select id="status" name="status" defaultValue={status || ""} className="input">
             <option value="">Todos</option>
-            {STATUSES.map((s) => (
+            {ACTIVE_SHIPMENT_STATUSES.map((s) => (
               <option key={s} value={s}>
                 {SHIPMENT_STATUS_LABELS[s].es}
               </option>
@@ -69,11 +71,12 @@ export default async function EmbarquesPage({
               <th className="px-4 py-3 text-left">Modo</th>
               <th className="px-4 py-3 text-left">Estado</th>
               <th className="px-4 py-3 text-left">ETA</th>
+              <th className="px-4 py-3 text-right">Editar</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-ink-100">
             {shipments.map((s) => (
-              <tr key={s.id} className="hover:bg-ink-50 cursor-pointer">
+              <tr key={s.id} className="hover:bg-ink-50">
                 <td className="px-4 py-3">
                   <Link href={`/admin/embarques/${s.id}`} className="font-mono text-ink-900 hover:underline">
                     {s.hbl_number}
@@ -90,11 +93,20 @@ export default async function EmbarquesPage({
                   </span>
                 </td>
                 <td className="px-4 py-3 text-ink-700">{s.eta ? formatDate(s.eta) : "—"}</td>
+                <td className="px-4 py-3 text-right">
+                  <Link
+                    href={`/admin/embarques/${s.id}`}
+                    aria-label="Editar embarque"
+                    className="inline-flex h-8 w-8 items-center justify-center rounded-md text-ink-500 hover:bg-brand-50 hover:text-brand-700"
+                  >
+                    <Pencil className="h-4 w-4" strokeWidth={1.6} />
+                  </Link>
+                </td>
               </tr>
             ))}
             {shipments.length === 0 && (
               <tr>
-                <td colSpan={6} className="px-4 py-12 text-center text-ink-500">
+                <td colSpan={7} className="px-4 py-12 text-center text-ink-500">
                   No hay embarques que coincidan con los filtros.
                 </td>
               </tr>

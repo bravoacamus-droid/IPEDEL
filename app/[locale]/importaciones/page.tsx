@@ -3,10 +3,7 @@ import { notFound } from "next/navigation";
 import {
   ArrowRight,
   Briefcase,
-  CheckCircle2,
-  Clock,
   Compass,
-  Globe2,
   Headset,
   Layers,
   Plane,
@@ -19,7 +16,7 @@ import { getDictionary } from "@/lib/i18n/get-dictionary";
 import { PageBanner } from "@/components/public/PageBanner";
 import { ImageSlot } from "@/components/public/ImageSlot";
 
-export default async function ExportacionesPage({
+export default async function ImportacionesPage({
   params,
 }: {
   params: Promise<{ locale: string }>;
@@ -33,15 +30,15 @@ export default async function ExportacionesPage({
     <div className="bg-white">
       <PageBanner
         eyebrow={isEs ? "IPE del Perú" : "IPE del Perú"}
-        title={isEs ? "Exportaciones" : "Exports"}
+        title={isEs ? "Importaciones" : "Imports"}
         subtitle={
           isEs
-            ? "Acompañamos al exportador peruano y al consolidador internacional con servicios de carga aérea y marítima de extremo a extremo."
-            : "We support Peruvian exporters and international consolidators with end-to-end air and sea freight services."
+            ? "Acompañamos al importador y al consolidador internacional con servicios de carga aérea y marítima durante la operación."
+            : "We support importers and international consolidators with air and sea freight services throughout the operation."
         }
         breadcrumb={[
           { href: `/${locale}`, label: isEs ? "Inicio" : "Home" },
-          { href: `/${locale}/exportaciones`, label: isEs ? "Exportaciones" : "Exports" },
+          { href: `/${locale}/importaciones`, label: isEs ? "Importaciones" : "Imports" },
         ]}
       />
 
@@ -65,14 +62,14 @@ export default async function ExportacionesPage({
                     <strong className="text-ink-900">IPE del Perú SAC</strong> es
                     Consolidador Aéreo y Marítimo, está en la capacidad de
                     desarrollar y ejecutar el conjunto de acciones necesarias
-                    para prestar un servicio impecable.
+                    para prestar un servicio de calidad.
                   </>
                 ) : (
                   <>
                     <strong className="text-ink-900">IPE del Perú SAC</strong> is
                     an Air and Maritime Consolidator, fully capable of
-                    developing and executing every action needed to deliver an
-                    impeccable service.
+                    developing and executing every action needed to deliver a
+                    quality service.
                   </>
                 )}
               </p>
@@ -83,8 +80,8 @@ export default async function ExportacionesPage({
               </p>
               <p>
                 {isEs
-                  ? "Empleamos un sistema de seguimiento donde usted estará informado de manera permanente desde el primer contacto con el proveedor en origen hasta la llegada de la mercancía y entrega de documentos."
-                  : "We use a tracking system that keeps you continuously informed from the first contact with the supplier at origin through cargo arrival and document delivery."}
+                  ? "Empleamos un sistema de seguimiento donde usted estará informado desde la coordinación hasta la entrega del embarque."
+                  : "We use a tracking system that keeps you informed from the coordination to the shipment delivery."}
               </p>
             </div>
 
@@ -102,8 +99,8 @@ export default async function ExportacionesPage({
                 },
                 {
                   icon: Route,
-                  es: "Trazabilidad permanente",
-                  en: "Continuous traceability",
+                  es: "Trazabilidad del embarque",
+                  en: "Shipment traceability",
                 },
                 {
                   icon: ShieldCheck,
@@ -136,7 +133,7 @@ export default async function ExportacionesPage({
                   ? "Avión carguero · contenedores · acreditación IATA"
                   : "Cargo plane · containers · IATA accreditation"
               }
-              suggested="/exports/consolidaciones-asia.jpg"
+              suggested="/imports/consolidaciones-asia.jpg"
               ratio="aspect-[4/5]"
               priority
             />
@@ -171,13 +168,13 @@ export default async function ExportacionesPage({
                   ? "Operación logística — agentes / vehículos / IPEDEL"
                   : "Logistics operation — agents / vehicles / IPEDEL"
               }
-              suggested="/exports/agente-logistico.jpg"
+              suggested="/imports/agente-logistico.jpg"
               ratio="aspect-[4/5]"
             />
           </div>
           <div className="lg:col-span-7">
             <span className="text-xs font-semibold uppercase tracking-[0.18em] text-brand-600">
-              {isEs ? "Quiénes somos en exportaciones" : "Who we are in exports"}
+              {isEs ? "Quiénes somos en importaciones" : "Who we are in imports"}
             </span>
             <h2 className="mt-3 text-3xl font-semibold leading-tight tracking-tight text-ink-900 sm:text-4xl">
               {isEs ? "Agente logístico" : "Logistics agent"}
@@ -188,23 +185,23 @@ export default async function ExportacionesPage({
                 {isEs ? (
                   <>
                     <strong className="text-ink-900">IPE del Perú SAC</strong> es
-                    Consolidador Aéreo y Marítimo, se dedica a la logística
-                    Nacional e Internacional, tanto para importación como
-                    exportación y tratamientos especiales.
+                    Consolidador Aéreo y Marítimo, dedicada a la logística
+                    nacional e internacional para importación, exportación y
+                    tratamientos especiales.
                   </>
                 ) : (
                   <>
                     <strong className="text-ink-900">IPE del Perú SAC</strong> is
-                    an Air and Maritime Consolidator dedicated to National and
-                    International logistics — imports, exports and specialized
+                    an Air and Maritime Consolidator dedicated to national and
+                    international logistics for imports, exports and specialized
                     treatments.
                   </>
                 )}
               </p>
               <p>
                 {isEs
-                  ? "Siendo representante de transnacionales japonesas, ponemos a su disposición un equipo humano integrado por profesionales altamente calificados, contando con una red de agentes en más de 40 países y esforzándonos por brindar un óptimo servicio de calidad, a precios competitivos en el mercado."
-                  : "As a representative of Japanese multinationals, we put at your service a team of highly qualified professionals, backed by a network of agents in over 40 countries, committed to delivering top-quality service at competitive market prices."}
+                  ? "Siendo representantes de transnacionales japonesas, contamos con una red de agentes en más de 40 países."
+                  : "As representatives of Japanese multinationals, we count on a network of agents in 40+ countries."}
               </p>
               <p>
                 {isEs
@@ -216,7 +213,7 @@ export default async function ExportacionesPage({
             <div className="mt-8 grid grid-cols-2 gap-4 border-t border-ink-200 pt-8 sm:grid-cols-4">
               <Stat value="30+" label={isEs ? "Años" : "Years"} />
               <Stat value="40+" label={isEs ? "Países" : "Countries"} />
-              <Stat value="24/7" label={isEs ? "Trazabilidad" : "Tracking"} />
+              <Stat value="3" label={isEs ? "Aéreo · Marítimo · Terrestre" : "Air · Sea · Land"} />
               <Stat value="JP" label={isEs ? "Especialidad" : "Expertise"} />
             </div>
           </div>
@@ -241,7 +238,6 @@ export default async function ExportacionesPage({
 
         <ol className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
           <Step
-            n={1}
             icon={Headset}
             title={isEs ? "Contacto" : "Contact"}
             desc={
@@ -251,7 +247,6 @@ export default async function ExportacionesPage({
             }
           />
           <Step
-            n={2}
             icon={Compass}
             title={isEs ? "Diseño" : "Design"}
             desc={
@@ -261,7 +256,6 @@ export default async function ExportacionesPage({
             }
           />
           <Step
-            n={3}
             icon={Layers}
             title={isEs ? "Operación" : "Operation"}
             desc={
@@ -271,7 +265,6 @@ export default async function ExportacionesPage({
             }
           />
           <Step
-            n={4}
             icon={Sparkles}
             title={isEs ? "Trazabilidad" : "Tracking"}
             desc={
@@ -286,16 +279,9 @@ export default async function ExportacionesPage({
       {/* CTA */}
       <section className="bg-brand-500 py-16">
         <div className="container-page flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">
-          <div>
-            <h2 className="text-2xl font-semibold tracking-tight text-black sm:text-3xl">
-              {isEs ? "Exporta con IPE del Perú" : "Export with IPE del Perú"}
-            </h2>
-            <p className="mt-2 max-w-xl text-black/80">
-              {isEs
-                ? "Solicita una cotización personalizada para tu próxima exportación."
-                : "Request a personalized quote for your next export."}
-            </p>
-          </div>
+          <h2 className="text-2xl font-semibold tracking-tight text-black sm:text-3xl">
+            {isEs ? "Importa con IPE del Perú" : "Import with IPE del Perú"}
+          </h2>
           <div className="flex gap-3">
             <Link
               href={`/${locale}/contacto`}
@@ -305,10 +291,10 @@ export default async function ExportacionesPage({
               <ArrowRight className="h-4 w-4" />
             </Link>
             <a
-              href="tel:+5112566135"
+              href="tel:+5113045520"
               className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-black hover:bg-ink-100"
             >
-              +511 256-6135
+              +511 304-5520
             </a>
           </div>
         </div>
@@ -333,7 +319,6 @@ function Step({
   title,
   desc,
 }: {
-  n: number;
   icon: typeof Compass;
   title: string;
   desc: string;

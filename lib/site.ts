@@ -3,8 +3,8 @@ export const SITE = {
   legalName: "IPE DEL PERU S.A.C.",
   brand: "IPE del Perú",
   ruc: "20197900378",
-  phone: "+511 256-6135",
-  phoneTel: "+5112566135",
+  phone: "+511 304-5520",
+  phoneTel: "+5113045520",
   email: "ventas@ipedelperu.com",
   address: {
     line1: "Calle el Boulevard 182, of. 901",

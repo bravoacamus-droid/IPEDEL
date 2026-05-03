@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { Mail, Phone, MapPin } from "lucide-react";
+import { ExternalLink, MapPin } from "lucide-react";
 import { isLocale, type Locale } from "@/lib/i18n/config";
 import { getDictionary } from "@/lib/i18n/get-dictionary";
 import { createClient } from "@/lib/supabase/server";
@@ -67,24 +67,17 @@ export default async function AgentesPage({
                     ))}
                   </div>
                 )}
-                <ul className="mt-4 space-y-1.5 text-sm">
-                  {a.contact_email && (
-                    <li className="flex items-center gap-2 text-ink-700">
-                      <Mail className="h-3.5 w-3.5 text-brand-600" />
-                      <a href={`mailto:${a.contact_email}`} className="hover:text-ink-900">
-                        {a.contact_email}
-                      </a>
-                    </li>
-                  )}
-                  {a.contact_phone && (
-                    <li className="flex items-center gap-2 text-ink-700">
-                      <Phone className="h-3.5 w-3.5 text-brand-600" />
-                      <a href={`tel:${a.contact_phone}`} className="hover:text-ink-900">
-                        {a.contact_phone}
-                      </a>
-                    </li>
-                  )}
-                </ul>
+                {a.website && (
+                  <a
+                    href={a.website}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-brand-700 hover:text-brand-800"
+                  >
+                    {locale === "es" ? "Visitar sitio web" : "Visit website"}
+                    <ExternalLink className="h-3.5 w-3.5" />
+                  </a>
+                )}
               </div>
             ))}
           </div>

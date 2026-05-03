@@ -32,7 +32,7 @@ export default async function ConfiguracionPage() {
           </div>
           <div>
             <dt className="text-ink-500">Teléfono</dt>
-            <dd className="text-ink-900">+511 256-6135</dd>
+            <dd className="text-ink-900">+511 304-5520</dd>
           </div>
           <div>
             <dt className="text-ink-500">Email</dt>

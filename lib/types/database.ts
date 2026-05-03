@@ -157,3 +157,15 @@ export const SHIPMENT_STATUS_LABELS: Record<ShipmentStatus, { es: string; en: st
   en_camino_entrega: { es: "En camino a entrega", en: "Out for delivery" },
   entregado: { es: "Entregado", en: "Delivered" },
 };
+
+// Estados activos en UI (cliente, observación 28 abr 2026):
+// solo 4 opciones — Recibido, En tránsito, En almacén, Entregado.
+// Las otras (en_aduana, desconsolidado, en_despacho, en_camino_entrega)
+// se mantienen en el enum DB para compatibilidad con datos antiguos,
+// pero no se ofrecen en formularios de creación/edición.
+export const ACTIVE_SHIPMENT_STATUSES: ShipmentStatus[] = [
+  "recibido",
+  "en_transito",
+  "en_almacen",
+  "entregado",
+];

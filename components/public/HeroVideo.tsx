@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, ChevronDown, Plane, Ship, Truck } from "lucide-react";
 import type { Locale } from "@/lib/i18n/config";
@@ -98,20 +97,6 @@ export function HeroVideo({
               {locale === "es" ? "Terrestre" : "Land"}
             </span>
           </div>
-        </div>
-      </div>
-
-      {/* Logo vertical bottom-right */}
-      <div className="pointer-events-none absolute bottom-6 right-6 z-10 sm:bottom-10 sm:right-10">
-        <div className="rounded-xl bg-white/90 px-3 py-2 shadow-2xl backdrop-blur-md ring-1 ring-white/30">
-          <Image
-            src="/logo-vertical.png"
-            alt="IPE del Perú SAC"
-            width={120}
-            height={120}
-            className="h-16 w-auto sm:h-20"
-            priority
-          />
         </div>
       </div>
 

@@ -57,10 +57,10 @@ export default async function TarifarioPage({
           rows={maritimo}
           dict={dict}
         />
-        <p className="rounded-md border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
+        <p className="rounded-md border border-ink-200 bg-white p-4 text-sm text-ink-700">
           {locale === "es"
-            ? "Tarifario publicado conforme al DS 010-2011-MTC y publicado en VUCE. Aplica únicamente para carga general. Para cargas especiales o consolidados, solicite cotización."
-            : "Tariff published per DS 010-2011-MTC and VUCE. Applies only to general cargo. For special or consolidated cargo, request a quote."}
+            ? "Para mayor información contáctenos."
+            : "For more information, please contact us."}
         </p>
       </section>
     </div>
@@ -101,10 +101,7 @@ function TarifaTable({
             {rows.map((r) => (
               <tr key={r.id}>
                 <td className="px-6 py-3 text-ink-900">{r.denominacion}</td>
-                <td className="px-6 py-3 font-semibold text-ink-900">
-                  {r.moneda === "DOLARES" && /^[\d.]+$/.test(r.precio) ? "$" : ""}
-                  {r.precio}
-                </td>
+                <td className="px-6 py-3 font-semibold text-ink-900">{r.precio}</td>
                 <td className="px-6 py-3 text-ink-600">{r.moneda}</td>
                 <td className="px-6 py-3 text-ink-600">{r.unidad_cobro || "—"}</td>
               </tr>

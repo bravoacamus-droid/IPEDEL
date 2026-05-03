@@ -19,7 +19,6 @@ export default async function ContactPage({
   return (
     <div className="bg-ink-50">
       <PageBanner
-        eyebrow={locale === "es" ? "Estamos para ayudarte" : "We are here to help"}
         title={dict.contact.title}
         subtitle={dict.contact.subtitle}
       />
@@ -31,8 +30,8 @@ export default async function ContactPage({
           </h2>
           <p className="mt-1 text-sm text-ink-600">
             {locale === "es"
-              ? "Completa el formulario y te responderemos en menos de 24 horas hábiles."
-              : "Complete the form and we will reply within 24 business hours."}
+              ? "Completa el formulario y nos ponemos en contacto contigo."
+              : "Complete the form and we will get back to you."}
           </p>
           <div className="mt-6">
             <ContactForm dict={dict} />
@@ -94,11 +93,6 @@ export default async function ContactPage({
                   </span>
                   <div>
                     <p className="text-ink-900 group-hover:text-brand-700">{SITE.email}</p>
-                    <p className="text-xs text-ink-500">
-                      {locale === "es"
-                        ? "Respondemos en menos de 24 h hábiles"
-                        : "We respond within 24 business hours"}
-                    </p>
                   </div>
                 </a>
               </li>

@@ -56,8 +56,8 @@ export default async function NosotrosPage({
         title={title}
         subtitle={
           locale === "es"
-            ? "Más de tres décadas siendo el puente logístico entre el Perú y el mundo, con la confianza de las grandes transnacionales japonesas."
-            : "Over three decades bridging Peru and the world, trusted by leading Japanese multinationals."
+            ? "Más de tres décadas siendo el puente logístico entre el Perú y el mundo."
+            : "Over three decades bridging Peru and the world."
         }
         breadcrumb={[
           { href: `/${locale}`, label: locale === "es" ? "Inicio" : "Home" },
@@ -72,66 +72,33 @@ export default async function NosotrosPage({
             {cmsBody?.value ? (
               <p className="text-lg leading-relaxed">{cmsBody.value}</p>
             ) : locale === "es" ? (
-              <>
-                <p className="text-lg leading-relaxed">
-                  <span className="font-semibold text-ink-900">
-                    {SITE.legalName}
-                  </span>{" "}
-                  es Consolidador Aéreo y Marítimo, se dedica a la Logística
-                  Nacional e Internacional, tanto para importación como
-                  exportación y tratamientos especiales.
-                </p>
-                <p className="leading-relaxed">
-                  Siendo representante de transnacionales japonesas, ponemos a
-                  su disposición un equipo humano integrado por profesionales
-                  altamente calificados, contando con una red de agentes en{" "}
-                  <strong>más de 40 países</strong> y esforzándonos por brindar
-                  un óptimo servicio de calidad, a precios competitivos en el
-                  mercado.
-                </p>
-                <p className="leading-relaxed">
-                  IPE del Perú SAC cuenta con la capacidad de adaptarse a las
-                  necesidades particulares de cada cliente, para cubrir de
-                  forma individual los requerimientos de cada uno de ellos.
-                </p>
-                <p className="leading-relaxed">
-                  Esperamos tener la oportunidad de brindarle un buen servicio.
-                  La familia de IPE del Perú SAC le estará esperando
-                  gustosamente.
-                </p>
-              </>
+              <p className="text-lg leading-relaxed">
+                <span className="font-semibold text-ink-900">
+                  IPE del Perú SAC
+                </span>{" "}
+                es Consolidador Aéreo y Marítimo, dedicada a la logística
+                nacional e internacional para importación, exportación y
+                tratamientos especiales. Siendo representantes de
+                transnacionales japonesas, contamos con una red de agentes en{" "}
+                <strong>más de 40 países</strong>.
+              </p>
             ) : (
-              <>
-                <p className="text-lg leading-relaxed">
-                  <span className="font-semibold text-ink-900">
-                    {SITE.legalName}
-                  </span>{" "}
-                  is an Air and Maritime Consolidator dedicated to National and
-                  International Logistics, covering imports, exports and
-                  specialized treatments.
-                </p>
-                <p className="leading-relaxed">
-                  As a representative of Japanese multinationals, we put at
-                  your service a team of highly qualified professionals, backed
-                  by a network of agents in <strong>40+ countries</strong>,
-                  committed to delivering top-quality service at competitive
-                  market prices.
-                </p>
-                <p className="leading-relaxed">
-                  IPE del Perú SAC adapts to the particular needs of every
-                  client, covering each requirement individually.
-                </p>
-                <p className="leading-relaxed">
-                  We look forward to providing you with great service. The IPE
-                  del Perú SAC family will be glad to welcome you.
-                </p>
-              </>
+              <p className="text-lg leading-relaxed">
+                <span className="font-semibold text-ink-900">
+                  IPE del Perú SAC
+                </span>{" "}
+                is an Air and Maritime Consolidator dedicated to national and
+                international logistics for imports, exports and specialized
+                treatments. As representatives of Japanese multinationals, we
+                count on a network of agents in{" "}
+                <strong>40+ countries</strong>.
+              </p>
             )}
 
             <div className="mt-8 grid grid-cols-3 gap-4 border-t border-ink-100 pt-8">
               <Stat value="30+" label={locale === "es" ? "Años de experiencia" : "Years of experience"} />
               <Stat value="40+" label={locale === "es" ? "Países en la red" : "Countries in network"} />
-              <Stat value="100%" label={locale === "es" ? "Trazabilidad de carga" : "Cargo traceability"} />
+              <Stat value="3" label={locale === "es" ? "Aéreo · Marítimo · Terrestre" : "Air · Sea · Land"} />
             </div>
           </div>
 
@@ -155,8 +122,8 @@ export default async function NosotrosPage({
               </p>
               <p className="mt-1 text-brand-800">
                 {locale === "es"
-                  ? "Confianza forjada con décadas de operaciones impecables."
-                  : "Trust forged through decades of impeccable operations."}
+                  ? "Décadas de operaciones que respaldan nuestra confianza."
+                  : "Decades of operations that back our trust."}
               </p>
             </div>
           </div>
@@ -183,8 +150,8 @@ export default async function NosotrosPage({
               title={locale === "es" ? "Misión" : "Mission"}
               body={
                 locale === "es"
-                  ? "Brindar soluciones logísticas internacionales confiables, eficientes y a la medida del cliente, conectando al Perú con el mundo a través de un servicio impecable."
-                  : "Deliver reliable, efficient and tailored international logistics solutions that connect Peru with the world through impeccable service."
+                  ? "Brindar soluciones logísticas internacionales confiables, eficientes y a la medida del cliente."
+                  : "Deliver reliable, efficient and tailored international logistics solutions."
               }
             />
             <PillarCard
@@ -201,8 +168,8 @@ export default async function NosotrosPage({
               title={locale === "es" ? "Valores" : "Values"}
               body={
                 locale === "es"
-                  ? "Confianza, excelencia operativa, transparencia, adaptabilidad y compromiso con cada embarque."
-                  : "Trust, operational excellence, transparency, adaptability and commitment to every shipment."
+                  ? "Confianza, calidad operativa, transparencia, adaptabilidad y compromiso con cada embarque."
+                  : "Trust, operational quality, transparency, adaptability and commitment to every shipment."
               }
             />
           </div>
@@ -276,13 +243,13 @@ export default async function NosotrosPage({
                 icon={Anchor}
                 title={
                   locale === "es"
-                    ? "Trazabilidad permanente"
-                    : "Real-time traceability"
+                    ? "Trazabilidad del embarque"
+                    : "Shipment traceability"
                 }
                 desc={
                   locale === "es"
-                    ? "Sistema de seguimiento desde el primer contacto con el proveedor hasta la entrega de documentos."
-                    : "Tracking system from first supplier contact through document delivery."
+                    ? "Sistema de seguimiento desde la coordinación hasta la entrega del embarque."
+                    : "Tracking system from coordination through shipment delivery."
                 }
               />
             </ul>

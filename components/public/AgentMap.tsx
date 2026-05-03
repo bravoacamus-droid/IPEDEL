@@ -2,13 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import createGlobe from "cobe";
-import {
-  ExternalLink,
-  Mail,
-  MapPin,
-  Phone,
-  Compass,
-} from "lucide-react";
+import { Compass, ExternalLink, MapPin } from "lucide-react";
 import type { Agent } from "@/lib/types/database";
 import { cn } from "@/lib/utils";
 
@@ -296,26 +290,6 @@ export function AgentMap({
                       )}
                       {isActive && (
                         <div className="mt-3 space-y-1.5 text-xs">
-                          {a.contact_email && (
-                            <a
-                              href={`mailto:${a.contact_email}`}
-                              onClick={(e) => e.stopPropagation()}
-                              className="flex items-center gap-1.5 text-ink-700 hover:text-brand-700"
-                            >
-                              <Mail className="h-3 w-3 text-brand-600" />
-                              {a.contact_email}
-                            </a>
-                          )}
-                          {a.contact_phone && (
-                            <a
-                              href={`tel:${a.contact_phone}`}
-                              onClick={(e) => e.stopPropagation()}
-                              className="flex items-center gap-1.5 text-ink-700 hover:text-brand-700"
-                            >
-                              <Phone className="h-3 w-3 text-brand-600" />
-                              {a.contact_phone}
-                            </a>
-                          )}
                           {a.website && (
                             <a
                               href={a.website}
