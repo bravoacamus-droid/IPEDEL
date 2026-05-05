@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState, useState } from "react";
+import { Download, Mail } from "lucide-react";
 import { submitReclamacion, type ReclamacionState } from "@/app/[locale]/libro-de-reclamaciones/actions";
 import type { Dictionary } from "@/lib/i18n/get-dictionary";
 import { UbigeoSelect } from "./UbigeoSelect";
@@ -14,10 +15,51 @@ export function LibroReclamacionesForm({ dict }: { dict: Dictionary }) {
 
   if (state?.ok) {
     return (
-      <div className="rounded-lg bg-brand-50 border border-brand-300 p-6 text-brand-900">
-        <p className="font-semibold">
-          ✓ {dict.ldr.success.replace("{n}", String(state.numero))}
-        </p>
+      <div className="rounded-2xl border border-brand-300 bg-brand-50 p-6 sm:p-8">
+        <div className="flex items-start gap-4">
+          <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-brand-500 text-black">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="h-5 w-5"
+              aria-hidden="true"
+            >
+              <polyline points="20 6 9 17 4 12" />
+            </svg>
+          </span>
+          <div className="flex-1 min-w-0">
+            <p className="text-base font-semibold text-brand-900">
+              {dict.ldr.success.replace("{n}", String(state.numero))}
+            </p>
+            <p className="mt-2 text-sm text-brand-800">
+              Conserva esta hoja como constancia. También enviamos una copia al
+              correo electrónico que indicaste.
+            </p>
+            <div className="mt-5 flex flex-wrap gap-3">
+              <a
+                href={state.pdfUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-full bg-black px-5 py-2.5 text-sm font-semibold text-white shadow-md hover:bg-ink-800"
+              >
+                <Download className="h-4 w-4" strokeWidth={1.6} />
+                Descargar copia (PDF)
+              </a>
+              <span className="inline-flex items-center gap-2 rounded-full border border-brand-300 bg-white px-5 py-2.5 text-sm text-brand-900">
+                <Mail className="h-4 w-4" strokeWidth={1.6} />
+                Copia enviada por correo
+              </span>
+            </div>
+            <p className="mt-4 text-xs text-brand-700">
+              Hoja N° <span className="font-semibold">{state.numero}</span> · IPE
+              DEL PERU S.A.C. · RUC 20197900378
+            </p>
+          </div>
+        </div>
       </div>
     );
   }

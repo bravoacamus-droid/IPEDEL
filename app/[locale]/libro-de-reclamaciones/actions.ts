@@ -5,6 +5,7 @@ import { headers } from "next/headers";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { sendMail } from "@/lib/email/mail";
 import { resolveUbigeo } from "@/lib/peru/ubigeo";
+import { signReclamacionToken } from "@/lib/utils/sign";
 
 const ReclamacionSchema = z.object({
   tipo: z.enum(["reclamo", "queja"]),
@@ -30,7 +31,7 @@ const ReclamacionSchema = z.object({
 });
 
 export type ReclamacionState =
-  | { ok: true; numero: number }
+  | { ok: true; numero: number; pdfUrl: string }
   | { ok: false; errors?: Record<string, string[]>; message?: string }
   | undefined;
 
@@ -88,12 +89,19 @@ export async function submitReclamacion(
       pedido_consumidor: d.pedido_consumidor,
       ip_address: ip,
     })
-    .select("numero_correlativo")
+    .select("id, numero_correlativo")
     .single();
 
   if (error || !data) {
     return { ok: false, message: "No pudimos registrar la reclamación. Intenta nuevamente." };
   }
+
+  // Token HMAC firmado para que el consumidor pueda descargar su copia
+  // (DS 011-2011-PCM Art. 4 — derecho de imprimir copia gratuita).
+  const token = signReclamacionToken(data.id);
+  const pdfUrl = `/api/reclamaciones/${data.id}/pdf?token=${token}`;
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") || "";
+  const absolutePdfUrl = `${siteUrl}${pdfUrl}`;
 
   // Best-effort notifications
   try {
@@ -108,12 +116,17 @@ export async function submitReclamacion(
       sendMail({
         to: d.email,
         subject: `IPE del Perú — Confirmación de reclamación N° ${data.numero_correlativo}`,
-        text: `Estimado(a) ${d.nombres},\n\nHemos recibido tu reclamación con número correlativo ${data.numero_correlativo}. Te responderemos en un plazo no mayor de 30 días calendario, conforme a la Ley 29571.\n\n${summary}\n\nIPE del Perú SAC`,
+        text:
+          `Estimado(a) ${d.nombres},\n\n` +
+          `Hemos recibido tu reclamación con número correlativo ${data.numero_correlativo}. ` +
+          `Te responderemos en un plazo no mayor de 30 días calendario, conforme a la Ley 29571.\n\n` +
+          `Puedes descargar tu copia oficial en formato PDF aquí:\n${absolutePdfUrl}\n\n` +
+          `${summary}\n\nIPE del Perú SAC`,
       }),
     ]);
   } catch (e) {
     console.warn("Reclamación email notify failed (non-fatal):", e);
   }
 
-  return { ok: true, numero: data.numero_correlativo };
+  return { ok: true, numero: data.numero_correlativo, pdfUrl };
 }

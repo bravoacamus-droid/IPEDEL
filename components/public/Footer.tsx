@@ -1,10 +1,11 @@
 import Link from "next/link";
 import Image from "next/image";
-import { BookText, ExternalLink, Mail, MapPin, Phone } from "lucide-react";
+import { ExternalLink, Mail, MapPin, Phone } from "lucide-react";
 import type { Locale } from "@/lib/i18n/config";
 import type { Dictionary } from "@/lib/i18n/get-dictionary";
 import { MAPS_URL, SITE } from "@/lib/site";
 import { FacebookIcon } from "./BrandIcons";
+import { AvisoLibroReclamaciones } from "./AvisoLibroReclamaciones";
 
 export function Footer({ locale, dict }: { locale: Locale; dict: Dictionary }) {
   const explore = [
@@ -108,13 +109,9 @@ export function Footer({ locale, dict }: { locale: Locale; dict: Dictionary }) {
                 </li>
               ))}
             </ul>
-            <Link
-              href={`/${locale}/libro-de-reclamaciones`}
-              className="mt-4 inline-flex items-center gap-2 rounded-md border border-brand-500 px-4 py-2 text-sm font-medium text-brand-300 hover:bg-brand-500 hover:text-black transition-colors"
-            >
-              <BookText className="h-4 w-4" strokeWidth={1.6} />
-              {dict.footer.ldr}
-            </Link>
+            <div className="mt-4">
+              <AvisoLibroReclamaciones locale={locale} />
+            </div>
           </div>
         </div>
         <div className="mt-12 flex flex-col items-start justify-between gap-2 border-t border-ink-800 pt-6 text-xs text-ink-400 sm:flex-row sm:items-center">
