@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import {
   Anchor,
@@ -15,7 +14,12 @@ import { isLocale } from "@/lib/i18n/config";
 import { getDictionary } from "@/lib/i18n/get-dictionary";
 import { createClient } from "@/lib/supabase/server";
 import { PageBanner } from "@/components/public/PageBanner";
-import { AnimatedNumber } from "@/components/public/AnimatedNumber";
+import {
+  AnimatedStat,
+  Diff,
+  HoverImage,
+  Pillar,
+} from "@/components/public/AboutSections";
 
 export default async function NosotrosPage({
   params,
@@ -101,9 +105,23 @@ export default async function NosotrosPage({
             )}
 
             <div className="mt-8 grid grid-cols-3 gap-4 border-t border-ink-100 pt-8">
-              <AnimatedStat value={30} suffix="+" label={locale === "es" ? "Años de experiencia" : "Years of experience"} />
-              <AnimatedStat value={40} suffix="+" label={locale === "es" ? "Países en la red" : "Countries in network"} />
-              <AnimatedStat value={3} label={locale === "es" ? "Aéreo · Marítimo · Terrestre" : "Air · Sea · Land"} />
+              <AnimatedStat
+                value={30}
+                suffix="+"
+                label={locale === "es" ? "Años de experiencia" : "Years of experience"}
+                delay={0}
+              />
+              <AnimatedStat
+                value={40}
+                suffix="+"
+                label={locale === "es" ? "Países en la red" : "Countries in network"}
+                delay={0.1}
+              />
+              <AnimatedStat
+                value={3}
+                label={locale === "es" ? "Aéreo · Marítimo · Terrestre" : "Air · Sea · Land"}
+                delay={0.2}
+              />
             </div>
           </div>
 
@@ -150,7 +168,7 @@ export default async function NosotrosPage({
           </div>
 
           <div className="mt-12 grid gap-6 md:grid-cols-3">
-            <PillarCard
+            <Pillar
               icon={Target}
               title={locale === "es" ? "Misión" : "Mission"}
               body={
@@ -158,8 +176,9 @@ export default async function NosotrosPage({
                   ? "Brindar soluciones logísticas internacionales confiables, eficientes y a la medida del cliente."
                   : "Deliver reliable, efficient and tailored international logistics solutions."
               }
+              delay={0}
             />
-            <PillarCard
+            <Pillar
               icon={Compass}
               title={locale === "es" ? "Visión" : "Vision"}
               body={
@@ -167,8 +186,9 @@ export default async function NosotrosPage({
                   ? "Ser el agente de carga referente en el Perú por nuestra trayectoria, compromiso y red internacional de socios estratégicos."
                   : "Be Peru's reference freight forwarder, recognized for our track record, commitment and global partner network."
               }
+              delay={0.1}
             />
-            <PillarCard
+            <Pillar
               icon={Sparkles}
               title={locale === "es" ? "Valores" : "Values"}
               body={
@@ -176,6 +196,7 @@ export default async function NosotrosPage({
                   ? "Confianza, calidad operativa, transparencia, adaptabilidad y compromiso con cada embarque."
                   : "Trust, operational quality, transparency, adaptability and commitment to every shipment."
               }
+              delay={0.2}
             />
           </div>
         </div>
@@ -204,9 +225,10 @@ export default async function NosotrosPage({
                 ? "Capacidad de adaptarnos a tu operación"
                 : "We adapt to your operation"}
             </h2>
-            <ul className="mt-8 space-y-5">
+            <ul className="mt-8 space-y-3">
               <Diff
                 icon={HeartHandshake}
+                delay={0}
                 title={
                   locale === "es"
                     ? "Trato directo y personalizado"
@@ -220,6 +242,7 @@ export default async function NosotrosPage({
               />
               <Diff
                 icon={Globe2}
+                delay={0.08}
                 title={
                   locale === "es"
                     ? "Red mundial de socios estratégicos"
@@ -233,6 +256,7 @@ export default async function NosotrosPage({
               />
               <Diff
                 icon={Users}
+                delay={0.16}
                 title={
                   locale === "es"
                     ? "Equipo altamente calificado"
@@ -246,6 +270,7 @@ export default async function NosotrosPage({
               />
               <Diff
                 icon={Anchor}
+                delay={0.24}
                 title={
                   locale === "es"
                     ? "Trazabilidad del embarque"
@@ -271,97 +296,3 @@ export default async function NosotrosPage({
   );
 }
 
-function AnimatedStat({
-  value,
-  suffix,
-  label,
-}: {
-  value: number;
-  suffix?: string;
-  label: string;
-}) {
-  return (
-    <div>
-      <p className="text-2xl font-semibold tracking-tight text-ink-900 sm:text-3xl">
-        <AnimatedNumber value={value} suffix={suffix} />
-      </p>
-      <p className="mt-1 text-xs uppercase tracking-[0.16em] text-ink-500">
-        {label}
-      </p>
-    </div>
-  );
-}
-
-// Imagen con efecto de zoom suave en hover y borde redondeado.
-function HoverImage({
-  src,
-  alt,
-  ratio = "aspect-[4/5]",
-  priority = false,
-}: {
-  src: string;
-  alt: string;
-  ratio?: string;
-  priority?: boolean;
-}) {
-  return (
-    <div
-      className={`group relative overflow-hidden rounded-2xl shadow-lg ring-1 ring-black/5 ${ratio}`}
-    >
-      <Image
-        src={src}
-        alt={alt}
-        fill
-        priority={priority}
-        sizes="(min-width: 1024px) 40vw, 100vw"
-        className="object-cover transition-transform duration-[800ms] ease-out group-hover:scale-[1.06]"
-      />
-      <div
-        aria-hidden="true"
-        className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/35 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-      />
-    </div>
-  );
-}
-
-function PillarCard({
-  icon: Icon,
-  title,
-  body,
-}: {
-  icon: typeof Target;
-  title: string;
-  body: string;
-}) {
-  return (
-    <div className="card p-6 transition-all hover:shadow-md">
-      <span className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-brand-500 text-black">
-        <Icon className="h-5 w-5" strokeWidth={1.6} />
-      </span>
-      <h3 className="mt-5 text-lg font-semibold text-ink-900">{title}</h3>
-      <p className="mt-2 text-sm leading-relaxed text-ink-600">{body}</p>
-    </div>
-  );
-}
-
-function Diff({
-  icon: Icon,
-  title,
-  desc,
-}: {
-  icon: typeof HeartHandshake;
-  title: string;
-  desc: string;
-}) {
-  return (
-    <li className="flex gap-4">
-      <span className="mt-0.5 inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-brand-50 text-brand-700">
-        <Icon className="h-5 w-5" strokeWidth={1.6} />
-      </span>
-      <div>
-        <p className="font-semibold text-ink-900">{title}</p>
-        <p className="mt-1 text-sm text-ink-600">{desc}</p>
-      </div>
-    </li>
-  );
-}

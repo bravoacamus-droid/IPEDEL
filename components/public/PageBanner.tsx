@@ -33,28 +33,35 @@ export function PageBanner({
   return (
     <section
       className={cn(
-        "relative overflow-hidden",
-        hasBg ? "bg-ink-900 text-ink-900" : "bg-ink-900 text-white",
+        "relative isolate overflow-hidden",
+        // Cuando hay imagen de fondo, NO usamos bg-ink-900 sobre la sección
+        // porque taparía la imagen. La imagen pinta primero (orden DOM) y
+        // los overlays/contenido encima sin necesidad de z-index negativos.
+        !hasBg && "bg-ink-900 text-white",
+        hasBg && "text-ink-900",
       )}
     >
       {hasBg ? (
         <>
+          {/* Background image — sin position:absolute negativos; usa el orden
+              natural de pintado: image → overlay → content. */}
           <Image
             src={backgroundImage!}
             alt={backgroundAlt}
             fill
             priority
             sizes="100vw"
-            className="absolute inset-0 -z-20 object-cover"
+            className="object-cover"
           />
-          {/* Overlay para legibilidad — un poco oscuro en la parte donde irá la tarjeta */}
+          {/* Overlay para legibilidad — más oscuro a la izquierda donde
+              vive la tarjeta de vidrio. */}
           <div
             aria-hidden="true"
-            className="absolute inset-0 -z-10 bg-gradient-to-r from-black/55 via-black/25 to-black/40"
+            className="absolute inset-0 bg-gradient-to-r from-black/55 via-black/25 to-black/40"
           />
           <div
             aria-hidden="true"
-            className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_15%_50%,rgba(150,198,0,0.18),transparent_55%)]"
+            className="absolute inset-0 bg-[radial-gradient(circle_at_15%_50%,rgba(150,198,0,0.18),transparent_55%)]"
           />
         </>
       ) : (
@@ -97,14 +104,14 @@ export function PageBanner({
           rightSlot && !hasBg && "grid items-center gap-12 lg:grid-cols-12",
         )}
       >
-        {/* Wrapper que aplica el efecto de vidrio cuando hay imagen de fondo */}
+        {/* Tarjeta de vidrio cuando hay imagen de fondo */}
         <div
           className={cn(
             !hasBg && rightSlot && "lg:col-span-7",
             !hasBg && !rightSlot && "max-w-3xl",
             align === "center" && !rightSlot && "mx-auto text-center",
             hasBg &&
-              "max-w-3xl rounded-3xl border border-white/30 bg-white/25 p-8 shadow-[0_24px_60px_-30px_rgba(0,0,0,0.55)] backdrop-blur-2xl sm:p-10",
+              "max-w-3xl rounded-3xl border border-white/30 bg-white/30 p-8 shadow-[0_24px_60px_-30px_rgba(0,0,0,0.55)] backdrop-blur-2xl sm:p-10",
           )}
         >
           {breadcrumb && breadcrumb.length > 0 && (
@@ -140,7 +147,7 @@ export function PageBanner({
               className={cn(
                 "inline-flex items-center gap-2 rounded-full border px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] backdrop-blur-sm",
                 hasBg
-                  ? "border-brand-700/30 bg-white/40 text-brand-800"
+                  ? "border-brand-700/30 bg-white/50 text-brand-800"
                   : "border-brand-300/40 bg-white/5 text-brand-300",
               )}
             >

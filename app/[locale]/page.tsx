@@ -75,15 +75,15 @@ export default async function HomePage({
       <ParallaxSection
         image="/CTAIPEDEL.webp"
         alt=""
-        intensity={0.22}
-        className="py-24 sm:py-28"
-        overlayClassName="bg-gradient-to-r from-brand-500/85 via-brand-500/55 to-brand-500/35"
+        intensity={0.25}
+        className="flex min-h-[520px] items-center sm:min-h-[600px] lg:min-h-[640px]"
+        overlayClassName="bg-gradient-to-r from-brand-500/85 via-brand-500/55 to-brand-500/30"
       >
         <div
           aria-hidden="true"
           className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_18%_50%,rgba(255,255,255,0.35),transparent_45%)]"
         />
-        <div className="container-page relative flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">
+        <div className="container-page relative flex w-full flex-col items-start justify-between gap-6 py-20 md:flex-row md:items-center md:py-24">
           <h2 className="text-2xl font-semibold tracking-tight text-black sm:text-3xl drop-shadow-sm">
             {locale === "es" ? "¿Necesitas una cotización?" : "Need a quote?"}
           </h2>
