@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import {
   ArrowRight,
@@ -19,6 +20,7 @@ import { createClient } from "@/lib/supabase/server";
 import { HeroVideo } from "@/components/public/HeroVideo";
 import { AnimatedNumber } from "@/components/public/AnimatedNumber";
 import { ParallaxSection } from "@/components/public/ParallaxSection";
+import { cn } from "@/lib/utils";
 import { notFound } from "next/navigation";
 
 export default async function HomePage({
@@ -203,7 +205,8 @@ function StatCard({
 }
 
 // =============================================================
-// SERVICES — premium cards con accent stripe + tags + identity
+// SERVICES — grid asimétrico tipo "showroom" con gradientes
+// brand y placeholders de imagen transparente por servicio.
 // =============================================================
 type ServiceCard = {
   slug: string;
@@ -214,6 +217,10 @@ type ServiceCard = {
   desc_en: string;
   tags_es: string[];
   tags_en: string[];
+  /** Path del PNG transparente del servicio. Cliente lo subirá a /public/services/. */
+  imagePath?: string;
+  /** Clases Tailwind para el gradiente de fondo de la tarjeta. */
+  gradient: string;
 };
 
 const SERVICE_CARDS: ServiceCard[] = [
@@ -228,6 +235,9 @@ const SERVICE_CARDS: ServiceCard[] = [
       "Tailored solutions across air, sea and land — including consolidation and project cargo.",
     tags_es: ["Aéreo", "FCL/LCL", "Multimodal", "Door to Door"],
     tags_en: ["Air", "FCL/LCL", "Multimodal", "Door to Door"],
+    // imagePath: "/services/card-agenciamiento.png", // PNG transparente — pendiente
+    gradient:
+      "bg-[linear-gradient(135deg,#ffffff_0%,#f4faea_30%,#d2e89f_75%,#aacd3e_100%)]",
   },
   {
     slug: "almacenamiento",
@@ -240,6 +250,9 @@ const SERVICE_CARDS: ServiceCard[] = [
       "Exclusive and shared areas tailored to your needs, with safe handling of controlled products.",
     tags_es: ["Bodegaje", "Custodia", "Productos controlados"],
     tags_en: ["Storage", "Custody", "Controlled goods"],
+    // imagePath: "/services/card-almacen.png",
+    gradient:
+      "bg-[linear-gradient(135deg,#f4faea_0%,#d2e89f_60%,#96c600_100%)]",
   },
   {
     slug: "especializados",
@@ -252,6 +265,9 @@ const SERVICE_CARDS: ServiceCard[] = [
       "Logistics operators: customs clearance, air consolidations and deep customs-legislation expertise.",
     tags_es: ["Desaduanaje", "Consolidación aérea", "Asia ↔ Perú"],
     tags_en: ["Customs clearance", "Air consolidation", "Asia ↔ Peru"],
+    // imagePath: "/services/card-especializados.png",
+    gradient:
+      "bg-[linear-gradient(135deg,#ffffff_0%,#e6f3cf_50%,#c2d971_100%)]",
   },
   {
     slug: "internacional",
@@ -264,6 +280,9 @@ const SERVICE_CARDS: ServiceCard[] = [
       "International moving with accredited agents abroad. Professional packing and full traceability.",
     tags_es: ["Door to Port", "Door to Door", "Room to Room"],
     tags_en: ["Door to Port", "Door to Door", "Room to Room"],
+    // imagePath: "/services/card-internacional.png",
+    gradient:
+      "bg-[linear-gradient(135deg,#aacd3e_0%,#96c600_55%,#7ba300_100%)]",
   },
 ];
 
@@ -306,10 +325,24 @@ function ServicesSection({
           </Link>
         </div>
 
-        <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {SERVICE_CARDS.map((s) => (
-            <ServiceCardItem key={s.slug} card={s} locale={locale} />
-          ))}
+        {/* Grid asimétrico estilo "showroom":
+              tall · short/short · tall (lg+).
+              Mobile: stacked. Tablet: 2 cols. */}
+        <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 lg:auto-rows-[290px]">
+          <ServiceCardItem
+            card={SERVICE_CARDS[0]}
+            locale={locale}
+            className="lg:row-span-2"
+            tall
+          />
+          <ServiceCardItem card={SERVICE_CARDS[1]} locale={locale} />
+          <ServiceCardItem card={SERVICE_CARDS[2]} locale={locale} />
+          <ServiceCardItem
+            card={SERVICE_CARDS[3]}
+            locale={locale}
+            className="lg:row-span-2"
+            tall
+          />
         </div>
 
         <div className="mt-10 flex justify-center sm:hidden">
@@ -329,9 +362,13 @@ function ServicesSection({
 function ServiceCardItem({
   card,
   locale,
+  className,
+  tall = false,
 }: {
   card: ServiceCard;
   locale: Locale;
+  className?: string;
+  tall?: boolean;
 }) {
   const Icon = card.icon;
   const isEs = locale === "es";
@@ -342,46 +379,108 @@ function ServiceCardItem({
   return (
     <Link
       href={`/${locale}/servicios/${card.slug}`}
-      className="group relative flex flex-col overflow-hidden rounded-2xl border border-ink-100 bg-white p-7 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-brand-300 hover:shadow-2xl hover:shadow-brand-500/10"
+      className={cn(
+        "group relative flex h-full min-h-[300px] flex-col overflow-hidden rounded-3xl p-7 shadow-sm transition-all duration-500",
+        "hover:-translate-y-1 hover:shadow-2xl hover:shadow-brand-500/20",
+        card.gradient,
+        className,
+      )}
     >
-      {/* Top accent stripe */}
+      {/* Vignette superior para que el título resalte sobre el gradiente */}
       <span
         aria-hidden="true"
-        className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-brand-300 via-brand-500 to-brand-700 opacity-60 transition-opacity group-hover:opacity-100"
+        className="pointer-events-none absolute inset-x-0 top-0 h-1/3 bg-gradient-to-b from-white/30 to-transparent"
       />
 
-      {/* Icon */}
-      <span className="relative inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-400 to-brand-600 text-black shadow-lg shadow-brand-500/30 transition-transform group-hover:scale-105">
-        <Icon className="h-6 w-6" strokeWidth={1.6} />
-      </span>
-
-      <h3 className="relative mt-6 text-lg font-semibold leading-snug text-ink-900">
-        {title}
-      </h3>
-      <p className="relative mt-2 text-sm leading-relaxed text-ink-600">
-        {desc}
-      </p>
-
-      <div className="relative mt-5 flex flex-wrap gap-1.5">
-        {tags.map((t) => (
-          <span
-            key={t}
-            className="rounded-full bg-brand-50 px-2.5 py-0.5 text-[11px] font-medium text-brand-700 ring-1 ring-brand-100"
-          >
-            {t}
-          </span>
-        ))}
-      </div>
-
-      <div className="relative mt-auto pt-6 flex items-center gap-1.5 text-sm font-semibold text-brand-700 group-hover:text-brand-800">
-        <span>{isEs ? "Ver detalle" : "View details"}</span>
-        <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-      </div>
-
-      {/* Decorative blob */}
+      {/* Patrón sutil / textura para "premium feel" */}
       <span
         aria-hidden="true"
-        className="pointer-events-none absolute -bottom-16 -right-16 h-40 w-40 rounded-full bg-brand-100/60 opacity-0 blur-3xl transition-opacity duration-500 group-hover:opacity-100"
+        className="pointer-events-none absolute inset-0 opacity-[0.04]"
+        style={{
+          backgroundImage:
+            "radial-gradient(circle at 1px 1px, #0a0a0a 1px, transparent 0)",
+          backgroundSize: "20px 20px",
+        }}
+      />
+
+      {/* Imagen del servicio (PNG transparente del cliente) o icono fallback.
+          Floats en la zona derecha/inferior y escala suavemente al hover. */}
+      <div
+        className={cn(
+          "pointer-events-none absolute z-0 transition-transform duration-700 ease-out group-hover:scale-110 group-hover:-rotate-2",
+          tall
+            ? "right-[-15%] top-1/3 h-[55%] w-[80%]"
+            : "right-[-10%] top-[15%] h-[80%] w-[55%]",
+        )}
+      >
+        {card.imagePath ? (
+          <Image
+            src={card.imagePath}
+            alt=""
+            fill
+            sizes="(min-width: 1024px) 30vw, (min-width: 640px) 50vw, 100vw"
+            className="object-contain object-right drop-shadow-2xl"
+          />
+        ) : (
+          <div className="flex h-full w-full items-center justify-end pr-4">
+            <Icon
+              className={cn(
+                "text-black/15",
+                tall ? "h-48 w-48 lg:h-56 lg:w-56" : "h-32 w-32",
+              )}
+              strokeWidth={1}
+            />
+          </div>
+        )}
+      </div>
+
+      {/* Top — eyebrow + title */}
+      <div className="relative z-10 max-w-[85%]">
+        <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-black/85 text-white shadow-lg ring-1 ring-black/10 backdrop-blur-sm">
+          <Icon className="h-5 w-5" strokeWidth={1.6} />
+        </span>
+        <h3
+          className={cn(
+            "mt-5 font-semibold leading-tight tracking-tight text-ink-900",
+            tall ? "text-2xl lg:text-3xl" : "text-xl lg:text-2xl",
+          )}
+        >
+          {title}
+        </h3>
+        <p
+          className={cn(
+            "mt-3 text-sm leading-relaxed text-ink-800/85",
+            tall ? "max-w-[26rem]" : "max-w-[20rem]",
+          )}
+        >
+          {desc}
+        </p>
+      </div>
+
+      {/* Bottom — tags + CTA */}
+      <div className="relative z-10 mt-auto pt-6">
+        <div className="flex flex-wrap gap-1.5">
+          {tags.map((t) => (
+            <span
+              key={t}
+              className="rounded-full bg-white/70 px-2.5 py-0.5 text-[11px] font-medium text-ink-800 ring-1 ring-black/5 backdrop-blur-sm"
+            >
+              {t}
+            </span>
+          ))}
+        </div>
+        <div className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-ink-900">
+          <span className="border-b border-ink-900/40 transition-colors group-hover:border-ink-900">
+            {isEs ? "Ver detalle" : "View details"}
+          </span>
+          <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+        </div>
+      </div>
+
+      {/* Decorative ring on hover */}
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 rounded-3xl ring-1 ring-inset ring-white/0 transition-all duration-500 group-hover:ring-white/40"
       />
     </Link>
   );
