@@ -2,9 +2,14 @@
 
 import Image from "next/image";
 import { motion } from "framer-motion";
-import type { LucideIcon } from "lucide-react";
 import { AnimatedNumber } from "./AnimatedNumber";
 import { cn } from "@/lib/utils";
+
+// IMPORTANTE: este es un client component. Como se usa desde un server
+// component (nosotros/page.tsx), los iconos NO pueden pasarse como
+// referencia a componente (funciones no serializables a través del
+// border RSC). Por eso `icon` se tipa como ReactNode — el caller pasa
+// `<Target className="..." />` ya renderizado.
 
 // Subcomponentes interactivos para la página /nosotros — entrance
 // animations con framer-motion + hover states premium.
@@ -54,12 +59,12 @@ export function AnimatedStat({
 // stripe, icono en gradient, hover lift + glow + fade-in stagger
 // =============================================================
 export function Pillar({
-  icon: Icon,
+  icon,
   title,
   body,
   delay = 0,
 }: {
-  icon: LucideIcon;
+  icon: React.ReactNode;
   title: string;
   body: string;
   delay?: number;
@@ -82,7 +87,7 @@ export function Pillar({
         className="pointer-events-none absolute -bottom-16 -right-16 h-40 w-40 rounded-full bg-brand-100/60 opacity-0 blur-3xl transition-opacity duration-500 group-hover:opacity-100"
       />
       <span className="relative inline-flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-brand-400 to-brand-600 text-black shadow-lg shadow-brand-500/25 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3">
-        <Icon className="h-5 w-5" strokeWidth={1.6} />
+        {icon}
       </span>
       <h3 className="relative mt-5 text-lg font-semibold text-ink-900">
         {title}
@@ -99,12 +104,12 @@ export function Pillar({
 // del icono y reveal lateral on scroll
 // =============================================================
 export function Diff({
-  icon: Icon,
+  icon,
   title,
   desc,
   delay = 0,
 }: {
-  icon: LucideIcon;
+  icon: React.ReactNode;
   title: string;
   desc: string;
   delay?: number;
@@ -118,7 +123,7 @@ export function Diff({
       className="group relative flex gap-4 rounded-xl p-3 transition-colors hover:bg-brand-50/40"
     >
       <span className="mt-0.5 inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-brand-50 text-brand-700 ring-1 ring-brand-100 transition-all duration-300 group-hover:bg-brand-500 group-hover:text-black group-hover:ring-brand-300 group-hover:scale-110">
-        <Icon className="h-5 w-5" strokeWidth={1.6} />
+        {icon}
       </span>
       <div className="min-w-0">
         <p className="font-semibold text-ink-900 transition-colors group-hover:text-brand-800">

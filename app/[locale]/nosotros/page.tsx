@@ -169,7 +169,7 @@ export default async function NosotrosPage({
 
           <div className="mt-12 grid gap-6 md:grid-cols-3">
             <Pillar
-              icon={Target}
+              icon={<Target className="h-5 w-5" strokeWidth={1.6} />}
               title={locale === "es" ? "Misión" : "Mission"}
               body={
                 locale === "es"
@@ -179,7 +179,7 @@ export default async function NosotrosPage({
               delay={0}
             />
             <Pillar
-              icon={Compass}
+              icon={<Compass className="h-5 w-5" strokeWidth={1.6} />}
               title={locale === "es" ? "Visión" : "Vision"}
               body={
                 locale === "es"
@@ -189,7 +189,7 @@ export default async function NosotrosPage({
               delay={0.1}
             />
             <Pillar
-              icon={Sparkles}
+              icon={<Sparkles className="h-5 w-5" strokeWidth={1.6} />}
               title={locale === "es" ? "Valores" : "Values"}
               body={
                 locale === "es"
@@ -227,7 +227,7 @@ export default async function NosotrosPage({
             </h2>
             <ul className="mt-8 space-y-3">
               <Diff
-                icon={HeartHandshake}
+                icon={<HeartHandshake className="h-5 w-5" strokeWidth={1.6} />}
                 delay={0}
                 title={
                   locale === "es"
@@ -241,7 +241,7 @@ export default async function NosotrosPage({
                 }
               />
               <Diff
-                icon={Globe2}
+                icon={<Globe2 className="h-5 w-5" strokeWidth={1.6} />}
                 delay={0.08}
                 title={
                   locale === "es"
@@ -255,7 +255,7 @@ export default async function NosotrosPage({
                 }
               />
               <Diff
-                icon={Users}
+                icon={<Users className="h-5 w-5" strokeWidth={1.6} />}
                 delay={0.16}
                 title={
                   locale === "es"
@@ -269,7 +269,7 @@ export default async function NosotrosPage({
                 }
               />
               <Diff
-                icon={Anchor}
+                icon={<Anchor className="h-5 w-5" strokeWidth={1.6} />}
                 delay={0.24}
                 title={
                   locale === "es"
