@@ -73,7 +73,15 @@ type ServiceContent = {
   side_image_real?: string;
   highlights_title_es: string;
   highlights_title_en: string;
-  highlights: { icon: LucideIcon; title_es: string; title_en: string; desc_es: string; desc_en: string }[];
+  highlights: {
+    icon: LucideIcon;
+    title_es: string;
+    title_en: string;
+    desc_es: string;
+    desc_en: string;
+    bullets_es: string[];
+    bullets_en: string[];
+  }[];
 };
 
 const CONTENT: Record<Slug, ServiceContent> = {
@@ -150,6 +158,16 @@ const CONTENT: Record<Slug, ServiceContent> = {
         title_en: "Global coverage",
         desc_es: "Red de agentes especializados en más de 40 países.",
         desc_en: "Specialized agent network across 40+ countries.",
+        bullets_es: [
+          "+40 países con agentes acreditados",
+          "Alianzas con líneas aéreas y navieras",
+          "Operación coordinada por nuestro equipo",
+        ],
+        bullets_en: [
+          "40+ countries with accredited agents",
+          "Partnerships with airlines and shipping lines",
+          "Operation coordinated by our team",
+        ],
       },
       {
         icon: Gauge,
@@ -157,6 +175,16 @@ const CONTENT: Record<Slug, ServiceContent> = {
         title_en: "Best cost-time ratio",
         desc_es: "Asesoría experta para optimizar la modalidad de transporte.",
         desc_en: "Expert advisory to optimize transport modality.",
+        bullets_es: [
+          "Multimodal según destino y plazo",
+          "Negociación directa de tarifas",
+          "Optimización de rutas y conexiones",
+        ],
+        bullets_en: [
+          "Multimodal per destination and timeline",
+          "Direct rate negotiation",
+          "Route and connection optimization",
+        ],
       },
       {
         icon: Route,
@@ -164,6 +192,16 @@ const CONTENT: Record<Slug, ServiceContent> = {
         title_en: "End-to-end traceability",
         desc_es: "Información permanente desde origen hasta destino.",
         desc_en: "Continuous information from origin to destination.",
+        bullets_es: [
+          "Sistema de seguimiento por HBL",
+          "Reportes periódicos durante el tránsito",
+          "Comunicación 24/7 con tu ejecutivo",
+        ],
+        bullets_en: [
+          "HBL-based tracking system",
+          "Periodic reports during transit",
+          "24/7 communication with your account manager",
+        ],
       },
     ],
   },
@@ -229,6 +267,16 @@ const CONTENT: Record<Slug, ServiceContent> = {
         title_en: "Custom areas",
         desc_es: "Espacios diseñados según el volumen y la rotación de su carga.",
         desc_en: "Spaces designed according to your cargo volume and turnover.",
+        bullets_es: [
+          "Espacios escalables según necesidad",
+          "Diseño según volumen y rotación",
+          "Layout optimizado por tipo de producto",
+        ],
+        bullets_en: [
+          "Scalable spaces per need",
+          "Layout designed by volume and turnover",
+          "Optimized layout per product type",
+        ],
       },
       {
         icon: ShieldCheck,
@@ -236,6 +284,16 @@ const CONTENT: Record<Slug, ServiceContent> = {
         title_en: "Controlled products",
         desc_es: "Manejo apropiado para mercaderías que requieren autorizaciones.",
         desc_en: "Proper handling for goods that need permits.",
+        bullets_es: [
+          "Permisos vigentes con autoridades",
+          "Personal capacitado para manipulación",
+          "Custodia documentada con trazabilidad",
+        ],
+        bullets_en: [
+          "Up-to-date permits with authorities",
+          "Staff trained for handling",
+          "Documented custody with traceability",
+        ],
       },
       {
         icon: Plug,
@@ -243,6 +301,16 @@ const CONTENT: Record<Slug, ServiceContent> = {
         title_en: "Continuous tracking",
         desc_es: "Información en tiempo real del estado de su mercadería.",
         desc_en: "Real-time information about your cargo status.",
+        bullets_es: [
+          "Inventario en tiempo real",
+          "Reportes mensuales detallados",
+          "Tu ejecutivo de cuenta a un click",
+        ],
+        bullets_en: [
+          "Real-time inventory",
+          "Detailed monthly reports",
+          "Your account executive one click away",
+        ],
       },
     ],
   },
@@ -310,6 +378,16 @@ const CONTENT: Record<Slug, ServiceContent> = {
         title_en: "Security and efficiency",
         desc_es: "Procesos auditados que aseguran cada paso de la operación.",
         desc_en: "Audited processes that secure every step of the operation.",
+        bullets_es: [
+          "Procesos auditados internamente",
+          "Personal certificado y capacitado",
+          "Estándares internacionales aplicados",
+        ],
+        bullets_en: [
+          "Internally audited processes",
+          "Certified and trained staff",
+          "International standards applied",
+        ],
       },
       {
         icon: Headset,
@@ -317,6 +395,16 @@ const CONTENT: Record<Slug, ServiceContent> = {
         title_en: "Specialized advisory",
         desc_es: "Equipo experto en regulación aduanera peruana.",
         desc_en: "Team expert in Peruvian customs regulation.",
+        bullets_es: [
+          "Conocimiento profundo de aduanas",
+          "Documentación al día",
+          "Resolución rápida de incidencias",
+        ],
+        bullets_en: [
+          "Deep customs knowledge",
+          "Up-to-date documentation",
+          "Quick incident resolution",
+        ],
       },
       {
         icon: Globe2,
@@ -324,6 +412,16 @@ const CONTENT: Record<Slug, ServiceContent> = {
         title_en: "Japan–Peru network",
         desc_es: "Experiencia comprobada en operaciones con representantes japoneses.",
         desc_en: "Proven experience operating with Japanese representatives.",
+        bullets_es: [
+          "Representantes oficiales de transnacionales",
+          "Décadas de experiencia operando",
+          "Coordinación bilingüe",
+        ],
+        bullets_en: [
+          "Official representatives of multinationals",
+          "Decades of operating experience",
+          "Bilingual coordination",
+        ],
       },
     ],
   },
@@ -381,6 +479,16 @@ const CONTENT: Record<Slug, ServiceContent> = {
         title_en: "Professional packing",
         desc_es: "Materiales y procedimientos certificados para piezas delicadas.",
         desc_en: "Certified materials and procedures for delicate pieces.",
+        bullets_es: [
+          "Materiales certificados",
+          "Empaque por categoría de pieza",
+          "Custodia de objetos delicados",
+        ],
+        bullets_en: [
+          "Certified materials",
+          "Packing per item category",
+          "Delicate items custody",
+        ],
       },
       {
         icon: ShieldCheck,
@@ -388,6 +496,16 @@ const CONTENT: Record<Slug, ServiceContent> = {
         title_en: "Customs advisory",
         desc_es: "Procedimientos claros para una llegada sin sorpresas.",
         desc_en: "Clear procedures for a hassle-free arrival.",
+        bullets_es: [
+          "Documentación origen-destino",
+          "Permisos especiales si aplica",
+          "Seguros de carga opcionales",
+        ],
+        bullets_en: [
+          "Origin–destination documentation",
+          "Special permits if needed",
+          "Optional cargo insurance",
+        ],
       },
       {
         icon: MapPin,
@@ -395,6 +513,16 @@ const CONTENT: Record<Slug, ServiceContent> = {
         title_en: "On-site support at destination",
         desc_es: "Coordinación con agentes acreditados en el extranjero.",
         desc_en: "Coordination with accredited agents overseas.",
+        bullets_es: [
+          "Agente local certificado",
+          "Coordinación en idioma local",
+          "Reporte fotográfico de entrega",
+        ],
+        bullets_en: [
+          "Certified local agent",
+          "Coordination in local language",
+          "Photo delivery report",
+        ],
       },
     ],
   },
@@ -423,14 +551,14 @@ export default async function ServiceDetail({
       {c.hero_background ? (
         // Hero con foto de fondo y tarjeta de vidrio — copy limpio sin
         // eyebrow ni breadcrumb redundante (igual que en /nosotros).
-        // backgroundPosition='center 75%' baja el encuadre para que el
-        // avión y el logo IPEDEL queden visibles arriba.
+        // backgroundPosition='center top' encuadra arriba para mostrar
+        // el avión cargo + logo IPEDEL en la parte alta de la foto.
         <PageBanner
           title={isEs ? c.title_es : c.title_en}
           subtitle={isEs ? c.subtitle_es : c.subtitle_en}
           backgroundImage={c.hero_background}
           backgroundAlt={isEs ? c.title_es : c.title_en}
-          backgroundPosition="center 75%"
+          backgroundPosition="center top"
         />
       ) : (
         <PageBanner
@@ -512,33 +640,106 @@ export default async function ServiceDetail({
         </div>
       </section>
 
-      {/* Highlights */}
-      <section className="container-page py-16 lg:py-24">
-        <div className="mx-auto max-w-2xl text-center">
-          <span className="text-xs font-semibold uppercase tracking-[0.18em] text-brand-600">
-            {isEs ? "Diferenciadores" : "Differentiators"}
-          </span>
-          <h2 className="mt-3 text-3xl font-semibold tracking-tight text-ink-900">
-            {isEs ? c.highlights_title_es : c.highlights_title_en}
-          </h2>
-        </div>
-        <div className="mt-12 grid gap-6 md:grid-cols-3">
-          {c.highlights.map((h, i) => {
-            const Icon = h.icon;
-            return (
-              <div key={i} className="card p-6 transition-all hover:shadow-md">
-                <span className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-brand-500 text-black">
-                  <Icon className="h-5 w-5" strokeWidth={1.6} />
-                </span>
-                <h3 className="mt-5 text-lg font-semibold text-ink-900">
-                  {isEs ? h.title_es : h.title_en}
-                </h3>
-                <p className="mt-2 text-sm text-ink-600">
-                  {isEs ? h.desc_es : h.desc_en}
-                </p>
-              </div>
-            );
-          })}
+      {/* Highlights — sección "diferenciadores" rediseñada estilo
+          editorial: cards con accent stripe, header horizontal con
+          icono+título, body destacado, divider y bullets con check
+          icons brand. Sección con patrón sutil de fondo. */}
+      <section className="relative overflow-hidden bg-gradient-to-b from-white to-ink-50 py-20 lg:py-28">
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 opacity-[0.03]"
+          style={{
+            backgroundImage:
+              "linear-gradient(to right, #0a0a0a 1px, transparent 1px), linear-gradient(to bottom, #0a0a0a 1px, transparent 1px)",
+            backgroundSize: "56px 56px",
+          }}
+        />
+        <div className="container-page relative">
+          <div className="mx-auto max-w-3xl text-center">
+            <span className="inline-flex items-center gap-2 rounded-full border border-brand-200 bg-white px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-brand-700 shadow-sm">
+              <span className="inline-block h-1.5 w-1.5 rounded-full bg-brand-500" />
+              {isEs ? "Diferenciadores" : "Differentiators"}
+            </span>
+            <h2 className="mt-5 text-balance text-3xl font-semibold leading-tight tracking-tight text-ink-900 sm:text-4xl lg:text-5xl">
+              {isEs ? c.highlights_title_es : c.highlights_title_en}
+            </h2>
+            <p className="mx-auto mt-5 max-w-2xl text-base text-ink-600 sm:text-lg">
+              {isEs
+                ? "Tres pilares concretos que sostienen cada operación, no eslóganes."
+                : "Three concrete pillars that hold every operation, not slogans."}
+            </p>
+          </div>
+          <div className="mt-14 grid gap-6 md:grid-cols-3 lg:gap-8">
+            {c.highlights.map((h, i) => {
+              const Icon = h.icon;
+              return (
+                <article
+                  key={i}
+                  className="group relative flex flex-col overflow-hidden rounded-2xl border border-ink-100 bg-white p-7 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-brand-300 hover:shadow-2xl hover:shadow-brand-500/10 sm:p-8"
+                >
+                  {/* Accent stripe top */}
+                  <span
+                    aria-hidden="true"
+                    className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-brand-300 via-brand-500 to-brand-700 opacity-70 transition-opacity duration-500 group-hover:opacity-100"
+                  />
+                  {/* Decorative blob */}
+                  <span
+                    aria-hidden="true"
+                    className="pointer-events-none absolute -bottom-16 -right-16 h-40 w-40 rounded-full bg-brand-100/60 opacity-0 blur-3xl transition-opacity duration-500 group-hover:opacity-100"
+                  />
+
+                  {/* Header: icon + title side by side */}
+                  <div className="relative flex items-start gap-4">
+                    <span className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-brand-400 to-brand-600 text-black shadow-lg shadow-brand-500/25 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3">
+                      <Icon className="h-5 w-5" strokeWidth={1.6} />
+                    </span>
+                    <h3 className="pt-1 text-xl font-semibold leading-tight text-ink-900">
+                      {isEs ? h.title_es : h.title_en}
+                    </h3>
+                  </div>
+
+                  {/* Body */}
+                  <p className="relative mt-5 text-[15px] leading-relaxed text-ink-700">
+                    {isEs ? h.desc_es : h.desc_en}
+                  </p>
+
+                  {/* Divider con accent gradient */}
+                  <span
+                    aria-hidden="true"
+                    className="relative my-6 block h-px w-12 bg-gradient-to-r from-brand-500 to-transparent"
+                  />
+
+                  {/* Bullets con check brand */}
+                  <ul className="relative space-y-2.5">
+                    {(isEs ? h.bullets_es : h.bullets_en).map((b) => (
+                      <li
+                        key={b}
+                        className="flex items-start gap-2.5 text-sm text-ink-700"
+                      >
+                        <span
+                          aria-hidden="true"
+                          className="mt-0.5 inline-flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-brand-500 text-black"
+                        >
+                          <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="3.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            className="h-2.5 w-2.5"
+                          >
+                            <polyline points="20 6 9 17 4 12" />
+                          </svg>
+                        </span>
+                        <span>{b}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </article>
+              );
+            })}
+          </div>
         </div>
       </section>
 

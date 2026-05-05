@@ -221,60 +221,169 @@ export default async function ImportacionesPage({
         </div>
       </section>
 
-      {/* Cómo trabajamos */}
-      <section className="container-page py-16 lg:py-24">
-        <div className="mx-auto max-w-2xl text-center">
-          <span className="text-xs font-semibold uppercase tracking-[0.18em] text-brand-600">
-            {isEs ? "Nuestro proceso" : "Our process"}
-          </span>
-          <h2 className="mt-3 text-3xl font-semibold tracking-tight text-ink-900 sm:text-4xl">
-            {isEs ? "Cómo trabajamos contigo" : "How we work with you"}
-          </h2>
-          <p className="mt-3 text-ink-600">
-            {isEs
-              ? "Cuatro pasos simples — un solo equipo cuidando cada detalle de tu carga."
-              : "Four simple steps — one team taking care of every detail of your shipment."}
-          </p>
-        </div>
+      {/* Cómo trabajamos — proceso visual con timeline conectado.
+          4 nodos sobre una línea horizontal con accent brand. Cada
+          nodo es una card elaborada con icono, título, body y bullets. */}
+      <section className="relative overflow-hidden bg-gradient-to-b from-white to-ink-50 py-20 lg:py-28">
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 opacity-[0.03]"
+          style={{
+            backgroundImage:
+              "linear-gradient(to right, #0a0a0a 1px, transparent 1px), linear-gradient(to bottom, #0a0a0a 1px, transparent 1px)",
+            backgroundSize: "56px 56px",
+          }}
+        />
+        <div className="container-page relative">
+          <div className="mx-auto max-w-3xl text-center">
+            <span className="inline-flex items-center gap-2 rounded-full border border-brand-200 bg-white px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-brand-700 shadow-sm">
+              <span className="inline-block h-1.5 w-1.5 rounded-full bg-brand-500" />
+              {isEs ? "Nuestro proceso" : "Our process"}
+            </span>
+            <h2 className="mt-5 text-balance text-3xl font-semibold leading-tight tracking-tight text-ink-900 sm:text-4xl lg:text-5xl">
+              {isEs ? "Cómo trabajamos contigo" : "How we work with you"}
+            </h2>
+            <p className="mx-auto mt-5 max-w-2xl text-base text-ink-600 sm:text-lg">
+              {isEs
+                ? "Cuatro etapas con responsable claro en cada una — sin sorpresas."
+                : "Four stages with a clear lead in each — no surprises."}
+            </p>
+          </div>
 
-        <ol className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-          <Step
-            icon={Headset}
-            title={isEs ? "Contacto" : "Contact"}
-            desc={
-              isEs
-                ? "Conversamos sobre tu carga, ruta y plazos."
-                : "We discuss your cargo, route and timing."
-            }
-          />
-          <Step
-            icon={Compass}
-            title={isEs ? "Diseño" : "Design"}
-            desc={
-              isEs
-                ? "Diseñamos la mejor combinación de modalidad y tarifa."
-                : "We design the best combination of mode and rate."
-            }
-          />
-          <Step
-            icon={Layers}
-            title={isEs ? "Operación" : "Operation"}
-            desc={
-              isEs
-                ? "Coordinamos origen, tránsito, aduana y entrega."
-                : "We coordinate origin, transit, customs and delivery."
-            }
-          />
-          <Step
-            icon={Sparkles}
-            title={isEs ? "Trazabilidad" : "Tracking"}
-            desc={
-              isEs
-                ? "Te mantenemos informado paso a paso hasta la entrega."
-                : "We keep you informed every step of the way."
-            }
-          />
-        </ol>
+          {/* Timeline horizontal con línea de conexión sobre los iconos */}
+          <div className="relative mt-14">
+            <span
+              aria-hidden="true"
+              className="pointer-events-none absolute left-[8%] right-[8%] top-[36px] hidden h-px bg-gradient-to-r from-brand-300/40 via-brand-500/60 to-brand-300/40 lg:block"
+            />
+            <ol className="relative grid gap-6 md:grid-cols-2 lg:grid-cols-4 lg:gap-6">
+              {[
+                {
+                  icon: Headset,
+                  title_es: "Contacto",
+                  title_en: "Contact",
+                  desc_es: "Conversamos sobre tu carga, ruta y plazos.",
+                  desc_en: "We discuss your cargo, route and timing.",
+                  bullets_es: [
+                    "Análisis del requerimiento",
+                    "Definición de plazos",
+                    "Propuesta inicial",
+                  ],
+                  bullets_en: [
+                    "Requirement analysis",
+                    "Timeline definition",
+                    "Initial proposal",
+                  ],
+                },
+                {
+                  icon: Compass,
+                  title_es: "Diseño",
+                  title_en: "Design",
+                  desc_es: "Diseñamos la mejor combinación de modalidad y tarifa.",
+                  desc_en: "We design the best combination of mode and rate.",
+                  bullets_es: [
+                    "Modalidad óptima",
+                    "Negociación de tarifas",
+                    "Cronograma detallado",
+                  ],
+                  bullets_en: [
+                    "Optimal mode",
+                    "Rate negotiation",
+                    "Detailed schedule",
+                  ],
+                },
+                {
+                  icon: Layers,
+                  title_es: "Operación",
+                  title_en: "Operation",
+                  desc_es: "Coordinamos origen, tránsito, aduana y entrega.",
+                  desc_en: "We coordinate origin, transit, customs and delivery.",
+                  bullets_es: [
+                    "Booking con transportistas",
+                    "Trámite documentario",
+                    "Coordinación con aduana",
+                  ],
+                  bullets_en: [
+                    "Booking with carriers",
+                    "Documentary processing",
+                    "Customs coordination",
+                  ],
+                },
+                {
+                  icon: Sparkles,
+                  title_es: "Trazabilidad",
+                  title_en: "Tracking",
+                  desc_es: "Te mantenemos informado paso a paso hasta la entrega.",
+                  desc_en: "We keep you informed every step of the way.",
+                  bullets_es: [
+                    "Seguimiento por HBL",
+                    "Reportes durante el tránsito",
+                    "Confirmación de entrega",
+                  ],
+                  bullets_en: [
+                    "HBL tracking",
+                    "Reports during transit",
+                    "Delivery confirmation",
+                  ],
+                },
+              ].map((step) => {
+                const Icon = step.icon;
+                return (
+                  <li
+                    key={step.title_es}
+                    className="group relative flex flex-col rounded-2xl border border-ink-100 bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-brand-300 hover:shadow-2xl hover:shadow-brand-500/10"
+                  >
+                    {/* Accent stripe top */}
+                    <span
+                      aria-hidden="true"
+                      className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-brand-300 via-brand-500 to-brand-700 opacity-70 transition-opacity group-hover:opacity-100"
+                    />
+                    {/* Icon — alineado con la línea horizontal del timeline */}
+                    <span className="mt-2 inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-brand-400 to-brand-600 text-black shadow-lg shadow-brand-500/25 ring-4 ring-white transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3">
+                      <Icon className="h-5 w-5" strokeWidth={1.6} />
+                    </span>
+                    <h3 className="mt-5 text-lg font-semibold text-ink-900">
+                      {isEs ? step.title_es : step.title_en}
+                    </h3>
+                    <p className="mt-2 text-sm leading-relaxed text-ink-600">
+                      {isEs ? step.desc_es : step.desc_en}
+                    </p>
+                    <span
+                      aria-hidden="true"
+                      className="my-4 block h-px w-10 bg-gradient-to-r from-brand-500 to-transparent"
+                    />
+                    <ul className="space-y-1.5">
+                      {(isEs ? step.bullets_es : step.bullets_en).map((b) => (
+                        <li
+                          key={b}
+                          className="flex items-start gap-2 text-xs text-ink-700"
+                        >
+                          <span
+                            aria-hidden="true"
+                            className="mt-0.5 inline-flex h-3 w-3 shrink-0 items-center justify-center rounded-full bg-brand-500 text-black"
+                          >
+                            <svg
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="4"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              className="h-2 w-2"
+                            >
+                              <polyline points="20 6 9 17 4 12" />
+                            </svg>
+                          </span>
+                          <span>{b}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </li>
+                );
+              })}
+            </ol>
+          </div>
+        </div>
       </section>
 
       <CTAFooter locale={locale as Locale} />
