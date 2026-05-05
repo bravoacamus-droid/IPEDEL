@@ -423,11 +423,14 @@ export default async function ServiceDetail({
       {c.hero_background ? (
         // Hero con foto de fondo y tarjeta de vidrio — copy limpio sin
         // eyebrow ni breadcrumb redundante (igual que en /nosotros).
+        // backgroundPosition='center 75%' baja el encuadre para que el
+        // avión y el logo IPEDEL queden visibles arriba.
         <PageBanner
           title={isEs ? c.title_es : c.title_en}
           subtitle={isEs ? c.subtitle_es : c.subtitle_en}
           backgroundImage={c.hero_background}
           backgroundAlt={isEs ? c.title_es : c.title_en}
+          backgroundPosition="center 75%"
         />
       ) : (
         <PageBanner

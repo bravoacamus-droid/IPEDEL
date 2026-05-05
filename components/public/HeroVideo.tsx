@@ -51,12 +51,7 @@ export function HeroVideo({
       {/* Contenido */}
       <div className="container-page relative z-10 pt-32 pb-32 sm:pt-40 sm:pb-40 text-white">
         <div className="max-w-3xl">
-          <span className="inline-flex items-center gap-2 rounded-full border border-brand-300/40 bg-white/5 px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-brand-300 backdrop-blur-sm">
-            <span className="inline-block h-1.5 w-1.5 rounded-full bg-brand-500" />
-            {dict.home.hero_eyebrow}
-          </span>
-
-          <h1 className="mt-7 text-balance text-4xl font-semibold leading-[1.02] tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
+          <h1 className="text-balance text-4xl font-semibold leading-[1.02] tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
             {heroTitle}
           </h1>
 

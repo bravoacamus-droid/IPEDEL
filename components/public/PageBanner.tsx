@@ -18,6 +18,7 @@ export function PageBanner({
   align = "left",
   backgroundImage,
   backgroundAlt = "",
+  backgroundPosition = "center",
 }: {
   eyebrow?: string;
   title: string;
@@ -27,6 +28,10 @@ export function PageBanner({
   align?: "left" | "center";
   backgroundImage?: string;
   backgroundAlt?: string;
+  /** CSS object-position para encuadre fino del fondo. Útil cuando
+   *  la zona "valiosa" de la foto no está al centro (logo arriba,
+   *  edificio abajo, etc.). Acepta cualquier valor de object-position. */
+  backgroundPosition?: string;
 }) {
   const hasBg = Boolean(backgroundImage);
 
@@ -52,6 +57,7 @@ export function PageBanner({
             priority
             sizes="100vw"
             className="object-cover"
+            style={{ objectPosition: backgroundPosition }}
           />
           {/* Overlay para legibilidad — más oscuro a la izquierda donde
               vive la tarjeta de vidrio. */}

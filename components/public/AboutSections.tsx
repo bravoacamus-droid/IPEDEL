@@ -55,46 +55,119 @@ export function AnimatedStat({
 }
 
 // =============================================================
-// Pillar (Misión / Visión / Valores) — card premium con accent
-// stripe, icono en gradient, hover lift + glow + fade-in stagger
+// Pillar (Misión / Visión / Valores) — card premium corporativa
+// con accent stripe permanente, etiqueta categoría, body principal
+// y lista de bullets/tags. Layout más elaborado y con jerarquía
+// tipográfica clara para sentir corporativo y profesional.
 // =============================================================
 export function Pillar({
   icon,
+  label,
   title,
   body,
+  bullets,
+  tags,
   delay = 0,
 }: {
   icon: React.ReactNode;
+  /** Etiqueta superior corta — "Misión" / "Visión" / "Valores" */
+  label: string;
+  /** Frase principal de la card (no es solo el label) */
   title: string;
   body: string;
+  /** Bullets con icono check (para Misión/Visión) */
+  bullets?: string[];
+  /** Tags / chips (para Valores) */
+  tags?: string[];
   delay?: number;
 }) {
   return (
     <motion.div
       {...fadeUp}
-      transition={{ duration: 0.55, ease: "easeOut", delay }}
+      transition={{ duration: 0.6, ease: "easeOut", delay }}
       whileHover={{ y: -6 }}
-      className="group relative overflow-hidden rounded-2xl border border-ink-100 bg-white p-7 shadow-sm transition-all duration-300 hover:border-brand-300 hover:shadow-2xl hover:shadow-brand-500/10"
+      className="group relative flex flex-col overflow-hidden rounded-2xl border border-ink-100 bg-white p-7 shadow-sm transition-all duration-300 hover:border-brand-300 hover:shadow-2xl hover:shadow-brand-500/10 sm:p-8"
     >
-      {/* Accent stripe top */}
+      {/* Accent stripe top — siempre visible, gradient brand */}
       <span
         aria-hidden="true"
-        className="absolute inset-x-0 top-0 h-1 origin-left scale-x-0 bg-gradient-to-r from-brand-300 via-brand-500 to-brand-700 transition-transform duration-500 ease-out group-hover:scale-x-100"
+        className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-brand-300 via-brand-500 to-brand-700 opacity-70 transition-opacity duration-500 group-hover:opacity-100"
       />
-      {/* Decorative blob */}
+
+      {/* Decorative blob de hover */}
       <span
         aria-hidden="true"
         className="pointer-events-none absolute -bottom-16 -right-16 h-40 w-40 rounded-full bg-brand-100/60 opacity-0 blur-3xl transition-opacity duration-500 group-hover:opacity-100"
       />
-      <span className="relative inline-flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-brand-400 to-brand-600 text-black shadow-lg shadow-brand-500/25 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3">
-        {icon}
-      </span>
-      <h3 className="relative mt-5 text-lg font-semibold text-ink-900">
+
+      {/* Header: icon + label */}
+      <div className="relative flex items-center gap-3">
+        <span className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-brand-400 to-brand-600 text-black shadow-lg shadow-brand-500/25 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3">
+          {icon}
+        </span>
+        <span className="text-[11px] font-semibold uppercase tracking-[0.22em] text-brand-700">
+          {label}
+        </span>
+      </div>
+
+      {/* Title */}
+      <h3 className="relative mt-6 text-xl font-semibold leading-tight text-ink-900 sm:text-2xl">
         {title}
       </h3>
-      <p className="relative mt-2 text-sm leading-relaxed text-ink-600">
+
+      {/* Body */}
+      <p className="relative mt-3 text-[15px] leading-relaxed text-ink-700">
         {body}
       </p>
+
+      {/* Divider con accent */}
+      <span
+        aria-hidden="true"
+        className="relative my-6 block h-px w-12 bg-gradient-to-r from-brand-500 to-transparent"
+      />
+
+      {/* Footer: bullets o tags */}
+      {bullets && bullets.length > 0 && (
+        <ul className="relative space-y-2.5">
+          {bullets.map((b) => (
+            <li
+              key={b}
+              className="flex items-start gap-2.5 text-sm text-ink-700"
+            >
+              <span
+                aria-hidden="true"
+                className="mt-0.5 inline-flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-brand-500 text-black"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="3.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="h-2.5 w-2.5"
+                >
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+              </span>
+              <span>{b}</span>
+            </li>
+          ))}
+        </ul>
+      )}
+
+      {tags && tags.length > 0 && (
+        <div className="relative flex flex-wrap gap-2">
+          {tags.map((t) => (
+            <span
+              key={t}
+              className="rounded-full bg-brand-50 px-3 py-1 text-xs font-medium text-brand-800 ring-1 ring-brand-200 transition-colors group-hover:bg-brand-100"
+            >
+              {t}
+            </span>
+          ))}
+        </div>
+      )}
     </motion.div>
   );
 }

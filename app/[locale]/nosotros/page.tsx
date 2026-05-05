@@ -148,48 +148,122 @@ export default async function NosotrosPage({
         </div>
       </section>
 
-      {/* Misión / Visión / Valores */}
-      <section className="bg-ink-50 py-16 lg:py-24">
-        <div className="container-page">
-          <div className="mx-auto max-w-2xl text-center">
-            <span className="text-xs font-semibold uppercase tracking-[0.18em] text-brand-600">
+      {/* Misión / Visión / Valores — sección corporativa premium */}
+      <section className="relative overflow-hidden bg-gradient-to-b from-ink-50 to-white py-20 lg:py-28">
+        {/* Patrón sutil de fondo para textura corporativa */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 opacity-[0.03]"
+          style={{
+            backgroundImage:
+              "linear-gradient(to right, #0a0a0a 1px, transparent 1px), linear-gradient(to bottom, #0a0a0a 1px, transparent 1px)",
+            backgroundSize: "56px 56px",
+          }}
+        />
+        <div className="container-page relative">
+          <div className="mx-auto max-w-3xl text-center">
+            <span className="inline-flex items-center gap-2 rounded-full border border-brand-200 bg-white px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-brand-700 shadow-sm">
+              <span className="inline-block h-1.5 w-1.5 rounded-full bg-brand-500" />
               {locale === "es" ? "Nuestro propósito" : "Our purpose"}
             </span>
-            <h2 className="mt-3 text-3xl font-semibold tracking-tight text-ink-900 sm:text-4xl">
+            <h2 className="mt-5 text-balance text-3xl font-semibold leading-tight tracking-tight text-ink-900 sm:text-4xl lg:text-5xl">
               {locale === "es"
-                ? "Conectar al Perú con el mundo, una operación a la vez"
-                : "Connecting Peru with the world, one shipment at a time"}
+                ? "Conectamos tu carga con el mundo, una operación a la vez."
+                : "We connect your cargo with the world, one shipment at a time."}
             </h2>
+            <p className="mx-auto mt-5 max-w-2xl text-base text-ink-600 sm:text-lg">
+              {locale === "es"
+                ? "Más de tres décadas operando con la disciplina de quien entiende que cada embarque es una promesa."
+                : "Over three decades operating with the discipline of someone who understands every shipment is a promise."}
+            </p>
           </div>
 
-          <div className="mt-12 grid gap-6 md:grid-cols-3">
+          <div className="mt-14 grid gap-6 md:grid-cols-3 lg:gap-8">
             <Pillar
               icon={<Target className="h-5 w-5" strokeWidth={1.6} />}
-              title={locale === "es" ? "Misión" : "Mission"}
+              label={locale === "es" ? "Misión" : "Mission"}
+              title={
+                locale === "es"
+                  ? "Soluciones logísticas a la medida del cliente."
+                  : "Logistics solutions tailored to each client."
+              }
               body={
                 locale === "es"
                   ? "Brindar soluciones logísticas internacionales confiables, eficientes y a la medida del cliente."
                   : "Deliver reliable, efficient and tailored international logistics solutions."
               }
+              bullets={
+                locale === "es"
+                  ? [
+                      "Asesoría experta para optimizar costos",
+                      "Acompañamiento en cada etapa de la operación",
+                      "Trazabilidad permanente de tu carga",
+                    ]
+                  : [
+                      "Expert advisory to optimize costs",
+                      "Support at every stage of the operation",
+                      "Continuous cargo traceability",
+                    ]
+              }
               delay={0}
             />
             <Pillar
               icon={<Compass className="h-5 w-5" strokeWidth={1.6} />}
-              title={locale === "es" ? "Visión" : "Vision"}
+              label={locale === "es" ? "Visión" : "Vision"}
+              title={
+                locale === "es"
+                  ? "Ser el agente de carga referente por trayectoria y red global."
+                  : "Be the reference freight forwarder by track record and global network."
+              }
               body={
                 locale === "es"
-                  ? "Ser el agente de carga referente en el Perú por nuestra trayectoria, compromiso y red internacional de socios estratégicos."
-                  : "Be Peru's reference freight forwarder, recognized for our track record, commitment and global partner network."
+                  ? "Sostener nuestra trayectoria con compromiso y una red internacional de socios estratégicos."
+                  : "Sustain our track record with commitment and an international network of strategic partners."
+              }
+              bullets={
+                locale === "es"
+                  ? [
+                      "Trayectoria reconocida en logística internacional",
+                      "Red de agentes en más de 40 países",
+                      "Adaptación constante al cambio del mercado",
+                    ]
+                  : [
+                      "Recognized track record in international logistics",
+                      "Agent network in 40+ countries",
+                      "Continuous adaptation to market change",
+                    ]
               }
               delay={0.1}
             />
             <Pillar
               icon={<Sparkles className="h-5 w-5" strokeWidth={1.6} />}
-              title={locale === "es" ? "Valores" : "Values"}
+              label={locale === "es" ? "Valores" : "Values"}
+              title={
+                locale === "es"
+                  ? "Cinco principios que rigen cada operación."
+                  : "Five principles that guide every operation."
+              }
               body={
                 locale === "es"
-                  ? "Confianza, calidad operativa, transparencia, adaptabilidad y compromiso con cada embarque."
-                  : "Trust, operational quality, transparency, adaptability and commitment to every shipment."
+                  ? "Cada embarque pasa por estos cinco filtros antes, durante y después de la operación."
+                  : "Every shipment passes through these five filters before, during and after the operation."
+              }
+              tags={
+                locale === "es"
+                  ? [
+                      "Confianza",
+                      "Calidad operativa",
+                      "Transparencia",
+                      "Adaptabilidad",
+                      "Compromiso",
+                    ]
+                  : [
+                      "Trust",
+                      "Operational quality",
+                      "Transparency",
+                      "Adaptability",
+                      "Commitment",
+                    ]
               }
               delay={0.2}
             />

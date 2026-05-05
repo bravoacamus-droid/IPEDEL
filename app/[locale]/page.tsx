@@ -418,13 +418,14 @@ function ServiceCardItem({
           Posicionamiento por tipo:
             · tall  → centrada horizontal + más arriba + más grande
                      (bottom-[18%], h-68%, w-78%, object-bottom).
-            · short → centrada vertical sobre el lado derecho. */}
+            · short → más pequeña y desplazada a la derecha para
+                     dejar espacio al texto. */}
       <div
         className={cn(
           "pointer-events-none absolute z-0 transition-transform duration-700 ease-out group-hover:scale-105 group-hover:-rotate-1",
           tall
             ? "bottom-[18%] left-1/2 h-[68%] w-[78%] -translate-x-1/2"
-            : "right-[-3%] top-1/2 h-[88%] w-[58%] -translate-y-1/2",
+            : "right-[-6%] top-1/2 h-[80%] w-[48%] -translate-y-1/2",
         )}
       >
         {card.imagePath ? (
@@ -456,17 +457,24 @@ function ServiceCardItem({
         )}
       </div>
 
-      {/* Gradiente blanco para legibilidad del texto en cards short
-          — la imagen ocupa la derecha y se acercaría al texto sin esto. */}
+      {/* Gradiente blanco MUY fuerte sobre los 2/3 izquierdos para
+          legibilidad absoluta del texto en cards short. */}
       {!tall && (
         <span
           aria-hidden="true"
-          className="pointer-events-none absolute inset-0 z-[1] bg-[linear-gradient(to_right,rgba(255,255,255,0.85)_0%,rgba(255,255,255,0.55)_45%,transparent_75%)]"
+          className="pointer-events-none absolute inset-0 z-[1] bg-[linear-gradient(to_right,rgba(255,255,255,0.95)_0%,rgba(255,255,255,0.85)_40%,rgba(255,255,255,0.5)_60%,transparent_85%)]"
         />
       )}
 
-      {/* Top — eyebrow + title */}
-      <div className="relative z-10 max-w-[85%]">
+      {/* Top — eyebrow + title.
+          En cards short el contenido se limita a la mitad izquierda
+          para no toparse con la imagen del lado derecho. */}
+      <div
+        className={cn(
+          "relative z-10",
+          tall ? "max-w-[85%]" : "max-w-[58%]",
+        )}
+      >
         <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-black/85 text-white shadow-lg ring-1 ring-black/10 backdrop-blur-sm">
           <Icon className="h-5 w-5" strokeWidth={1.6} />
         </span>
@@ -488,8 +496,14 @@ function ServiceCardItem({
         </p>
       </div>
 
-      {/* Bottom — tags + CTA */}
-      <div className="relative z-10 mt-auto pt-6">
+      {/* Bottom — tags + CTA. Mismo max-width que el contenido superior
+          en cards short para mantener la columna de texto limpia. */}
+      <div
+        className={cn(
+          "relative z-10 mt-auto pt-6",
+          !tall && "max-w-[62%]",
+        )}
+      >
         <div className="flex flex-wrap gap-1.5">
           {tags.map((t) => (
             <span
