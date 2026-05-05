@@ -1,8 +1,8 @@
+import Image from "next/image";
 import Link from "next/link";
 import {
   Anchor,
   Award,
-  CheckCircle2,
   Compass,
   Globe2,
   HeartHandshake,
@@ -15,8 +15,7 @@ import { isLocale } from "@/lib/i18n/config";
 import { getDictionary } from "@/lib/i18n/get-dictionary";
 import { createClient } from "@/lib/supabase/server";
 import { PageBanner } from "@/components/public/PageBanner";
-import { ImageSlot } from "@/components/public/ImageSlot";
-import { SITE } from "@/lib/site";
+import { AnimatedNumber } from "@/components/public/AnimatedNumber";
 
 export default async function NosotrosPage({
   params,
@@ -63,6 +62,12 @@ export default async function NosotrosPage({
           { href: `/${locale}`, label: locale === "es" ? "Inicio" : "Home" },
           { href: `/${locale}/nosotros`, label: eyebrow },
         ]}
+        backgroundImage="/heronosotros.webp"
+        backgroundAlt={
+          locale === "es"
+            ? "Operación logística IPE del Perú"
+            : "IPE del Perú logistics operation"
+        }
       />
 
       {/* Bienvenidos — texto oficial */}
@@ -96,20 +101,20 @@ export default async function NosotrosPage({
             )}
 
             <div className="mt-8 grid grid-cols-3 gap-4 border-t border-ink-100 pt-8">
-              <Stat value="30+" label={locale === "es" ? "Años de experiencia" : "Years of experience"} />
-              <Stat value="40+" label={locale === "es" ? "Países en la red" : "Countries in network"} />
-              <Stat value="3" label={locale === "es" ? "Aéreo · Marítimo · Terrestre" : "Air · Sea · Land"} />
+              <AnimatedStat value={30} suffix="+" label={locale === "es" ? "Años de experiencia" : "Years of experience"} />
+              <AnimatedStat value={40} suffix="+" label={locale === "es" ? "Países en la red" : "Countries in network"} />
+              <AnimatedStat value={3} label={locale === "es" ? "Aéreo · Marítimo · Terrestre" : "Air · Sea · Land"} />
             </div>
           </div>
 
           <div className="lg:col-span-5">
-            <ImageSlot
-              hint={
+            <HoverImage
+              src="/team.webp"
+              alt={
                 locale === "es"
-                  ? "Equipo IPE del Perú · operación logística"
-                  : "IPE del Perú team · logistics operation"
+                  ? "Equipo IPE del Perú"
+                  : "IPE del Perú team"
               }
-              suggested="/about/equipo.jpg"
               ratio="aspect-[4/5]"
               priority
             />
@@ -180,13 +185,13 @@ export default async function NosotrosPage({
       <section className="container-page py-16 lg:py-24">
         <div className="grid gap-10 lg:grid-cols-12 lg:gap-16">
           <div className="lg:col-span-5">
-            <ImageSlot
-              hint={
+            <HoverImage
+              src="/almacen.webp"
+              alt={
                 locale === "es"
-                  ? "Almacén / contenedor / agentes — imagen institucional"
-                  : "Warehouse / container / agents — institutional"
+                  ? "Almacén IPE del Perú"
+                  : "IPE del Perú warehouse"
               }
-              suggested="/about/operacion.jpg"
               ratio="aspect-[4/5]"
             />
           </div>
@@ -266,15 +271,55 @@ export default async function NosotrosPage({
   );
 }
 
-function Stat({ value, label }: { value: string; label: string }) {
+function AnimatedStat({
+  value,
+  suffix,
+  label,
+}: {
+  value: number;
+  suffix?: string;
+  label: string;
+}) {
   return (
     <div>
       <p className="text-2xl font-semibold tracking-tight text-ink-900 sm:text-3xl">
-        {value}
+        <AnimatedNumber value={value} suffix={suffix} />
       </p>
       <p className="mt-1 text-xs uppercase tracking-[0.16em] text-ink-500">
         {label}
       </p>
+    </div>
+  );
+}
+
+// Imagen con efecto de zoom suave en hover y borde redondeado.
+function HoverImage({
+  src,
+  alt,
+  ratio = "aspect-[4/5]",
+  priority = false,
+}: {
+  src: string;
+  alt: string;
+  ratio?: string;
+  priority?: boolean;
+}) {
+  return (
+    <div
+      className={`group relative overflow-hidden rounded-2xl shadow-lg ring-1 ring-black/5 ${ratio}`}
+    >
+      <Image
+        src={src}
+        alt={alt}
+        fill
+        priority={priority}
+        sizes="(min-width: 1024px) 40vw, 100vw"
+        className="object-cover transition-transform duration-[800ms] ease-out group-hover:scale-[1.06]"
+      />
+      <div
+        aria-hidden="true"
+        className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/35 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+      />
     </div>
   );
 }

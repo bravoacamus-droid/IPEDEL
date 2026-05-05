@@ -18,6 +18,7 @@ import { getDictionary, type Dictionary } from "@/lib/i18n/get-dictionary";
 import { createClient } from "@/lib/supabase/server";
 import { HeroVideo } from "@/components/public/HeroVideo";
 import { AnimatedNumber } from "@/components/public/AnimatedNumber";
+import { ParallaxSection } from "@/components/public/ParallaxSection";
 import { notFound } from "next/navigation";
 
 export default async function HomePage({
@@ -70,37 +71,39 @@ export default async function HomePage({
 
       <ServicesSection locale={locale as Locale} dict={dict} />
 
-      {/* CTA strip */}
-      <section className="relative overflow-hidden bg-brand-500 py-16">
+      {/* CTA strip — parallax sobre CTAIPEDEL.webp con overlay verde ligero */}
+      <ParallaxSection
+        image="/CTAIPEDEL.webp"
+        alt=""
+        intensity={0.22}
+        className="py-24 sm:py-28"
+        overlayClassName="bg-gradient-to-r from-brand-500/85 via-brand-500/55 to-brand-500/35"
+      >
         <div
           aria-hidden="true"
-          className="absolute inset-0 opacity-20"
-          style={{
-            backgroundImage:
-              "radial-gradient(circle at 80% 50%, rgba(0,0,0,0.25), transparent 55%)",
-          }}
+          className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_18%_50%,rgba(255,255,255,0.35),transparent_45%)]"
         />
         <div className="container-page relative flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">
-          <h2 className="text-2xl font-semibold tracking-tight text-black sm:text-3xl">
+          <h2 className="text-2xl font-semibold tracking-tight text-black sm:text-3xl drop-shadow-sm">
             {locale === "es" ? "¿Necesitas una cotización?" : "Need a quote?"}
           </h2>
           <div className="flex flex-wrap gap-3">
             <Link
               href={`/${locale}/contacto`}
-              className="inline-flex items-center gap-2 rounded-full bg-black px-6 py-3 text-sm font-semibold text-white hover:bg-ink-800"
+              className="inline-flex items-center gap-2 rounded-full bg-black px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-black/20 transition-transform hover:-translate-y-0.5 hover:bg-ink-800"
             >
               {dict.home.hero_cta_contact}
               <ArrowRight className="h-4 w-4" />
             </Link>
             <a
               href="tel:+5113045520"
-              className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-black hover:bg-ink-100"
+              className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-black shadow-lg transition-transform hover:-translate-y-0.5 hover:bg-ink-100"
             >
               +511 304-5520
             </a>
           </div>
         </div>
-      </section>
+      </ParallaxSection>
     </>
   );
 }
