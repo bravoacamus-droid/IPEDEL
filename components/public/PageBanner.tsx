@@ -100,7 +100,12 @@ export function PageBanner({
 
       <div
         className={cn(
-          "container-page relative pt-32 pb-20 sm:pt-36 sm:pb-24",
+          "container-page relative",
+          // Cuando hay imagen de fondo el banner es más compacto para que
+          // la imagen no se "estire" demasiado al hacer object-cover.
+          hasBg
+            ? "pt-28 pb-14 sm:pt-32 sm:pb-16"
+            : "pt-32 pb-20 sm:pt-36 sm:pb-24",
           rightSlot && !hasBg && "grid items-center gap-12 lg:grid-cols-12",
         )}
       >

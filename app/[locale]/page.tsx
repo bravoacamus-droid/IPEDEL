@@ -71,33 +71,50 @@ export default async function HomePage({
 
       <ServicesSection locale={locale as Locale} dict={dict} />
 
-      {/* CTA strip — parallax sobre CTAIPEDEL.webp con overlay verde ligero */}
+      {/* CTA strip — parallax sobre CTAIPEDEL.webp con overlay verde tenue
+          (intensidad 0.4 para que el desplazamiento se aprecie al scrollear). */}
       <ParallaxSection
         image="/CTAIPEDEL.webp"
         alt=""
-        intensity={0.25}
+        intensity={0.4}
         className="flex min-h-[520px] items-center sm:min-h-[600px] lg:min-h-[640px]"
-        overlayClassName="bg-gradient-to-r from-brand-500/85 via-brand-500/55 to-brand-500/30"
+        overlayClassName="bg-gradient-to-r from-brand-500/70 via-brand-500/40 to-brand-500/15"
       >
+        {/* Vignette superior e inferior + foco lateral para legibilidad */}
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_18%_50%,rgba(255,255,255,0.35),transparent_45%)]"
+          className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-b from-black/15 via-transparent to-black/30"
         />
-        <div className="container-page relative flex w-full flex-col items-start justify-between gap-6 py-20 md:flex-row md:items-center md:py-24">
-          <h2 className="text-2xl font-semibold tracking-tight text-black sm:text-3xl drop-shadow-sm">
-            {locale === "es" ? "¿Necesitas una cotización?" : "Need a quote?"}
-          </h2>
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_18%_55%,rgba(255,255,255,0.28),transparent_55%)]"
+        />
+        <div className="container-page relative flex w-full flex-col items-start justify-between gap-10 py-20 lg:flex-row lg:items-end lg:py-28">
+          <div className="max-w-xl">
+            <span className="inline-flex items-center gap-2 rounded-full border border-black/30 bg-white/40 px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-black/85 backdrop-blur-md">
+              <span className="inline-block h-1.5 w-1.5 rounded-full bg-black" />
+              {locale === "es" ? "Trabajemos juntos" : "Let's work together"}
+            </span>
+            <h2 className="mt-5 text-balance text-3xl font-semibold leading-[1.05] tracking-tight text-black sm:text-4xl lg:text-5xl drop-shadow-sm">
+              {locale === "es" ? "¿Necesitas una cotización?" : "Need a quote?"}
+            </h2>
+            <p className="mt-5 max-w-lg text-base text-black/85 sm:text-lg">
+              {locale === "es"
+                ? "Cuéntanos sobre tu carga y te enviamos una propuesta a la medida de tu operación."
+                : "Tell us about your shipment and we'll send a proposal tailored to your operation."}
+            </p>
+          </div>
           <div className="flex flex-wrap gap-3">
             <Link
               href={`/${locale}/contacto`}
-              className="inline-flex items-center gap-2 rounded-full bg-black px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-black/20 transition-transform hover:-translate-y-0.5 hover:bg-ink-800"
+              className="group inline-flex items-center gap-2 rounded-full bg-black px-7 py-3.5 text-sm font-semibold text-white shadow-xl shadow-black/30 ring-1 ring-black/10 transition-all hover:-translate-y-0.5 hover:bg-ink-800 hover:shadow-2xl hover:shadow-black/40"
             >
               {dict.home.hero_cta_contact}
-              <ArrowRight className="h-4 w-4" />
+              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
             </Link>
             <a
               href="tel:+5113045520"
-              className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-black shadow-lg transition-transform hover:-translate-y-0.5 hover:bg-ink-100"
+              className="inline-flex items-center gap-2 rounded-full bg-white px-7 py-3.5 text-sm font-semibold text-black shadow-xl shadow-black/15 ring-1 ring-black/5 transition-all hover:-translate-y-0.5 hover:bg-ink-100 hover:shadow-2xl"
             >
               +511 304-5520
             </a>
