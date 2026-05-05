@@ -47,25 +47,20 @@ export default async function NosotrosPage({
       .maybeSingle(),
   ]);
 
+  // Título único (sin eyebrow ni breadcrumb redundantes — antes había
+  // "Quiénes somos" en breadcrumb + chip + "Sobre nosotros" en título).
   const title =
-    cmsTitle?.value || (locale === "es" ? "Bienvenidos" : "Welcome");
-  const eyebrow =
-    locale === "es" ? "Quiénes somos" : "About us";
+    cmsTitle?.value || (locale === "es" ? "Quiénes somos" : "About us");
 
   return (
     <div className="bg-white">
       <PageBanner
-        eyebrow={eyebrow}
         title={title}
         subtitle={
           locale === "es"
             ? "Más de tres décadas siendo el puente logístico entre el Perú y el mundo."
             : "Over three decades bridging Peru and the world."
         }
-        breadcrumb={[
-          { href: `/${locale}`, label: locale === "es" ? "Inicio" : "Home" },
-          { href: `/${locale}/nosotros`, label: eyebrow },
-        ]}
         backgroundImage="/heronosotros.webp"
         backgroundAlt={
           locale === "es"

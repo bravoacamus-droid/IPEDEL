@@ -325,22 +325,33 @@ function ServicesSection({
           </Link>
         </div>
 
-        {/* Grid asimétrico estilo "showroom":
-              tall · short/short · tall (lg+).
-              Mobile: stacked. Tablet: 2 cols. */}
-        <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 lg:auto-rows-[290px]">
+        {/* Grid asimétrico estilo "showroom" (referencia VAPE Distro):
+              col 1 → tall (Agenciamiento)
+              col 2 → 2 cards stacked (Almacenamiento arriba, Especializados abajo)
+              col 3 → tall (Internacional)
+              Posicionamiento explícito con col-start/row-start para
+              evitar que CSS Grid auto-flow desordene las cards. */}
+        <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 lg:grid-rows-2 lg:auto-rows-[290px]">
           <ServiceCardItem
             card={SERVICE_CARDS[0]}
             locale={locale}
-            className="lg:row-span-2"
+            className="lg:col-start-1 lg:row-start-1 lg:row-span-2"
             tall
           />
-          <ServiceCardItem card={SERVICE_CARDS[1]} locale={locale} />
-          <ServiceCardItem card={SERVICE_CARDS[2]} locale={locale} />
+          <ServiceCardItem
+            card={SERVICE_CARDS[1]}
+            locale={locale}
+            className="lg:col-start-2 lg:row-start-1"
+          />
+          <ServiceCardItem
+            card={SERVICE_CARDS[2]}
+            locale={locale}
+            className="lg:col-start-2 lg:row-start-2"
+          />
           <ServiceCardItem
             card={SERVICE_CARDS[3]}
             locale={locale}
-            className="lg:row-span-2"
+            className="lg:col-start-3 lg:row-start-1 lg:row-span-2"
             tall
           />
         </div>
