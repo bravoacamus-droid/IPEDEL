@@ -235,7 +235,7 @@ const SERVICE_CARDS: ServiceCard[] = [
       "Tailored solutions across air, sea and land — including consolidation and project cargo.",
     tags_es: ["Aéreo", "FCL/LCL", "Multimodal", "Door to Door"],
     tags_en: ["Air", "FCL/LCL", "Multimodal", "Door to Door"],
-    // imagePath: "/services/card-agenciamiento.png", // PNG transparente — pendiente
+    imagePath: "/agenciacarga.png",
     gradient:
       "bg-[linear-gradient(135deg,#ffffff_0%,#f4faea_30%,#d2e89f_75%,#aacd3e_100%)]",
   },
@@ -250,7 +250,7 @@ const SERVICE_CARDS: ServiceCard[] = [
       "Exclusive and shared areas tailored to your needs, with safe handling of controlled products.",
     tags_es: ["Bodegaje", "Custodia", "Productos controlados"],
     tags_en: ["Storage", "Custody", "Controlled goods"],
-    // imagePath: "/services/card-almacen.png",
+    imagePath: "/almacengrid.png",
     gradient:
       "bg-[linear-gradient(135deg,#f4faea_0%,#d2e89f_60%,#96c600_100%)]",
   },
@@ -265,7 +265,7 @@ const SERVICE_CARDS: ServiceCard[] = [
       "Logistics operators: customs clearance, air consolidations and deep customs-legislation expertise.",
     tags_es: ["Desaduanaje", "Consolidación aérea", "Asia ↔ Perú"],
     tags_en: ["Customs clearance", "Air consolidation", "Asia ↔ Peru"],
-    // imagePath: "/services/card-especializados.png",
+    imagePath: "/especializados.png",
     gradient:
       "bg-[linear-gradient(135deg,#ffffff_0%,#e6f3cf_50%,#c2d971_100%)]",
   },
@@ -280,7 +280,7 @@ const SERVICE_CARDS: ServiceCard[] = [
       "International moving with accredited agents abroad. Professional packing and full traceability.",
     tags_es: ["Door to Port", "Door to Door", "Room to Room"],
     tags_en: ["Door to Port", "Door to Door", "Room to Room"],
-    // imagePath: "/services/card-internacional.png",
+    imagePath: "/internacional.png",
     gradient:
       "bg-[linear-gradient(135deg,#aacd3e_0%,#96c600_55%,#7ba300_100%)]",
   },
@@ -415,13 +415,15 @@ function ServiceCardItem({
       />
 
       {/* Imagen del servicio (PNG transparente del cliente) o icono fallback.
-          Floats en la zona derecha/inferior y escala suavemente al hover. */}
+          Posicionamiento por tipo de card:
+            · tall  → bottom-right anclado, ~58% h × 68% w (showroom)
+            · short → centrada vertical, derecha, ~88% h × 58% w */}
       <div
         className={cn(
-          "pointer-events-none absolute z-0 transition-transform duration-700 ease-out group-hover:scale-110 group-hover:-rotate-2",
+          "pointer-events-none absolute z-0 transition-transform duration-700 ease-out group-hover:scale-105 group-hover:-rotate-1",
           tall
-            ? "right-[-15%] top-1/3 h-[55%] w-[80%]"
-            : "right-[-10%] top-[15%] h-[80%] w-[55%]",
+            ? "bottom-[6%] right-[-3%] h-[58%] w-[68%]"
+            : "right-[-3%] top-1/2 h-[88%] w-[58%] -translate-y-1/2",
         )}
       >
         {card.imagePath ? (
@@ -430,7 +432,10 @@ function ServiceCardItem({
             alt=""
             fill
             sizes="(min-width: 1024px) 30vw, (min-width: 640px) 50vw, 100vw"
-            className="object-contain object-right drop-shadow-2xl"
+            className={cn(
+              "drop-shadow-xl transition-[filter] duration-500 group-hover:drop-shadow-2xl",
+              tall ? "object-contain object-bottom-right" : "object-contain object-right",
+            )}
           />
         ) : (
           <div className="flex h-full w-full items-center justify-end pr-4">
