@@ -11,10 +11,11 @@ import {
   Warehouse,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
-import { isLocale } from "@/lib/i18n/config";
+import { isLocale, type Locale } from "@/lib/i18n/config";
 import { getDictionary } from "@/lib/i18n/get-dictionary";
 import { PageBanner } from "@/components/public/PageBanner";
 import { ImageSlot } from "@/components/public/ImageSlot";
+import { CTAFooter } from "@/components/public/CTAFooter";
 
 type Service = {
   slug: string;
@@ -241,28 +242,7 @@ export default async function ServiciosPage({
         </div>
       </section>
 
-      {/* CTA strip */}
-      <section className="bg-brand-500 py-16">
-        <div className="container-page flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">
-          <div>
-            <h2 className="text-2xl font-semibold tracking-tight text-black sm:text-3xl">
-              {isEs ? "¿No encuentras tu servicio?" : "Can't find your service?"}
-            </h2>
-            <p className="mt-2 max-w-xl text-black/80">
-              {isEs
-                ? "Cuéntanos qué necesitas y diseñamos una solución a la medida."
-                : "Tell us what you need and we'll design a tailored solution."}
-            </p>
-          </div>
-          <Link
-            href={`/${locale}/contacto`}
-            className="inline-flex items-center gap-2 rounded-full bg-black px-6 py-3 text-sm font-semibold text-white hover:bg-ink-800"
-          >
-            {dict.home.hero_cta_contact}
-            <ArrowRight className="h-4 w-4" />
-          </Link>
-        </div>
-      </section>
+      <CTAFooter locale={locale as Locale} />
     </div>
   );
 }

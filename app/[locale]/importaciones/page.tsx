@@ -11,10 +11,11 @@ import {
   ShieldCheck,
   Sparkles,
 } from "lucide-react";
-import { isLocale } from "@/lib/i18n/config";
+import { isLocale, type Locale } from "@/lib/i18n/config";
 import { getDictionary } from "@/lib/i18n/get-dictionary";
 import { PageBanner } from "@/components/public/PageBanner";
 import { ImageSlot } from "@/components/public/ImageSlot";
+import { CTAFooter } from "@/components/public/CTAFooter";
 
 export default async function ImportacionesPage({
   params,
@@ -276,29 +277,7 @@ export default async function ImportacionesPage({
         </ol>
       </section>
 
-      {/* CTA */}
-      <section className="bg-brand-500 py-16">
-        <div className="container-page flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">
-          <h2 className="text-2xl font-semibold tracking-tight text-black sm:text-3xl">
-            {isEs ? "Importa con IPE del Perú" : "Import with IPE del Perú"}
-          </h2>
-          <div className="flex gap-3">
-            <Link
-              href={`/${locale}/contacto`}
-              className="inline-flex items-center gap-2 rounded-full bg-black px-6 py-3 text-sm font-semibold text-white hover:bg-ink-800"
-            >
-              {dict.home.hero_cta_contact}
-              <ArrowRight className="h-4 w-4" />
-            </Link>
-            <a
-              href="tel:+5113045520"
-              className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-black hover:bg-ink-100"
-            >
-              +511 304-5520
-            </a>
-          </div>
-        </div>
-      </section>
+      <CTAFooter locale={locale as Locale} />
     </div>
   );
 }

@@ -414,15 +414,16 @@ function ServiceCardItem({
         }}
       />
 
-      {/* Imagen del servicio (PNG transparente del cliente) o icono fallback.
-          Posicionamiento por tipo de card:
-            · tall  → bottom-right anclado, ~58% h × 68% w (showroom)
-            · short → centrada vertical, derecha, ~88% h × 58% w */}
+      {/* Imagen del servicio (PNG transparente del cliente).
+          Posicionamiento por tipo:
+            · tall  → centrada horizontal + más arriba + más grande
+                     (bottom-[18%], h-68%, w-78%, object-bottom).
+            · short → centrada vertical sobre el lado derecho. */}
       <div
         className={cn(
           "pointer-events-none absolute z-0 transition-transform duration-700 ease-out group-hover:scale-105 group-hover:-rotate-1",
           tall
-            ? "bottom-[6%] right-[-3%] h-[58%] w-[68%]"
+            ? "bottom-[18%] left-1/2 h-[68%] w-[78%] -translate-x-1/2"
             : "right-[-3%] top-1/2 h-[88%] w-[58%] -translate-y-1/2",
         )}
       >
@@ -434,11 +435,16 @@ function ServiceCardItem({
             sizes="(min-width: 1024px) 30vw, (min-width: 640px) 50vw, 100vw"
             className={cn(
               "drop-shadow-xl transition-[filter] duration-500 group-hover:drop-shadow-2xl",
-              tall ? "object-contain object-bottom-right" : "object-contain object-right",
+              tall ? "object-contain object-bottom" : "object-contain object-right",
             )}
           />
         ) : (
-          <div className="flex h-full w-full items-center justify-end pr-4">
+          <div
+            className={cn(
+              "flex h-full w-full items-center",
+              tall ? "justify-center" : "justify-end pr-4",
+            )}
+          >
             <Icon
               className={cn(
                 "text-black/15",
@@ -449,6 +455,15 @@ function ServiceCardItem({
           </div>
         )}
       </div>
+
+      {/* Gradiente blanco para legibilidad del texto en cards short
+          — la imagen ocupa la derecha y se acercaría al texto sin esto. */}
+      {!tall && (
+        <span
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 z-[1] bg-[linear-gradient(to_right,rgba(255,255,255,0.85)_0%,rgba(255,255,255,0.55)_45%,transparent_75%)]"
+        />
+      )}
 
       {/* Top — eyebrow + title */}
       <div className="relative z-10 max-w-[85%]">

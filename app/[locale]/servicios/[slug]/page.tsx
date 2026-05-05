@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import {
@@ -32,6 +33,7 @@ import { isLocale, type Locale } from "@/lib/i18n/config";
 import { getDictionary } from "@/lib/i18n/get-dictionary";
 import { PageBanner } from "@/components/public/PageBanner";
 import { ImageSlot } from "@/components/public/ImageSlot";
+import { CTAFooter } from "@/components/public/CTAFooter";
 
 const SLUGS = [
   "agenciamiento-de-carga",
@@ -53,6 +55,10 @@ type ServiceContent = {
   hero_image_hint_es: string;
   hero_image_hint_en: string;
   hero_image_path: string;
+  /** Si está presente, el hero usa esta imagen como fondo full-bleed
+   *  con tarjeta de vidrio (sin rightSlot ImageSlot). Para servicios
+   *  cuyo cliente ya entregó foto institucional. */
+  hero_background?: string;
   intro_es: string[];
   intro_en: string[];
   bullets_title_es: string;
@@ -61,6 +67,10 @@ type ServiceContent = {
   side_image_hint_es: string;
   side_image_hint_en: string;
   side_image_path: string;
+  /** Si es una ruta a un archivo real (no un placeholder /services/...),
+   *  la sección "El servicio comprende" usa esta imagen en lugar del
+   *  ImageSlot. */
+  side_image_real?: string;
   highlights_title_es: string;
   highlights_title_en: string;
   highlights: { icon: LucideIcon; title_es: string; title_en: string; desc_es: string; desc_en: string }[];
@@ -73,12 +83,13 @@ const CONTENT: Record<Slug, ServiceContent> = {
     title_es: "Agenciamiento de carga",
     title_en: "Freight forwarding",
     subtitle_es:
-      "Soluciones adaptadas al negocio de cada cliente, atendiendo sus necesidades de carga internacional cualquiera sea sus términos de compra-venta.",
+      "Soluciones a la medida en transporte aéreo, marítimo, terrestre y multimodal — para cualquier término de compra-venta internacional.",
     subtitle_en:
-      "Solutions tailored to each client's business, serving international cargo needs under any purchase or sale terms.",
+      "Tailored solutions in air, sea, land and multimodal transport — for any international purchase or sale term.",
     hero_image_hint_es: "Carga aérea / contenedores marítimos — vista institucional",
     hero_image_hint_en: "Air cargo / maritime containers — institutional view",
     hero_image_path: "/services/agenciamiento-hero.jpg",
+    hero_background: "/Herocarga.webp",
     intro_es: [
       "Brindamos la mejor asesoría del mercado para reducir sus costos y elegir el medio adecuado de transporte para su mercadería.",
       "Garantizamos un control efectivo y constante información de su carga, a través de nuestras alianzas y red de agentes especializados a nivel mundial.",
@@ -129,6 +140,7 @@ const CONTENT: Record<Slug, ServiceContent> = {
     side_image_hint_es: "Operación logística (carga aérea o marítima)",
     side_image_hint_en: "Logistics operation (air or sea cargo)",
     side_image_path: "/services/agenciamiento-side.jpg",
+    side_image_real: "/serviciocomprende.webp",
     highlights_title_es: "Por qué IPEDEL",
     highlights_title_en: "Why IPEDEL",
     highlights: [
@@ -408,24 +420,35 @@ export default async function ServiceDetail({
 
   return (
     <div className="bg-white">
-      <PageBanner
-        eyebrow={isEs ? c.eyebrow_es : c.eyebrow_en}
-        title={isEs ? c.title_es : c.title_en}
-        subtitle={isEs ? c.subtitle_es : c.subtitle_en}
-        breadcrumb={[
-          { href: `/${locale}`, label: isEs ? "Inicio" : "Home" },
-          { href: `/${locale}/servicios`, label: isEs ? "Servicios" : "Services" },
-          { href: `/${locale}/servicios/${slug}`, label: isEs ? c.title_es : c.title_en },
-        ]}
-        rightSlot={
-          <ImageSlot
-            hint={isEs ? c.hero_image_hint_es : c.hero_image_hint_en}
-            suggested={c.hero_image_path}
-            ratio="aspect-[4/3]"
-            priority
-          />
-        }
-      />
+      {c.hero_background ? (
+        // Hero con foto de fondo y tarjeta de vidrio — copy limpio sin
+        // eyebrow ni breadcrumb redundante (igual que en /nosotros).
+        <PageBanner
+          title={isEs ? c.title_es : c.title_en}
+          subtitle={isEs ? c.subtitle_es : c.subtitle_en}
+          backgroundImage={c.hero_background}
+          backgroundAlt={isEs ? c.title_es : c.title_en}
+        />
+      ) : (
+        <PageBanner
+          eyebrow={isEs ? c.eyebrow_es : c.eyebrow_en}
+          title={isEs ? c.title_es : c.title_en}
+          subtitle={isEs ? c.subtitle_es : c.subtitle_en}
+          breadcrumb={[
+            { href: `/${locale}`, label: isEs ? "Inicio" : "Home" },
+            { href: `/${locale}/servicios`, label: isEs ? "Servicios" : "Services" },
+            { href: `/${locale}/servicios/${slug}`, label: isEs ? c.title_es : c.title_en },
+          ]}
+          rightSlot={
+            <ImageSlot
+              hint={isEs ? c.hero_image_hint_es : c.hero_image_hint_en}
+              suggested={c.hero_image_path}
+              ratio="aspect-[4/3]"
+              priority
+            />
+          }
+        />
+      )}
 
       {/* Intro */}
       <section className="container-page py-16 lg:py-24">
@@ -440,11 +463,27 @@ export default async function ServiceDetail({
       <section className="bg-ink-50 py-16 lg:py-24">
         <div className="container-page grid gap-12 lg:grid-cols-12 lg:gap-16">
           <div className="lg:col-span-5 lg:order-last">
-            <ImageSlot
-              hint={isEs ? c.side_image_hint_es : c.side_image_hint_en}
-              suggested={c.side_image_path}
-              ratio="aspect-[4/5]"
-            />
+            {c.side_image_real ? (
+              <div className="group relative aspect-[4/5] overflow-hidden rounded-2xl shadow-lg ring-1 ring-black/5">
+                <Image
+                  src={c.side_image_real}
+                  alt={isEs ? c.side_image_hint_es : c.side_image_hint_en}
+                  fill
+                  sizes="(min-width: 1024px) 40vw, 100vw"
+                  className="object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.06]"
+                />
+                <div
+                  aria-hidden="true"
+                  className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/40 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+                />
+              </div>
+            ) : (
+              <ImageSlot
+                hint={isEs ? c.side_image_hint_es : c.side_image_hint_en}
+                suggested={c.side_image_path}
+                ratio="aspect-[4/5]"
+              />
+            )}
           </div>
           <div className="lg:col-span-7">
             <span className="text-xs font-semibold uppercase tracking-[0.18em] text-brand-600">
@@ -500,38 +539,7 @@ export default async function ServiceDetail({
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="bg-brand-500 py-16">
-        <div className="container-page flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">
-          <div>
-            <h2 className="text-2xl font-semibold tracking-tight text-black sm:text-3xl">
-              {isEs
-                ? "¿Necesitas una cotización para este servicio?"
-                : "Need a quote for this service?"}
-            </h2>
-            <p className="mt-2 max-w-xl text-black/80">
-              {isEs
-                ? "Cuéntanos sobre tu carga y te respondemos en menos de 24 horas hábiles."
-                : "Tell us about your cargo and we will reply within 24 business hours."}
-            </p>
-          </div>
-          <div className="flex gap-3">
-            <Link
-              href={`/${locale}/contacto`}
-              className="inline-flex items-center gap-2 rounded-full bg-black px-6 py-3 text-sm font-semibold text-white hover:bg-ink-800"
-            >
-              {dict.home.hero_cta_contact}
-              <ArrowRight className="h-4 w-4" />
-            </Link>
-            <a
-              href="tel:+5113045520"
-              className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-black hover:bg-ink-100"
-            >
-              +511 304-5520
-            </a>
-          </div>
-        </div>
-      </section>
+      <CTAFooter locale={locale as Locale} />
     </div>
   );
 }
