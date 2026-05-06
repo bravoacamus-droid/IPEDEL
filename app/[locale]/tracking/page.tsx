@@ -1,12 +1,22 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { Plane, Ship, Truck, Package, MapPin, Calendar, Clock, ArrowRight } from "lucide-react";
+import {
+  Plane,
+  Ship,
+  Truck,
+  Package,
+  Clock,
+  ArrowRight,
+  ExternalLink,
+} from "lucide-react";
 import { isLocale } from "@/lib/i18n/config";
 import { getDictionary } from "@/lib/i18n/get-dictionary";
 import { createClient } from "@/lib/supabase/server";
 import { SHIPMENT_STATUS_LABELS, type Shipment, type ShipmentEvent } from "@/lib/types/database";
 import { HBLTracker } from "@/components/public/HBLTracker";
 import { formatDate, formatDateTime } from "@/lib/utils";
+
+const NIPPON_EXPRESS_TRACKING_URL = "https://www.nipponexpress.com/";
 
 export default async function TrackingPage({
   params,
@@ -53,6 +63,26 @@ export default async function TrackingPage({
           <p className="mt-3 max-w-2xl text-ink-300">{dict.tracking.subtitle}</p>
           <div className="mt-8 max-w-2xl">
             <HBLTracker locale={locale} dict={dict} />
+          </div>
+
+          <div className="mt-6 max-w-2xl rounded-2xl border border-white/15 bg-white/5 p-5 backdrop-blur-sm">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-brand-300">
+              {locale === "es" ? "Operador externo" : "External operator"}
+            </p>
+            <p className="mt-2 text-sm leading-relaxed text-white/80">
+              {locale === "es"
+                ? "¿Tu carga está gestionada por Nippon Express? Ingresa tu código directamente en su sistema de tracking."
+                : "Is your cargo handled by Nippon Express? Enter your code directly in their tracking system."}
+            </p>
+            <a
+              href={NIPPON_EXPRESS_TRACKING_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-4 inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-ink-900 transition-colors hover:bg-ink-100"
+            >
+              {locale === "es" ? "Tracking Nippon Express" : "Track on Nippon Express"}
+              <ExternalLink className="h-4 w-4" />
+            </a>
           </div>
         </div>
       </section>
