@@ -1,15 +1,54 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import createGlobe from "cobe";
+import dynamic from "next/dynamic";
 import { ExternalLink, MapPin } from "lucide-react";
+import type { GlobeMethods } from "react-globe.gl";
 import type { Agent } from "@/lib/types/database";
 import { cn } from "@/lib/utils";
 
-// Globo 3D real (WebGL via cobe) con auto-rotación + drag para girar.
-// Al seleccionar un agente, el globo "vuela" hacia su país y queda
-// estático. Cada país de la red lleva su nombre superpuesto en HTML
-// que se reposiciona en cada frame según la rotación del globo.
+// react-globe.gl monta three.js — no funciona en SSR. Lazy-load del lado
+// del cliente. Soporta: polígonos de países, zoom animado, etiquetas,
+// auto-rotación y atmósfera. Ideal para sombrear países y enfocarlos.
+const Globe = dynamic(
+  () => import("react-globe.gl").then((m) => m.default),
+  { ssr: false },
+);
+
+const GLOBE_TEXTURE =
+  "https://unpkg.com/three-globe/example/img/earth-dark.jpg";
+const COUNTRIES_TOPO_URL =
+  "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
+
+// Mapea nuestros agent.country (en español) a los `name` que vienen
+// dentro del topology de world-atlas (en inglés).
+const COUNTRY_NAME_MAP: Record<string, string[]> = {
+  "Japón": ["Japan"],
+  "Estados Unidos": ["United States of America", "United States"],
+  "Bélgica": ["Belgium"],
+  "Bangladesh": ["Bangladesh"],
+  "Filipinas": ["Philippines"],
+  "México": ["Mexico"],
+};
+
+function isAgentCountry(feature: { properties?: { name?: string } }) {
+  const name = feature.properties?.name ?? "";
+  return Object.values(COUNTRY_NAME_MAP).some((aliases) =>
+    aliases.includes(name),
+  );
+}
+
+function findAgentByFeature(
+  agents: Agent[],
+  feature: { properties?: { name?: string } },
+): Agent | null {
+  const name = feature.properties?.name ?? "";
+  for (const a of agents) {
+    const aliases = COUNTRY_NAME_MAP[a.country] ?? [];
+    if (aliases.includes(name)) return a;
+  }
+  return null;
+}
 
 export function AgentMap({
   agents,
@@ -27,158 +66,101 @@ export function AgentMap({
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const selected = validAgents.find((a) => a.id === selectedId) ?? null;
 
+  const [countries, setCountries] = useState<object[]>([]);
+  const [globeReady, setGlobeReady] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const labelRefs = useRef<Map<string, HTMLDivElement>>(new Map());
+  const globeRef = useRef<GlobeMethods | undefined>(undefined);
+  const [size, setSize] = useState(560);
 
-  const phiRef = useRef(0);
-  const thetaRef = useRef(0.18);
-  const targetPhiRef = useRef<number | null>(null);
-  const targetThetaRef = useRef<number | null>(null);
-  const pointerDownRef = useRef<number | null>(null);
-  const isInteractingRef = useRef(false);
-  const selectedIdRef = useRef<string | null>(null);
-
-  // Mantiene un ref sincronizado del selectedId para que el frame loop
-  // sepa si debe pausar la auto-rotación.
+  // Cargar features GeoJSON del topology world-atlas.
   useEffect(() => {
-    selectedIdRef.current = selectedId;
-  }, [selectedId]);
-
-  useEffect(() => {
-    if (!canvasRef.current) return;
-    const canvas = canvasRef.current;
-    let width = 0;
-    let height = 0;
-
-    const onResize = () => {
-      width = canvas.offsetWidth;
-      height = canvas.offsetHeight;
-    };
-    window.addEventListener("resize", onResize);
-    onResize();
-
-    const markers = validAgents.map((a) => ({
-      location: [Number(a.lat), Number(a.lng)] as [number, number],
-      size: 0.04,
-    }));
-    markers.push({ location: [-12.0464, -77.0428], size: 0.06 });
-
-    const dpr = Math.min(window.devicePixelRatio || 2, 2);
-    const globe = createGlobe(canvas, {
-      devicePixelRatio: dpr,
-      width: width * dpr,
-      height: height * dpr,
-      phi: 0,
-      theta: 0.18,
-      dark: 1,
-      diffuse: 1.4,
-      mapSamples: 22000,
-      mapBrightness: 5.5,
-      baseColor: [0.22, 0.25, 0.22],
-      markerColor: [150 / 255, 198 / 255, 0],
-      glowColor: [0.95, 1, 0.85],
-      markers,
-    });
-
-    let raf = 0;
-    function frame() {
-      raf = requestAnimationFrame(frame);
-
-      const hasSelection = selectedIdRef.current !== null;
-
-      // Auto-rotate: solo si no hay interacción, ni target activo, ni
-      // un agente seleccionado.
-      if (
-        !isInteractingRef.current &&
-        !hasSelection &&
-        targetPhiRef.current === null &&
-        targetThetaRef.current === null
-      ) {
-        phiRef.current += 0.0028;
-      }
-
-      const lerp = 0.06;
-      if (targetPhiRef.current !== null) {
-        const diff = targetPhiRef.current - phiRef.current;
-        phiRef.current += diff * lerp;
-        if (Math.abs(diff) < 0.002) {
-          phiRef.current = targetPhiRef.current;
-          targetPhiRef.current = null;
-        }
-      }
-      if (targetThetaRef.current !== null) {
-        const diff = targetThetaRef.current - thetaRef.current;
-        thetaRef.current += diff * lerp;
-        if (Math.abs(diff) < 0.002) {
-          thetaRef.current = targetThetaRef.current;
-          targetThetaRef.current = null;
-        }
-      }
-
-      globe.update({
-        phi: phiRef.current,
-        theta: thetaRef.current,
-        width: width * dpr,
-        height: height * dpr,
-      });
-
-      // Reposicionar las etiquetas según la rotación actual. La proyección
-      // sigue exactamente la convención de cobe (ver node_modules/cobe).
-      for (const a of validAgents) {
-        const el = labelRefs.current.get(a.id);
-        if (!el) continue;
-        const proj = project(
-          Number(a.lat),
-          Number(a.lng),
-          phiRef.current,
-          thetaRef.current,
-        );
-        // Coordenadas normalizadas 0..1 (igual fórmula que cobe).
-        const sx = ((proj.ndcX + 1) / 2) * width;
-        const sy = ((proj.ndcY + 1) / 2) * height;
-        const facing = proj.z;
-        const opacity = facing > 0.2 ? 1 : facing > -0.05 ? facing * 4 + 0.2 : 0;
-        el.style.transform = `translate(${sx}px, ${sy}px)`;
-        el.style.opacity = String(Math.max(0, Math.min(1, opacity)));
-      }
-    }
-    raf = requestAnimationFrame(frame);
-
-    setTimeout(() => {
-      canvas.style.opacity = "1";
-    }, 0);
-
+    let cancelled = false;
+    (async () => {
+      const [{ feature }, atlas] = await Promise.all([
+        import("topojson-client"),
+        fetch(COUNTRIES_TOPO_URL).then((r) => r.json()),
+      ]);
+      if (cancelled) return;
+      const fc = feature(atlas, atlas.objects.countries) as unknown as {
+        features: object[];
+      };
+      setCountries(fc.features);
+    })();
     return () => {
-      cancelAnimationFrame(raf);
-      globe.destroy();
-      window.removeEventListener("resize", onResize);
+      cancelled = true;
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [validAgents.length]);
+  }, []);
 
-  // Cuando se selecciona un agente, lerp hacia su ubicación.
-  // Fórmulas derivadas de la matriz de rotación cobe (ver project() abajo):
-  //   xr = 0  cuando  cos(phi + lngR) = 0  →  phi = π/2 − lngR
-  //   yr = 0  cuando  theta = lat
-  // Con lngR = lng·π/180 − π → phi target = 3π/2 − lng·π/180.
-  // Normalizamos a la diferencia más corta vs phi actual para evitar
-  // que el globo de la vuelta larga al cambiar de país.
+  // Tamaño responsivo del globo.
   useEffect(() => {
-    if (!selected) return;
-    const lng = Number(selected.lng);
-    const lat = Number(selected.lat);
-    let phiTarget = (3 * Math.PI) / 2 - (lng * Math.PI) / 180;
-    const cur = phiRef.current;
-    while (phiTarget - cur > Math.PI) phiTarget -= 2 * Math.PI;
-    while (phiTarget - cur < -Math.PI) phiTarget += 2 * Math.PI;
-    targetPhiRef.current = phiTarget;
-    targetThetaRef.current = (lat * Math.PI) / 180;
-  }, [selected]);
+    function onResize() {
+      const w = containerRef.current?.offsetWidth ?? 560;
+      setSize(Math.min(w, 720));
+    }
+    onResize();
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
+
+  // Configurar controles cuando el globo esté listo o cambie selección.
+  useEffect(() => {
+    if (!globeReady || !globeRef.current) return;
+    const controls = globeRef.current.controls();
+    if (controls) {
+      controls.autoRotate = !selectedId;
+      controls.autoRotateSpeed = 0.5;
+      controls.enableZoom = false;
+    }
+  }, [selectedId, globeReady]);
+
+  // Volar a la ubicación del agente seleccionado con zoom.
+  useEffect(() => {
+    if (!selected || !globeReady || !globeRef.current) return;
+    globeRef.current.pointOfView(
+      {
+        lat: Number(selected.lat),
+        lng: Number(selected.lng),
+        altitude: 1.4,
+      },
+      1200,
+    );
+  }, [selected, globeReady]);
+
+  // Vista por defecto al cargar.
+  useEffect(() => {
+    if (!globeReady || !globeRef.current) return;
+    globeRef.current.pointOfView({ lat: 10, lng: -30, altitude: 2.3 });
+  }, [globeReady]);
+
+  function colorForPolygon(feature: { properties?: { name?: string } }) {
+    if (!isAgentCountry(feature)) return "rgba(0, 0, 0, 0)";
+    if (
+      selected &&
+      (COUNTRY_NAME_MAP[selected.country] ?? []).includes(
+        feature.properties?.name ?? "",
+      )
+    ) {
+      return "rgba(150, 198, 0, 0.85)";
+    }
+    return "rgba(150, 198, 0, 0.5)";
+  }
+
+  function altitudeForPolygon(feature: { properties?: { name?: string } }) {
+    if (!isAgentCountry(feature)) return 0.006;
+    if (
+      selected &&
+      (COUNTRY_NAME_MAP[selected.country] ?? []).includes(
+        feature.properties?.name ?? "",
+      )
+    ) {
+      return 0.04;
+    }
+    return 0.018;
+  }
 
   return (
     <div className="grid items-start gap-8 lg:grid-cols-12 lg:gap-12">
-      {/* Globo 3D + etiquetas overlay */}
+      {/* Globo 3D */}
       <div className="lg:col-span-7">
         <div
           ref={containerRef}
@@ -189,117 +171,62 @@ export function AgentMap({
             className="pointer-events-none absolute inset-0 -z-10 rounded-full"
             style={{
               background:
-                "radial-gradient(circle at center, rgba(150,198,0,0.18), transparent 65%)",
+                "radial-gradient(circle at center, rgba(150,198,0,0.22), transparent 65%)",
               filter: "blur(40px)",
             }}
           />
-          <canvas
-            ref={canvasRef}
-            onPointerDown={(e) => {
-              pointerDownRef.current = e.clientX;
-              isInteractingRef.current = true;
-              targetPhiRef.current = null;
-              targetThetaRef.current = null;
-              if (canvasRef.current) canvasRef.current.style.cursor = "grabbing";
-            }}
-            onPointerUp={() => {
-              isInteractingRef.current = false;
-              pointerDownRef.current = null;
-              if (canvasRef.current) canvasRef.current.style.cursor = "grab";
-            }}
-            onPointerOut={() => {
-              isInteractingRef.current = false;
-              pointerDownRef.current = null;
-            }}
-            onMouseMove={(e) => {
-              if (pointerDownRef.current !== null) {
-                const delta = e.clientX - pointerDownRef.current;
-                phiRef.current += delta / 200;
-                pointerDownRef.current = e.clientX;
+          {countries.length > 0 ? (
+            <Globe
+              ref={globeRef}
+              width={size}
+              height={size}
+              backgroundColor="rgba(0, 0, 0, 0)"
+              globeImageUrl={GLOBE_TEXTURE}
+              showAtmosphere
+              atmosphereColor="#96c600"
+              atmosphereAltitude={0.18}
+              polygonsData={countries}
+              polygonAltitude={altitudeForPolygon}
+              polygonCapColor={colorForPolygon}
+              polygonSideColor={() => "rgba(150, 198, 0, 0.15)"}
+              polygonStrokeColor={(d) =>
+                isAgentCountry(d as { properties?: { name?: string } })
+                  ? "rgba(255, 255, 255, 0.6)"
+                  : "rgba(255, 255, 255, 0.08)"
               }
-            }}
-            onTouchStart={(e) => {
-              if (e.touches[0]) {
-                pointerDownRef.current = e.touches[0].clientX;
-                isInteractingRef.current = true;
-                targetPhiRef.current = null;
-                targetThetaRef.current = null;
-              }
-            }}
-            onTouchEnd={() => {
-              isInteractingRef.current = false;
-              pointerDownRef.current = null;
-            }}
-            onTouchMove={(e) => {
-              if (pointerDownRef.current !== null && e.touches[0]) {
-                const delta = e.touches[0].clientX - pointerDownRef.current;
-                phiRef.current += delta / 100;
-                pointerDownRef.current = e.touches[0].clientX;
-              }
-            }}
-            style={{
-              width: "100%",
-              height: "100%",
-              cursor: "grab",
-              contain: "layout paint size",
-              opacity: 0,
-              transition: "opacity 1s ease",
-            }}
-          />
-
-          {/* Etiquetas HTML superpuestas con el nombre de cada país.
-              Se reposicionan en cada frame y se ocultan cuando el
-              punto está al otro lado del globo. */}
-          <div className="pointer-events-none absolute inset-0">
-            {validAgents.map((a) => {
-              const isActive = a.id === selectedId;
-              return (
-                <div
-                  key={a.id}
-                  ref={(el) => {
-                    if (el) labelRefs.current.set(a.id, el);
-                    else labelRefs.current.delete(a.id);
-                  }}
-                  className={cn(
-                    "pointer-events-auto absolute left-0 top-0 -translate-x-1/2 select-none whitespace-nowrap",
-                    "flex -translate-y-[200%] flex-col items-center gap-1.5",
-                  )}
-                  style={{ opacity: 0, transition: "opacity 0.3s ease" }}
-                >
-                  <button
-                    type="button"
-                    onClick={() => setSelectedId(isActive ? null : a.id)}
-                    className={cn(
-                      "group flex flex-col items-center gap-1 rounded-lg px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] shadow-lg backdrop-blur-md transition-all",
-                      isActive
-                        ? "bg-brand-500 text-black ring-2 ring-brand-300"
-                        : "bg-white/90 text-ink-900 hover:bg-brand-500 hover:text-black",
-                    )}
-                  >
-                    <span>{a.country}</span>
-                  </button>
-                  {/* Línea conectora hacia el marker */}
-                  <span
-                    aria-hidden="true"
-                    className={cn(
-                      "block h-3 w-px",
-                      isActive ? "bg-brand-500" : "bg-white/70",
-                    )}
-                  />
-                  {/* Punto sobre el marker para reforzar la "delineación" */}
-                  <span
-                    aria-hidden="true"
-                    className={cn(
-                      "h-2 w-2 rounded-full ring-2",
-                      isActive
-                        ? "bg-brand-500 ring-brand-300 ring-offset-2 ring-offset-ink-900"
-                        : "bg-white ring-white/40",
-                    )}
-                  />
-                </div>
-              );
-            })}
-          </div>
+              polygonLabel={(d) => {
+                const f = d as { properties?: { name?: string } };
+                return isAgentCountry(f)
+                  ? `<div style="background:#0a0a0a;color:#fff;padding:6px 10px;border-radius:6px;font-size:12px;font-weight:600;border:1px solid #96c600">${f.properties?.name}</div>`
+                  : "";
+              }}
+              onPolygonClick={(d) => {
+                const a = findAgentByFeature(
+                  validAgents,
+                  d as { properties?: { name?: string } },
+                );
+                if (a) setSelectedId(a.id === selectedId ? null : a.id);
+              }}
+              labelsData={validAgents}
+              labelLat={(d) => Number((d as Agent).lat)}
+              labelLng={(d) => Number((d as Agent).lng)}
+              labelText={(d) => (d as Agent).country}
+              labelSize={0.9}
+              labelDotRadius={0.4}
+              labelColor={() => "#ffffff"}
+              labelResolution={2}
+              labelAltitude={0.06}
+              onLabelClick={(d) => {
+                const a = d as Agent;
+                setSelectedId(a.id === selectedId ? null : a.id);
+              }}
+              onGlobeReady={() => setGlobeReady(true)}
+            />
+          ) : (
+            <div className="flex h-full w-full items-center justify-center">
+              <div className="h-32 w-32 animate-pulse rounded-full bg-brand-500/20" />
+            </div>
+          )}
         </div>
         <p className="mt-4 text-center text-xs uppercase tracking-[0.2em] text-ink-500">
           {selectedId
@@ -312,7 +239,7 @@ export function AgentMap({
         </p>
       </div>
 
-      {/* Panel lateral — lista y detalle del agente seleccionado */}
+      {/* Panel lateral */}
       <aside className="lg:col-span-5">
         <div className="rounded-2xl border border-ink-100 bg-white p-1 shadow-sm">
           <div className="border-b border-ink-100 px-5 py-4">
@@ -346,7 +273,9 @@ export function AgentMap({
                 <li key={a.id}>
                   <button
                     type="button"
-                    onClick={() => setSelectedId(isActive ? null : a.id)}
+                    onClick={() =>
+                      setSelectedId(isActive ? null : a.id)
+                    }
                     className={cn(
                       "group flex w-full items-start gap-4 px-5 py-4 text-left transition-colors",
                       isActive ? "bg-brand-50/70" : "hover:bg-ink-50",
@@ -413,39 +342,4 @@ export function AgentMap({
       </aside>
     </div>
   );
-}
-
-// Proyecta un punto (lat, lng) a coordenadas NDC del canvas siguiendo
-// EXACTAMENTE la convención de cobe (ver node_modules/cobe/dist/index.esm.js,
-// funciones U y O). Sin esta paridad las etiquetas no caen sobre los markers.
-//
-//   U: lat,lng → 3D con offset −π en longitud:
-//     x = −cos(lat)·cos(lng − π)
-//     y =  sin(lat)
-//     z =  cos(lat)·sin(lng − π)
-//
-//   O: aplica rotación phi (vertical) y theta (horizontal) y proyecta a
-//   coordenadas NDC. ndcX, ndcY ∈ [−R, R] con R = ee + p = 0.85.
-//   visible = zr ≥ 0.
-function project(lat: number, lng: number, phi: number, theta: number) {
-  const R = 0.85;
-  const latR = (lat * Math.PI) / 180;
-  const lngR = (lng * Math.PI) / 180 - Math.PI;
-  const cosLat = Math.cos(latR);
-
-  const x = -R * cosLat * Math.cos(lngR);
-  const y = R * Math.sin(latR);
-  const z = R * cosLat * Math.sin(lngR);
-
-  const cosP = Math.cos(phi);
-  const sinP = Math.sin(phi);
-  const cosT = Math.cos(theta);
-  const sinT = Math.sin(theta);
-
-  const xr = cosP * x + sinP * z;
-  const yr = sinP * sinT * x + cosT * y - cosP * sinT * z;
-  const zr = -sinP * cosT * x + sinT * y + cosP * cosT * z;
-
-  // DOM Y va hacia abajo → invertimos signo de yr al devolverlo.
-  return { ndcX: xr, ndcY: -yr, z: zr };
 }
