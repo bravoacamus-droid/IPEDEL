@@ -2,12 +2,14 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import createGlobe from "cobe";
-import { Compass, ExternalLink, MapPin } from "lucide-react";
+import { ExternalLink, MapPin } from "lucide-react";
 import type { Agent } from "@/lib/types/database";
 import { cn } from "@/lib/utils";
 
-// Globo 3D real con WebGL (cobe). Auto-rotación, drag para girar y
-// "fly to" cuando el usuario selecciona un agente.
+// Globo 3D real (WebGL via cobe) con auto-rotación + drag para girar.
+// Al seleccionar un agente, el globo "vuela" hacia su país y queda
+// estático. Cada país de la red lleva su nombre superpuesto en HTML
+// que se reposiciona en cada frame según la rotación del globo.
 
 export function AgentMap({
   agents,
@@ -25,51 +27,55 @@ export function AgentMap({
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const selected = validAgents.find((a) => a.id === selectedId) ?? null;
 
+  const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const labelRefs = useRef<Map<string, HTMLDivElement>>(new Map());
 
-  // Refs para la animación / interacción
   const phiRef = useRef(0);
   const thetaRef = useRef(0.18);
   const targetPhiRef = useRef<number | null>(null);
   const targetThetaRef = useRef<number | null>(null);
   const pointerDownRef = useRef<number | null>(null);
-  const pointerMovementRef = useRef(0);
   const isInteractingRef = useRef(false);
+  const selectedIdRef = useRef<string | null>(null);
+
+  // Mantiene un ref sincronizado del selectedId para que el frame loop
+  // sepa si debe pausar la auto-rotación.
+  useEffect(() => {
+    selectedIdRef.current = selectedId;
+  }, [selectedId]);
 
   useEffect(() => {
     if (!canvasRef.current) return;
     const canvas = canvasRef.current;
     let width = 0;
+    let height = 0;
 
     const onResize = () => {
       width = canvas.offsetWidth;
+      height = canvas.offsetHeight;
     };
     window.addEventListener("resize", onResize);
     onResize();
 
+    // Marker principal de Lima (sede) en color distinto.
     const markers = validAgents.map((a) => ({
       location: [Number(a.lat), Number(a.lng)] as [number, number],
-      size: 0.06,
+      size: 0.07,
     }));
-
-    // Marker dorado/blanco para Lima (sede IPE) — siempre presente
-    markers.push({
-      location: [-12.0464, -77.0428],
-      size: 0.09,
-    });
+    markers.push({ location: [-12.0464, -77.0428], size: 0.09 });
 
     const dpr = Math.min(window.devicePixelRatio || 2, 2);
     const globe = createGlobe(canvas, {
       devicePixelRatio: dpr,
       width: width * dpr,
-      height: width * dpr,
+      height: height * dpr,
       phi: 0,
       theta: 0.18,
       dark: 1,
       diffuse: 1.4,
       mapSamples: 22000,
       mapBrightness: 5.5,
-      // Tonos: tierra slate-oscuro, marker brand verde, glow tenue blanco
       baseColor: [0.22, 0.25, 0.22],
       markerColor: [150 / 255, 198 / 255, 0],
       glowColor: [0.95, 1, 0.85],
@@ -80,16 +86,19 @@ export function AgentMap({
     function frame() {
       raf = requestAnimationFrame(frame);
 
-      // Auto-rotate cuando no hay interacción ni target activo
+      const hasSelection = selectedIdRef.current !== null;
+
+      // Auto-rotate: solo si no hay interacción, ni target activo, ni
+      // un agente seleccionado.
       if (
         !isInteractingRef.current &&
+        !hasSelection &&
         targetPhiRef.current === null &&
         targetThetaRef.current === null
       ) {
         phiRef.current += 0.0028;
       }
 
-      // Lerp suave hacia un target (cuando se selecciona un agente)
       const lerp = 0.06;
       if (targetPhiRef.current !== null) {
         const diff = targetPhiRef.current - phiRef.current;
@@ -109,15 +118,36 @@ export function AgentMap({
       }
 
       globe.update({
-        phi: phiRef.current + pointerMovementRef.current,
+        phi: phiRef.current,
         theta: thetaRef.current,
         width: width * dpr,
-        height: width * dpr,
+        height: height * dpr,
       });
+
+      // Reposicionar las etiquetas de país según la rotación actual.
+      const radius = Math.min(width, height) * 0.45;
+      const cx = width / 2;
+      const cy = height / 2;
+      for (const a of validAgents) {
+        const el = labelRefs.current.get(a.id);
+        if (!el) continue;
+        const proj = project(
+          Number(a.lat),
+          Number(a.lng),
+          phiRef.current,
+          thetaRef.current,
+        );
+        const sx = cx + proj.x * radius;
+        const sy = cy + proj.y * radius;
+        // z>0 → mirando a cámara; fade out conforme se va hacia atrás.
+        const facing = proj.z;
+        const opacity = facing > 0.15 ? 1 : facing > -0.05 ? facing * 5 + 0.25 : 0;
+        el.style.transform = `translate(${sx}px, ${sy}px)`;
+        el.style.opacity = String(Math.max(0, Math.min(1, opacity)));
+      }
     }
     raf = requestAnimationFrame(frame);
 
-    // Fade-in
     setTimeout(() => {
       canvas.style.opacity = "1";
     }, 0);
@@ -130,23 +160,23 @@ export function AgentMap({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [validAgents.length]);
 
-  // Cuando se selecciona un agente, lerp hacia su ubicación
+  // Cuando se selecciona un agente, lerp hacia su ubicación.
   useEffect(() => {
     if (!selected) return;
     const lng = Number(selected.lng);
     const lat = Number(selected.lat);
-    // En cobe, phi rota horizontalmente: phi=0 mira a (lng=0).
-    // Para centrar a `lng`, phi target = -lng en radianes.
     targetPhiRef.current = (-lng * Math.PI) / 180;
-    // theta rota verticalmente; positivo mira hacia abajo del ecuador.
     targetThetaRef.current = (-lat * Math.PI) / 180;
   }, [selected]);
 
   return (
     <div className="grid items-start gap-8 lg:grid-cols-12 lg:gap-12">
-      {/* Globo 3D */}
+      {/* Globo 3D + etiquetas overlay */}
       <div className="lg:col-span-7">
-        <div className="relative mx-auto aspect-square w-full max-w-[640px]">
+        <div
+          ref={containerRef}
+          className="relative mx-auto aspect-square w-full max-w-[640px]"
+        >
           <div
             aria-hidden="true"
             className="pointer-events-none absolute inset-0 -z-10 rounded-full"
@@ -159,21 +189,16 @@ export function AgentMap({
           <canvas
             ref={canvasRef}
             onPointerDown={(e) => {
-              pointerDownRef.current =
-                e.clientX - pointerMovementRef.current * 100;
+              pointerDownRef.current = e.clientX;
               isInteractingRef.current = true;
               targetPhiRef.current = null;
               targetThetaRef.current = null;
-              if (canvasRef.current) {
-                canvasRef.current.style.cursor = "grabbing";
-              }
+              if (canvasRef.current) canvasRef.current.style.cursor = "grabbing";
             }}
             onPointerUp={() => {
               isInteractingRef.current = false;
               pointerDownRef.current = null;
-              if (canvasRef.current) {
-                canvasRef.current.style.cursor = "grab";
-              }
+              if (canvasRef.current) canvasRef.current.style.cursor = "grab";
             }}
             onPointerOut={() => {
               isInteractingRef.current = false;
@@ -182,9 +207,7 @@ export function AgentMap({
             onMouseMove={(e) => {
               if (pointerDownRef.current !== null) {
                 const delta = e.clientX - pointerDownRef.current;
-                pointerMovementRef.current = delta / 200;
-                phiRef.current += pointerMovementRef.current;
-                pointerMovementRef.current = 0;
+                phiRef.current += delta / 200;
                 pointerDownRef.current = e.clientX;
               }
             }}
@@ -216,16 +239,73 @@ export function AgentMap({
               transition: "opacity 1s ease",
             }}
           />
+
+          {/* Etiquetas HTML superpuestas con el nombre de cada país.
+              Se reposicionan en cada frame y se ocultan cuando el
+              punto está al otro lado del globo. */}
+          <div className="pointer-events-none absolute inset-0">
+            {validAgents.map((a) => {
+              const isActive = a.id === selectedId;
+              return (
+                <div
+                  key={a.id}
+                  ref={(el) => {
+                    if (el) labelRefs.current.set(a.id, el);
+                    else labelRefs.current.delete(a.id);
+                  }}
+                  className={cn(
+                    "pointer-events-auto absolute left-0 top-0 -translate-x-1/2 select-none whitespace-nowrap",
+                    "flex -translate-y-[200%] flex-col items-center gap-1.5",
+                  )}
+                  style={{ opacity: 0, transition: "opacity 0.3s ease" }}
+                >
+                  <button
+                    type="button"
+                    onClick={() => setSelectedId(isActive ? null : a.id)}
+                    className={cn(
+                      "group flex flex-col items-center gap-1 rounded-lg px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] shadow-lg backdrop-blur-md transition-all",
+                      isActive
+                        ? "bg-brand-500 text-black ring-2 ring-brand-300"
+                        : "bg-white/90 text-ink-900 hover:bg-brand-500 hover:text-black",
+                    )}
+                  >
+                    <span>{a.country}</span>
+                  </button>
+                  {/* Línea conectora hacia el marker */}
+                  <span
+                    aria-hidden="true"
+                    className={cn(
+                      "block h-3 w-px",
+                      isActive ? "bg-brand-500" : "bg-white/70",
+                    )}
+                  />
+                  {/* Punto sobre el marker para reforzar la "delineación" */}
+                  <span
+                    aria-hidden="true"
+                    className={cn(
+                      "h-2 w-2 rounded-full ring-2",
+                      isActive
+                        ? "bg-brand-500 ring-brand-300 ring-offset-2 ring-offset-ink-900"
+                        : "bg-white ring-white/40",
+                    )}
+                  />
+                </div>
+              );
+            })}
+          </div>
         </div>
-        <p className="mt-4 flex items-center justify-center gap-1.5 text-center text-xs uppercase tracking-[0.2em] text-ink-500">
-          <Compass className="h-3.5 w-3.5 text-brand-600" strokeWidth={1.6} />
-          {isEs
-            ? "Arrastra para girar el globo · Click en un agente para enfocarlo"
-            : "Drag to rotate · Click an agent to focus"}
+        <p className="mt-4 text-center text-xs uppercase tracking-[0.2em] text-ink-500">
+          {selectedId
+            ? isEs
+              ? "Click en otro país para cambiar · arrastra para girar"
+              : "Click another country to switch · drag to spin"
+            : isEs
+            ? "Click un país para enfocar · arrastra para girar"
+            : "Click a country to focus · drag to spin"}
         </p>
       </div>
 
-      {/* Panel de agentes */}
+      {/* Panel lateral — lista y detalle del agente seleccionado */}
       <aside className="lg:col-span-5">
         <div className="rounded-2xl border border-ink-100 bg-white p-1 shadow-sm">
           <div className="border-b border-ink-100 px-5 py-4">
@@ -289,16 +369,16 @@ export function AgentMap({
                         </p>
                       )}
                       {isActive && (
-                        <div className="mt-3 space-y-1.5 text-xs">
+                        <div className="mt-3 space-y-2 text-xs">
                           {a.website && (
                             <a
                               href={a.website}
                               target="_blank"
                               rel="noopener noreferrer"
                               onClick={(e) => e.stopPropagation()}
-                              className="inline-flex items-center gap-1 text-brand-700 hover:underline"
+                              className="inline-flex items-center gap-1.5 rounded-full bg-brand-500 px-3 py-1.5 text-[11px] font-semibold text-black hover:bg-brand-400"
                             >
-                              {a.website}
+                              {isEs ? "Ver sitio del agente" : "View agent site"}
                               <ExternalLink className="h-3 w-3" />
                             </a>
                           )}
@@ -326,4 +406,35 @@ export function AgentMap({
       </aside>
     </div>
   );
+}
+
+// Proyecta un punto (lat, lng) sobre la esfera unitaria, aplicando las
+// rotaciones actuales del globo (phi alrededor de Y, theta alrededor de X)
+// y devuelve coordenadas 2D normalizadas (-1..1). z > 0 = mirando a cámara.
+function project(lat: number, lng: number, phi: number, theta: number) {
+  const latR = (lat * Math.PI) / 180;
+  const lngR = (lng * Math.PI) / 180;
+
+  let x = Math.cos(latR) * Math.sin(lngR);
+  let y = Math.sin(latR);
+  let z = Math.cos(latR) * Math.cos(lngR);
+
+  // Rotación alrededor de Y (cobe phi).
+  const cosP = Math.cos(phi);
+  const sinP = Math.sin(phi);
+  const nx = x * cosP + z * sinP;
+  const nz = -x * sinP + z * cosP;
+  x = nx;
+  z = nz;
+
+  // Rotación alrededor de X (cobe theta).
+  const cosT = Math.cos(theta);
+  const sinT = Math.sin(theta);
+  const ny = y * cosT - z * sinT;
+  const nz2 = y * sinT + z * cosT;
+  y = ny;
+  z = nz2;
+
+  // Y invertida porque DOM Y va hacia abajo.
+  return { x, y: -y, z };
 }

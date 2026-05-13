@@ -16,7 +16,8 @@ import { SHIPMENT_STATUS_LABELS, type Shipment, type ShipmentEvent } from "@/lib
 import { HBLTracker } from "@/components/public/HBLTracker";
 import { formatDate, formatDateTime } from "@/lib/utils";
 
-const NIPPON_EXPRESS_TRACKING_URL = "https://www.nipponexpress.com/";
+const NIPPON_EXPRESS_TRACKING_URL =
+  "https://e-nx.nipponexpress.com/faces/pages/sptrctrc/enx_sptrctrc_010.xhtml";
 
 export default async function TrackingPage({
   params,
