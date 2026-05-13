@@ -194,12 +194,7 @@ export function AgentMap({
                   ? "rgba(255, 255, 255, 0.6)"
                   : "rgba(255, 255, 255, 0.08)"
               }
-              polygonLabel={(d) => {
-                const f = d as { properties?: { name?: string } };
-                return isAgentCountry(f)
-                  ? `<div style="background:#0a0a0a;color:#fff;padding:6px 10px;border-radius:6px;font-size:12px;font-weight:600;border:1px solid #96c600">${f.properties?.name}</div>`
-                  : "";
-              }}
+              polygonLabel={() => ""}
               onPolygonClick={(d) => {
                 const a = findAgentByFeature(
                   validAgents,
@@ -207,18 +202,62 @@ export function AgentMap({
                 );
                 if (a) setSelectedId(a.id === selectedId ? null : a.id);
               }}
-              labelsData={validAgents}
-              labelLat={(d) => Number((d as Agent).lat)}
-              labelLng={(d) => Number((d as Agent).lng)}
-              labelText={(d) => (d as Agent).country}
-              labelSize={0.9}
-              labelDotRadius={0.4}
-              labelColor={() => "#ffffff"}
-              labelResolution={2}
-              labelAltitude={0.06}
-              onLabelClick={(d) => {
+              htmlElementsData={validAgents}
+              htmlLat={(d: object) => Number((d as Agent).lat)}
+              htmlLng={(d: object) => Number((d as Agent).lng)}
+              htmlAltitude={0.08}
+              htmlElement={(d: object) => {
                 const a = d as Agent;
-                setSelectedId(a.id === selectedId ? null : a.id);
+                const isActive = a.id === selectedId;
+                const el = document.createElement("div");
+                el.style.pointerEvents = "auto";
+                el.style.cursor = "pointer";
+                el.style.transform = "translate(-50%, -120%)";
+                el.style.transition =
+                  "transform 200ms ease, opacity 200ms ease";
+                el.innerHTML = `
+                  <div style="
+                    position: relative;
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 6px;
+                    padding: 6px 12px;
+                    border-radius: 999px;
+                    font-family: ui-sans-serif, system-ui, sans-serif;
+                    font-size: 13px;
+                    font-weight: 700;
+                    line-height: 1;
+                    letter-spacing: 0.01em;
+                    white-space: nowrap;
+                    color: ${isActive ? "#000" : "#fff"};
+                    background: ${isActive ? "#96c600" : "rgba(10,10,10,0.92)"};
+                    border: 1.5px solid ${isActive ? "#96c600" : "rgba(150,198,0,0.9)"};
+                    box-shadow: 0 6px 18px rgba(0,0,0,0.45), 0 0 0 1px rgba(255,255,255,0.05);
+                    backdrop-filter: blur(4px);
+                  ">
+                    <span style="
+                      width: 6px;
+                      height: 6px;
+                      border-radius: 999px;
+                      background: ${isActive ? "#000" : "#96c600"};
+                      box-shadow: 0 0 8px ${isActive ? "rgba(0,0,0,0.6)" : "rgba(150,198,0,0.8)"};
+                    "></span>
+                    ${a.country}
+                  </div>
+                  <div style="
+                    position: absolute;
+                    left: 50%;
+                    top: 100%;
+                    width: 1.5px;
+                    height: 14px;
+                    transform: translateX(-50%);
+                    background: linear-gradient(to bottom, ${isActive ? "#96c600" : "rgba(150,198,0,0.9)"}, transparent);
+                  "></div>
+                `;
+                el.addEventListener("click", () => {
+                  setSelectedId(a.id === selectedId ? null : a.id);
+                });
+                return el;
               }}
               onGlobeReady={() => setGlobeReady(true)}
             />
