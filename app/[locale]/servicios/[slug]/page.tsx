@@ -91,22 +91,22 @@ const CONTENT: Record<Slug, ServiceContent> = {
     title_es: "Agenciamiento de carga",
     title_en: "Freight forwarding",
     subtitle_es:
-      "Soluciones a la medida en transporte aéreo, marítimo, terrestre y multimodal — para cualquier término de compra-venta internacional.",
+      "Soluciones adaptadas al negocio de nuestros clientes, atendiendo sus necesidades de carga internacional según sus términos de compra-venta.",
     subtitle_en:
-      "Tailored solutions in air, sea, land and multimodal transport — for any international purchase or sale term.",
+      "Tailored solutions for our clients' businesses, supporting their international freight needs based on their trade terms.",
     hero_image_hint_es: "Carga aérea / contenedores marítimos — vista institucional",
     hero_image_hint_en: "Air cargo / maritime containers — institutional view",
     hero_image_path: "/services/agenciamiento-hero.jpg",
     hero_background: "/Herocarga.webp",
     intro_es: [
-      "Brindamos la mejor asesoría del mercado para reducir sus costos y elegir el medio adecuado de transporte para su mercadería.",
-      "Garantizamos un control efectivo y constante información de su carga, a través de nuestras alianzas y red de agentes especializados a nivel mundial.",
+      "Brindamos asesoría especializada para optimizar sus costos y seleccionar el medio adecuado de transporte para su carga.",
+      "Ofrecemos un control efectivo e información actualizada de su carga, a través de nuestras alianzas y red de agentes especializados a nivel mundial.",
     ],
     intro_en: [
-      "We offer the best advisory in the market to reduce your costs and choose the right transport mode for your cargo.",
-      "We guarantee effective control and constant information about your shipment through our alliances and worldwide network of specialized agents.",
+      "We provide specialized advisory to optimize your costs and select a suitable transport mode for your cargo.",
+      "We offer effective control and updated information on your cargo through our alliances and worldwide network of specialized agents.",
     ],
-    bullets_title_es: "El servicio comprende",
+    bullets_title_es: "El servicio incluye",
     bullets_title_en: "The service includes",
     bullets: [
       {
@@ -121,8 +121,8 @@ const CONTENT: Record<Slug, ServiceContent> = {
       },
       {
         icon: Globe2,
-        es: "Importación y exportación desde y hacia todo el mundo",
-        en: "Imports and exports from and to anywhere in the world",
+        es: "Importación y exportación a nivel internacional",
+        en: "International imports and exports",
       },
       {
         icon: Factory,
@@ -141,66 +141,66 @@ const CONTENT: Record<Slug, ServiceContent> = {
       },
       {
         icon: FileCheck,
-        es: "Asesoramiento y seguimiento de la documentación",
-        en: "Advisory and tracking of documentation",
+        es: "Asesoría documentaria y seguimiento",
+        en: "Documentary advisory and follow-up",
       },
     ],
     side_image_hint_es: "Operación logística (carga aérea o marítima)",
     side_image_hint_en: "Logistics operation (air or sea cargo)",
     side_image_path: "/services/agenciamiento-side.jpg",
     side_image_real: "/serviciocomprende.webp",
-    highlights_title_es: "Por qué IPEDEL",
-    highlights_title_en: "Why IPEDEL",
+    highlights_title_es: "Por qué IPE del Perú",
+    highlights_title_en: "Why IPE del Perú",
     highlights: [
       {
         icon: ShieldCheck,
         title_es: "Cobertura global",
         title_en: "Global coverage",
-        desc_es: "Red de agentes especializados en más de 40 países.",
-        desc_en: "Specialized agent network across 40+ countries.",
+        desc_es: "",
+        desc_en: "",
         bullets_es: [
-          "+40 países con agentes acreditados",
-          "Alianzas con líneas aéreas y navieras",
-          "Operación coordinada por nuestro equipo",
+          "Red de agentes en más de 40 países",
+          "Coordinación con líneas aéreas y navieras",
+          "Experiencia en logística internacional",
         ],
         bullets_en: [
-          "40+ countries with accredited agents",
-          "Partnerships with airlines and shipping lines",
-          "Operation coordinated by our team",
+          "Network of agents in over 40 countries",
+          "Coordination with airlines and shipping lines",
+          "Experience in international logistics",
         ],
       },
       {
         icon: Gauge,
-        title_es: "Mejor relación costo-tiempo",
-        title_en: "Best cost-time ratio",
-        desc_es: "Asesoría experta para optimizar la modalidad de transporte.",
-        desc_en: "Expert advisory to optimize transport modality.",
+        title_es: "Eficiencia operativa",
+        title_en: "Operational efficiency",
+        desc_es: "",
+        desc_en: "",
         bullets_es: [
-          "Multimodal según destino y plazo",
-          "Negociación directa de tarifas",
-          "Optimización de rutas y conexiones",
+          "Orientación logística",
+          "Equilibrio costo-tiempo",
+          "Personal con experiencia",
         ],
         bullets_en: [
-          "Multimodal per destination and timeline",
-          "Direct rate negotiation",
-          "Route and connection optimization",
+          "Logistics guidance",
+          "Cost-time balance",
+          "Experienced staff",
         ],
       },
       {
         icon: Route,
-        title_es: "Trazabilidad punto a punto",
-        title_en: "End-to-end traceability",
-        desc_es: "Información permanente desde origen hasta destino.",
-        desc_en: "Continuous information from origin to destination.",
+        title_es: "Coordinación logística",
+        title_en: "Logistics coordination",
+        desc_es: "",
+        desc_en: "",
         bullets_es: [
-          "Sistema de seguimiento por HBL",
-          "Reportes periódicos durante el tránsito",
-          "Comunicación 24/7 con tu ejecutivo",
+          "Carga aérea, marítima y terrestre",
+          "Multimodal según requerimiento",
+          "Optimización de rutas y conexiones",
         ],
         bullets_en: [
-          "HBL-based tracking system",
-          "Periodic reports during transit",
-          "24/7 communication with your account manager",
+          "Air, sea and land cargo",
+          "Multimodal as required",
+          "Route and connection optimization",
         ],
       },
     ],
@@ -671,8 +671,8 @@ export default async function ServiceDetail({
             </h2>
             <p className="mx-auto mt-5 max-w-2xl text-base text-ink-600 sm:text-lg">
               {isEs
-                ? "Tres pilares concretos que sostienen cada operación, no eslóganes."
-                : "Three concrete pillars that hold every operation, not slogans."}
+                ? "Tres pilares concretos que sostienen cada operación internacional."
+                : "Three key pillars supporting every international operation."}
             </p>
           </div>
           <div className="mt-14 grid gap-6 md:grid-cols-3 lg:gap-8">
@@ -704,15 +704,17 @@ export default async function ServiceDetail({
                     </h3>
                   </div>
 
-                  {/* Body */}
-                  <p className="relative mt-5 text-[15px] leading-relaxed text-ink-700">
-                    {isEs ? h.desc_es : h.desc_en}
-                  </p>
+                  {/* Body — solo si hay descripción (algunos servicios la omiten). */}
+                  {(isEs ? h.desc_es : h.desc_en) && (
+                    <p className="relative mt-5 text-[15px] leading-relaxed text-ink-700">
+                      {isEs ? h.desc_es : h.desc_en}
+                    </p>
+                  )}
 
                   {/* Divider con accent gradient */}
                   <span
                     aria-hidden="true"
-                    className="relative my-6 block h-px w-12 bg-gradient-to-r from-brand-500 to-transparent"
+                    className="relative mt-6 mb-6 block h-px w-12 bg-gradient-to-r from-brand-500 to-transparent"
                   />
 
                   {/* Bullets con check brand */}

@@ -30,13 +30,13 @@ export function CTAFooter({ locale }: { locale: Locale }) {
           </span>
           <h2 className="mt-5 text-balance text-3xl font-semibold leading-[1.05] tracking-tight sm:text-4xl lg:text-5xl">
             {isEs
-              ? "Conectamos tu carga con cualquier destino del mundo."
-              : "We connect your cargo to any destination in the world."}
+              ? "Conectando tu carga con el mundo."
+              : "Connecting your cargo to the world."}
           </h2>
           <p className="mt-5 max-w-lg text-base text-white/85 sm:text-lg">
             {isEs
-              ? "Tres décadas de operaciones impecables, una red global de socios estratégicos y un equipo que entiende tu negocio."
-              : "Three decades of impeccable operations, a global partner network and a team that understands your business."}
+              ? "Tres décadas de experiencia, una red internacional de agentes y un equipo que entiende tu negocio."
+              : "Three decades of experience, an international network of agents, and a team that understands your business."}
           </p>
         </div>
         <div className="flex flex-wrap gap-3">
