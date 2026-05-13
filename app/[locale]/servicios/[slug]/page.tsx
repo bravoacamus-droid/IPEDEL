@@ -218,6 +218,7 @@ const CONTENT: Record<Slug, ServiceContent> = {
     hero_image_hint_es: "Almacén / racks / contenedores en bodega",
     hero_image_hint_en: "Warehouse / racks / containers indoors",
     hero_image_path: "/services/almacenamiento-hero.jpg",
+    hero_background: "/almacenamientohero.webp",
     intro_es: [
       "IPE del Perú SAC está en la capacidad de desarrollar y ejecutar el servicio de almacenamiento prestando un servicio impecable.",
       "Empleamos un sistema de seguimiento donde usted estará informado de manera permanente desde el primer contacto con el proveedor en origen hasta la llegada de la mercancía y los almacenamientos en general.",
@@ -258,6 +259,7 @@ const CONTENT: Record<Slug, ServiceContent> = {
     side_image_hint_es: "Vista interna del almacén — IPEDEL",
     side_image_hint_en: "Interior warehouse view — IPEDEL",
     side_image_path: "/services/almacenamiento-side.jpg",
+    side_image_real: "/almacenamiento.webp",
     highlights_title_es: "Beneficios",
     highlights_title_en: "Benefits",
     highlights: [
@@ -327,6 +329,7 @@ const CONTENT: Record<Slug, ServiceContent> = {
     hero_image_hint_es: "Desaduanaje / SUNAT / cargas especializadas",
     hero_image_hint_en: "Customs clearance / specialized cargo",
     hero_image_path: "/services/especializados-hero.jpg",
+    hero_background: "/especializacionhero.webp",
     intro_es: [
       "IPE del Perú SAC está en la capacidad de desarrollar y ejecutar el conjunto de acciones necesarias para prestar un servicio impecable.",
       "Siendo representantes de grandes transnacionales japonesas en Perú, contamos con gran experiencia en consolidaciones aéreas de los distintos lugares del mundo.",
@@ -369,6 +372,7 @@ const CONTENT: Record<Slug, ServiceContent> = {
     side_image_hint_es: "Operador logístico — desaduanaje en SUNAT",
     side_image_hint_en: "Logistics operator — SUNAT customs clearance",
     side_image_path: "/services/especializados-side.jpg",
+    side_image_real: "/especializados.webp",
     highlights_title_es: "Diferenciadores",
     highlights_title_en: "Differentiators",
     highlights: [
@@ -438,6 +442,7 @@ const CONTENT: Record<Slug, ServiceContent> = {
     hero_image_hint_es: "Embalaje y mudanza internacional — caja, camión, vivienda",
     hero_image_hint_en: "International moving — packing, truck, home",
     hero_image_path: "/services/internacional-hero.jpg",
+    hero_background: "/mudanzashero.webp",
     intro_es: [
       "Todo se inicia con la visita personal de un ejecutivo de nuestra empresa, que realizará un estimado del volumen y peso del embarque, los materiales de embalaje necesarios y los requerimientos específicos de los muebles y objetos más delicados que precisen un trato especial.",
       "La visita no culminará hasta que el cliente absuelva todas sus inquietudes y solicitudes.",
@@ -470,6 +475,7 @@ const CONTENT: Record<Slug, ServiceContent> = {
     side_image_hint_es: "Mudanza — embalaje profesional / contenedor",
     side_image_hint_en: "Moving — professional packing / container",
     side_image_path: "/services/internacional-side.jpg",
+    side_image_real: "/mudanzas.webp",
     highlights_title_es: "Lo que aseguramos",
     highlights_title_en: "What we guarantee",
     highlights: [

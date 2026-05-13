@@ -1,7 +1,6 @@
-import Link from "next/link";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import {
-  ArrowRight,
   Briefcase,
   Compass,
   Headset,
@@ -12,9 +11,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import { isLocale, type Locale } from "@/lib/i18n/config";
-import { getDictionary } from "@/lib/i18n/get-dictionary";
 import { PageBanner } from "@/components/public/PageBanner";
-import { ImageSlot } from "@/components/public/ImageSlot";
 import { CTAFooter } from "@/components/public/CTAFooter";
 
 export default async function ImportacionesPage({
@@ -24,23 +21,19 @@ export default async function ImportacionesPage({
 }) {
   const { locale } = await params;
   if (!isLocale(locale)) notFound();
-  const dict = await getDictionary(locale);
   const isEs = locale === "es";
 
   return (
     <div className="bg-white">
       <PageBanner
-        eyebrow={isEs ? "IPE del Perú" : "IPE del Perú"}
         title={isEs ? "Importaciones" : "Imports"}
         subtitle={
           isEs
             ? "Acompañamos al importador y al consolidador internacional con servicios de carga aérea y marítima durante la operación."
             : "We support importers and international consolidators with air and sea freight services throughout the operation."
         }
-        breadcrumb={[
-          { href: `/${locale}`, label: isEs ? "Inicio" : "Home" },
-          { href: `/${locale}/importaciones`, label: isEs ? "Importaciones" : "Imports" },
-        ]}
+        backgroundImage="/importacioneshero.webp"
+        backgroundAlt={isEs ? "Importaciones IPEDEL" : "IPEDEL imports"}
       />
 
       {/* Sección 1 — Consolidaciones aéreas desde Asia */}
@@ -128,16 +121,24 @@ export default async function ImportacionesPage({
           </div>
 
           <div className="lg:col-span-5">
-            <ImageSlot
-              hint={
-                isEs
-                  ? "Avión carguero · contenedores · acreditación IATA"
-                  : "Cargo plane · containers · IATA accreditation"
-              }
-              suggested="/imports/consolidaciones-asia.jpg"
-              ratio="aspect-[4/5]"
-              priority
-            />
+            <div className="group relative aspect-[4/5] overflow-hidden rounded-2xl shadow-lg ring-1 ring-black/5">
+              <Image
+                src="/importacionesconsolidacion.webp"
+                alt={
+                  isEs
+                    ? "Consolidación aérea — IPEDEL"
+                    : "Air consolidation — IPEDEL"
+                }
+                fill
+                priority
+                sizes="(min-width: 1024px) 40vw, 100vw"
+                className="object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.06]"
+              />
+              <div
+                aria-hidden="true"
+                className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/40 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+              />
+            </div>
             <div className="mt-4 flex items-center gap-3 rounded-xl border border-brand-200 bg-brand-50 p-4 text-sm">
               <span className="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-brand-500 text-black">
                 <Briefcase className="h-4 w-4" strokeWidth={1.6} />
@@ -163,15 +164,23 @@ export default async function ImportacionesPage({
       <section className="bg-ink-50 py-16 lg:py-24">
         <div className="container-page grid gap-12 lg:grid-cols-12 lg:gap-16">
           <div className="lg:col-span-5 lg:order-last">
-            <ImageSlot
-              hint={
-                isEs
-                  ? "Operación logística — agentes / vehículos / IPEDEL"
-                  : "Logistics operation — agents / vehicles / IPEDEL"
-              }
-              suggested="/imports/agente-logistico.jpg"
-              ratio="aspect-[4/5]"
-            />
+            <div className="group relative aspect-[4/5] overflow-hidden rounded-2xl shadow-lg ring-1 ring-black/5">
+              <Image
+                src="/importacionesagente.webp"
+                alt={
+                  isEs
+                    ? "Agente logístico — IPEDEL"
+                    : "Logistics agent — IPEDEL"
+                }
+                fill
+                sizes="(min-width: 1024px) 40vw, 100vw"
+                className="object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.06]"
+              />
+              <div
+                aria-hidden="true"
+                className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/40 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+              />
+            </div>
           </div>
           <div className="lg:col-span-7">
             <span className="text-xs font-semibold uppercase tracking-[0.18em] text-brand-600">
@@ -402,22 +411,3 @@ function Stat({ value, label }: { value: string; label: string }) {
   );
 }
 
-function Step({
-  icon: Icon,
-  title,
-  desc,
-}: {
-  icon: typeof Compass;
-  title: string;
-  desc: string;
-}) {
-  return (
-    <li className="card relative p-6">
-      <span className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-brand-500 text-black">
-        <Icon className="h-5 w-5" strokeWidth={1.6} />
-      </span>
-      <h3 className="mt-5 text-lg font-semibold text-ink-900">{title}</h3>
-      <p className="mt-2 text-sm text-ink-600">{desc}</p>
-    </li>
-  );
-}
