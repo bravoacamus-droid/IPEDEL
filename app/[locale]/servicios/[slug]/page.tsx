@@ -1,11 +1,8 @@
 import Image from "next/image";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import {
   type LucideIcon,
-  ArrowRight,
   Boxes,
-  CheckCircle2,
   ClipboardCheck,
   Container,
   Factory,
@@ -23,14 +20,11 @@ import {
   Plug,
   Route,
   Scale,
-  Ship,
   ShieldCheck,
   Sparkles,
-  Truck,
   Warehouse,
 } from "lucide-react";
 import { isLocale, type Locale } from "@/lib/i18n/config";
-import { getDictionary } from "@/lib/i18n/get-dictionary";
 import { PageBanner } from "@/components/public/PageBanner";
 import { ImageSlot } from "@/components/public/ImageSlot";
 import { CTAFooter } from "@/components/public/CTAFooter";
@@ -548,7 +542,6 @@ export default async function ServiceDetail({
   const { locale, slug } = await params;
   if (!isLocale(locale)) notFound();
   if (!(SLUGS as readonly string[]).includes(slug)) notFound();
-  const dict = await getDictionary(locale);
   const c = CONTENT[slug as Slug];
   const isEs = locale === "es";
 

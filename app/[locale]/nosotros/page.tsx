@@ -99,7 +99,7 @@ export default async function NosotrosPage({
               </p>
             )}
 
-            <div className="mt-8 grid grid-cols-3 gap-4 border-t border-ink-100 pt-8">
+            <div className="mt-8 grid grid-cols-1 gap-4 border-t border-ink-100 pt-8 sm:grid-cols-3">
               <AnimatedStat
                 value={30}
                 suffix="+"
