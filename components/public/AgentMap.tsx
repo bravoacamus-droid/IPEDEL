@@ -58,12 +58,11 @@ export function AgentMap({
     window.addEventListener("resize", onResize);
     onResize();
 
-    // Marker principal de Lima (sede) en color distinto.
     const markers = validAgents.map((a) => ({
       location: [Number(a.lat), Number(a.lng)] as [number, number],
-      size: 0.07,
+      size: 0.04,
     }));
-    markers.push({ location: [-12.0464, -77.0428], size: 0.09 });
+    markers.push({ location: [-12.0464, -77.0428], size: 0.06 });
 
     const dpr = Math.min(window.devicePixelRatio || 2, 2);
     const globe = createGlobe(canvas, {
@@ -124,10 +123,8 @@ export function AgentMap({
         height: height * dpr,
       });
 
-      // Reposicionar las etiquetas de país según la rotación actual.
-      const radius = Math.min(width, height) * 0.45;
-      const cx = width / 2;
-      const cy = height / 2;
+      // Reposicionar las etiquetas según la rotación actual. La proyección
+      // sigue exactamente la convención de cobe (ver node_modules/cobe).
       for (const a of validAgents) {
         const el = labelRefs.current.get(a.id);
         if (!el) continue;
@@ -137,11 +134,11 @@ export function AgentMap({
           phiRef.current,
           thetaRef.current,
         );
-        const sx = cx + proj.x * radius;
-        const sy = cy + proj.y * radius;
-        // z>0 → mirando a cámara; fade out conforme se va hacia atrás.
+        // Coordenadas normalizadas 0..1 (igual fórmula que cobe).
+        const sx = ((proj.ndcX + 1) / 2) * width;
+        const sy = ((proj.ndcY + 1) / 2) * height;
         const facing = proj.z;
-        const opacity = facing > 0.15 ? 1 : facing > -0.05 ? facing * 5 + 0.25 : 0;
+        const opacity = facing > 0.2 ? 1 : facing > -0.05 ? facing * 4 + 0.2 : 0;
         el.style.transform = `translate(${sx}px, ${sy}px)`;
         el.style.opacity = String(Math.max(0, Math.min(1, opacity)));
       }
@@ -161,12 +158,22 @@ export function AgentMap({
   }, [validAgents.length]);
 
   // Cuando se selecciona un agente, lerp hacia su ubicación.
+  // Fórmulas derivadas de la matriz de rotación cobe (ver project() abajo):
+  //   xr = 0  cuando  cos(phi + lngR) = 0  →  phi = π/2 − lngR
+  //   yr = 0  cuando  theta = lat
+  // Con lngR = lng·π/180 − π → phi target = 3π/2 − lng·π/180.
+  // Normalizamos a la diferencia más corta vs phi actual para evitar
+  // que el globo de la vuelta larga al cambiar de país.
   useEffect(() => {
     if (!selected) return;
     const lng = Number(selected.lng);
     const lat = Number(selected.lat);
-    targetPhiRef.current = (-lng * Math.PI) / 180;
-    targetThetaRef.current = (-lat * Math.PI) / 180;
+    let phiTarget = (3 * Math.PI) / 2 - (lng * Math.PI) / 180;
+    const cur = phiRef.current;
+    while (phiTarget - cur > Math.PI) phiTarget -= 2 * Math.PI;
+    while (phiTarget - cur < -Math.PI) phiTarget += 2 * Math.PI;
+    targetPhiRef.current = phiTarget;
+    targetThetaRef.current = (lat * Math.PI) / 180;
   }, [selected]);
 
   return (
@@ -408,33 +415,37 @@ export function AgentMap({
   );
 }
 
-// Proyecta un punto (lat, lng) sobre la esfera unitaria, aplicando las
-// rotaciones actuales del globo (phi alrededor de Y, theta alrededor de X)
-// y devuelve coordenadas 2D normalizadas (-1..1). z > 0 = mirando a cámara.
+// Proyecta un punto (lat, lng) a coordenadas NDC del canvas siguiendo
+// EXACTAMENTE la convención de cobe (ver node_modules/cobe/dist/index.esm.js,
+// funciones U y O). Sin esta paridad las etiquetas no caen sobre los markers.
+//
+//   U: lat,lng → 3D con offset −π en longitud:
+//     x = −cos(lat)·cos(lng − π)
+//     y =  sin(lat)
+//     z =  cos(lat)·sin(lng − π)
+//
+//   O: aplica rotación phi (vertical) y theta (horizontal) y proyecta a
+//   coordenadas NDC. ndcX, ndcY ∈ [−R, R] con R = ee + p = 0.85.
+//   visible = zr ≥ 0.
 function project(lat: number, lng: number, phi: number, theta: number) {
+  const R = 0.85;
   const latR = (lat * Math.PI) / 180;
-  const lngR = (lng * Math.PI) / 180;
+  const lngR = (lng * Math.PI) / 180 - Math.PI;
+  const cosLat = Math.cos(latR);
 
-  let x = Math.cos(latR) * Math.sin(lngR);
-  let y = Math.sin(latR);
-  let z = Math.cos(latR) * Math.cos(lngR);
+  const x = -R * cosLat * Math.cos(lngR);
+  const y = R * Math.sin(latR);
+  const z = R * cosLat * Math.sin(lngR);
 
-  // Rotación alrededor de Y (cobe phi).
   const cosP = Math.cos(phi);
   const sinP = Math.sin(phi);
-  const nx = x * cosP + z * sinP;
-  const nz = -x * sinP + z * cosP;
-  x = nx;
-  z = nz;
-
-  // Rotación alrededor de X (cobe theta).
   const cosT = Math.cos(theta);
   const sinT = Math.sin(theta);
-  const ny = y * cosT - z * sinT;
-  const nz2 = y * sinT + z * cosT;
-  y = ny;
-  z = nz2;
 
-  // Y invertida porque DOM Y va hacia abajo.
-  return { x, y: -y, z };
+  const xr = cosP * x + sinP * z;
+  const yr = sinP * sinT * x + cosT * y - cosP * sinT * z;
+  const zr = -sinP * cosT * x + sinT * y + cosP * cosT * z;
+
+  // DOM Y va hacia abajo → invertimos signo de yr al devolverlo.
+  return { ndcX: xr, ndcY: -yr, z: zr };
 }
