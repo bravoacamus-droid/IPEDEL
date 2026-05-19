@@ -67,7 +67,6 @@ export default async function NosotrosPage({
             ? "Operación logística IPE del Perú"
             : "IPE del Perú logistics operation"
         }
-        verticalSpacing="tall"
       />
 
       {/* Bienvenidos — texto oficial */}
