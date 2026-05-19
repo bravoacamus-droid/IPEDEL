@@ -73,10 +73,10 @@ export default async function HomePage({
 
       <ServicesSection locale={locale as Locale} dict={dict} />
 
-      {/* CTA strip — parallax sobre CTAIPEDEL.webp con overlay verde tenue
+      {/* CTA strip — parallax sobre CTAIPEDEL2.webp con overlay verde tenue
           (intensidad 0.4 para que el desplazamiento se aprecie al scrollear). */}
       <ParallaxSection
-        image="/CTAIPEDEL.webp"
+        image="/CTAIPEDEL2.webp"
         alt=""
         intensity={0.4}
         className="flex min-h-[520px] items-center sm:min-h-[600px] lg:min-h-[640px]"
@@ -235,7 +235,7 @@ const SERVICE_CARDS: ServiceCard[] = [
       "Tailored solutions across air, sea and land — including consolidation and project cargo.",
     tags_es: ["Aéreo", "FCL/LCL", "Multimodal", "Door to Door"],
     tags_en: ["Air", "FCL/LCL", "Multimodal", "Door to Door"],
-    imagePath: "/agenciacarga.png",
+    imagePath: "/agenciadecarga2.png",
     gradient:
       "bg-[linear-gradient(135deg,#ffffff_0%,#f4faea_30%,#d2e89f_75%,#aacd3e_100%)]",
   },
