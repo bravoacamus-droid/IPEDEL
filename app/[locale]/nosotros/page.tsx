@@ -61,7 +61,7 @@ export default async function NosotrosPage({
             ? "Más de tres décadas siendo el puente logístico entre el Perú y el mundo."
             : "Over three decades bridging Peru and the world."
         }
-        backgroundImage="/heronosotros.webp"
+        backgroundImage="/heronosotros2.webp"
         backgroundAlt={
           locale === "es"
             ? "Operación logística IPE del Perú"
@@ -122,7 +122,7 @@ export default async function NosotrosPage({
 
           <div className="lg:col-span-5">
             <HoverImage
-              src="/team.webp"
+              src="/team2.webp"
               alt={
                 locale === "es"
                   ? "Equipo IPE del Perú"
@@ -276,11 +276,11 @@ export default async function NosotrosPage({
         <div className="grid gap-10 lg:grid-cols-12 lg:gap-16">
           <div className="lg:col-span-5">
             <HoverImage
-              src="/almacen.webp"
+              src="/capacidad.webp"
               alt={
                 locale === "es"
-                  ? "Almacén IPE del Perú"
-                  : "IPE del Perú warehouse"
+                  ? "Capacidad operativa IPE del Perú"
+                  : "IPE del Perú operational capacity"
               }
               ratio="aspect-[4/5]"
             />
