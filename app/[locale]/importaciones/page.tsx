@@ -32,7 +32,7 @@ export default async function ImportacionesPage({
             ? "Acompañamos al importador y al consolidador internacional con servicios de carga aérea y marítima durante la operación."
             : "We support importers and international consolidators with air and sea freight services throughout the operation."
         }
-        backgroundImage="/importacioneshero.webp"
+        backgroundImage="/importacioneshero2.webp"
         backgroundAlt={isEs ? "Importaciones IPEDEL" : "IPEDEL imports"}
       />
 
@@ -123,7 +123,7 @@ export default async function ImportacionesPage({
           <div className="lg:col-span-5">
             <div className="group relative aspect-[4/5] overflow-hidden rounded-2xl shadow-lg ring-1 ring-black/5">
               <Image
-                src="/importacionesconsolidacion.webp"
+                src="/importacionesconsolidacion2.webp"
                 alt={
                   isEs
                     ? "Consolidación aérea — IPEDEL"
@@ -166,7 +166,7 @@ export default async function ImportacionesPage({
           <div className="lg:col-span-5 lg:order-last">
             <div className="group relative aspect-[4/5] overflow-hidden rounded-2xl shadow-lg ring-1 ring-black/5">
               <Image
-                src="/importacionesagente.webp"
+                src="/importacionesagente2.webp"
                 alt={
                   isEs
                     ? "Agente logístico — IPEDEL"
