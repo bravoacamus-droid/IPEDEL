@@ -91,7 +91,7 @@ const CONTENT: Record<Slug, ServiceContent> = {
     hero_image_hint_es: "Carga aérea / contenedores marítimos — vista institucional",
     hero_image_hint_en: "Air cargo / maritime containers — institutional view",
     hero_image_path: "/services/agenciamiento-hero.jpg",
-    hero_background: "/Herocarga.webp",
+    hero_background: "/Herocarga2.webp",
     intro_es: [
       "Brindamos asesoría especializada para optimizar sus costos y seleccionar el medio adecuado de transporte para su carga.",
       "Ofrecemos un control efectivo e información actualizada de su carga, a través de nuestras alianzas y red de agentes especializados a nivel mundial.",
@@ -142,7 +142,7 @@ const CONTENT: Record<Slug, ServiceContent> = {
     side_image_hint_es: "Operación logística (carga aérea o marítima)",
     side_image_hint_en: "Logistics operation (air or sea cargo)",
     side_image_path: "/services/agenciamiento-side.jpg",
-    side_image_real: "/serviciocomprende.webp",
+    side_image_real: "/serviciocomprende2.webp",
     highlights_title_es: "Por qué IPE del Perú",
     highlights_title_en: "Why IPE del Perú",
     highlights: [
@@ -212,7 +212,7 @@ const CONTENT: Record<Slug, ServiceContent> = {
     hero_image_hint_es: "Almacén / racks / contenedores en bodega",
     hero_image_hint_en: "Warehouse / racks / containers indoors",
     hero_image_path: "/services/almacenamiento-hero.jpg",
-    hero_background: "/almacenamientohero.webp",
+    hero_background: "/almacenamientohero2.webp",
     intro_es: [
       "IPE del Perú SAC está en la capacidad de desarrollar y ejecutar el servicio de almacenamiento prestando un servicio impecable.",
       "Empleamos un sistema de seguimiento donde usted estará informado de manera permanente desde el primer contacto con el proveedor en origen hasta la llegada de la mercancía y los almacenamientos en general.",
@@ -253,7 +253,7 @@ const CONTENT: Record<Slug, ServiceContent> = {
     side_image_hint_es: "Vista interna del almacén — IPEDEL",
     side_image_hint_en: "Interior warehouse view — IPEDEL",
     side_image_path: "/services/almacenamiento-side.jpg",
-    side_image_real: "/almacenamiento.webp",
+    side_image_real: "/almacenamiento2.webp",
     highlights_title_es: "Beneficios",
     highlights_title_en: "Benefits",
     highlights: [
@@ -323,7 +323,7 @@ const CONTENT: Record<Slug, ServiceContent> = {
     hero_image_hint_es: "Desaduanaje / SUNAT / cargas especializadas",
     hero_image_hint_en: "Customs clearance / specialized cargo",
     hero_image_path: "/services/especializados-hero.jpg",
-    hero_background: "/especializacionhero.webp",
+    hero_background: "/especializacionhero2.webp",
     intro_es: [
       "IPE del Perú SAC está en la capacidad de desarrollar y ejecutar el conjunto de acciones necesarias para prestar un servicio impecable.",
       "Siendo representantes de grandes transnacionales japonesas en Perú, contamos con gran experiencia en consolidaciones aéreas de los distintos lugares del mundo.",
@@ -366,7 +366,7 @@ const CONTENT: Record<Slug, ServiceContent> = {
     side_image_hint_es: "Operador logístico — desaduanaje en SUNAT",
     side_image_hint_en: "Logistics operator — SUNAT customs clearance",
     side_image_path: "/services/especializados-side.jpg",
-    side_image_real: "/especializados.webp",
+    side_image_real: "/especializados2.webp",
     highlights_title_es: "Diferenciadores",
     highlights_title_en: "Differentiators",
     highlights: [
@@ -469,7 +469,7 @@ const CONTENT: Record<Slug, ServiceContent> = {
     side_image_hint_es: "Mudanza — embalaje profesional / contenedor",
     side_image_hint_en: "Moving — professional packing / container",
     side_image_path: "/services/internacional-side.jpg",
-    side_image_real: "/mudanzas.webp",
+    side_image_real: "/mudanzas2.webp",
     highlights_title_es: "Lo que aseguramos",
     highlights_title_en: "What we guarantee",
     highlights: [
