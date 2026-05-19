@@ -116,7 +116,7 @@ export function PageBanner({
           // la imagen no se "estire" demasiado al hacer object-cover.
           // El padding vertical es ajustable por página con verticalSpacing
           // para optimizar el encuadre de cada foto.
-          hasBg && verticalSpacing === "low" && "pt-40 pb-10 sm:pt-48 sm:pb-12",
+          hasBg && verticalSpacing === "low" && "pt-48 pb-8 sm:pt-56 sm:pb-10",
           hasBg && verticalSpacing === "default" && "pt-28 pb-14 sm:pt-32 sm:pb-16",
           hasBg && verticalSpacing === "tall" && "pt-44 pb-20 sm:pt-52 sm:pb-24",
           !hasBg && verticalSpacing === "tall" && "pt-40 pb-24 sm:pt-48 sm:pb-32",
