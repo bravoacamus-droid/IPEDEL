@@ -33,9 +33,10 @@ export function PageBanner({
    *  la zona "valiosa" de la foto no está al centro (logo arriba,
    *  edificio abajo, etc.). Acepta cualquier valor de object-position. */
   backgroundPosition?: string;
-  /** Controla el padding vertical del banner. "compact" sube la tarjeta
-   *  para mostrar más imagen al pie; "tall" hace el hero más alto. */
-  verticalSpacing?: "default" | "compact" | "tall";
+  /** Controla el padding vertical del banner. "low" baja la tarjeta
+   *  para mostrar más imagen en la parte alta; "tall" hace el hero
+   *  más alto y también baja un poco la tarjeta. */
+  verticalSpacing?: "default" | "low" | "tall";
 }) {
   const hasBg = Boolean(backgroundImage);
 
@@ -115,9 +116,9 @@ export function PageBanner({
           // la imagen no se "estire" demasiado al hacer object-cover.
           // El padding vertical es ajustable por página con verticalSpacing
           // para optimizar el encuadre de cada foto.
-          hasBg && verticalSpacing === "compact" && "pt-20 pb-12 sm:pt-24 sm:pb-14",
+          hasBg && verticalSpacing === "low" && "pt-40 pb-10 sm:pt-48 sm:pb-12",
           hasBg && verticalSpacing === "default" && "pt-28 pb-14 sm:pt-32 sm:pb-16",
-          hasBg && verticalSpacing === "tall" && "pt-36 pb-20 sm:pt-44 sm:pb-24",
+          hasBg && verticalSpacing === "tall" && "pt-44 pb-20 sm:pt-52 sm:pb-24",
           !hasBg && verticalSpacing === "tall" && "pt-40 pb-24 sm:pt-48 sm:pb-32",
           !hasBg && verticalSpacing !== "tall" && "pt-32 pb-20 sm:pt-36 sm:pb-24",
           rightSlot && !hasBg && "grid items-center gap-12 lg:grid-cols-12",
