@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, useTransition } from "react";
+import { createPortal } from "react-dom";
 import { useRouter } from "next/navigation";
 import { MoreVertical, KeyRound, UserCog, Trash2, Pencil } from "lucide-react";
 import { toast } from "sonner";
@@ -30,68 +31,140 @@ export function UserRowActions({
 }) {
   const [open, setOpen] = useState(false);
   const [modal, setModal] = useState<"name" | "role" | "password" | "delete" | null>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const [pos, setPos] = useState<{ top: number; right: number; openUp: boolean }>(
+    { top: 0, right: 0, openUp: false },
+  );
+  const [mounted, setMounted] = useState(false);
+
+  // El menú se renderiza vía portal a document.body para escapar el
+  // overflow-hidden del card de la tabla — antes la opción "Eliminar"
+  // se cortaba en las últimas filas. Posición se calcula con
+  // getBoundingClientRect del botón, fijada en viewport. Si no hay
+  // espacio abajo, abre hacia arriba.
+  useEffect(() => setMounted(true), []);
+
+  useLayoutEffect(() => {
+    if (!open || !buttonRef.current) return;
+    function recalc() {
+      const btn = buttonRef.current;
+      if (!btn) return;
+      const r = btn.getBoundingClientRect();
+      // Alto aproximado del menú según items visibles (4-5 items × ~36px + paddings)
+      const menuH = isSelf ? 100 : 175;
+      const spaceBelow = window.innerHeight - r.bottom;
+      const openUp = spaceBelow < menuH + 12;
+      setPos({
+        top: openUp ? r.top - 4 : r.bottom + 4,
+        right: window.innerWidth - r.right,
+        openUp,
+      });
+    }
+    recalc();
+    window.addEventListener("resize", recalc);
+    window.addEventListener("scroll", recalc, true);
+    return () => {
+      window.removeEventListener("resize", recalc);
+      window.removeEventListener("scroll", recalc, true);
+    };
+  }, [open, isSelf]);
+
+  // Click-outside con listener global (en lugar de onBlur que falla
+  // cuando el menú está en otro nodo DOM via portal).
+  useEffect(() => {
+    if (!open) return;
+    function onClick(e: MouseEvent) {
+      const t = e.target as Node;
+      if (
+        buttonRef.current?.contains(t) ||
+        menuRef.current?.contains(t)
+      ) {
+        return;
+      }
+      setOpen(false);
+    }
+    function onEsc(e: KeyboardEvent) {
+      if (e.key === "Escape") setOpen(false);
+    }
+    document.addEventListener("mousedown", onClick);
+    document.addEventListener("keydown", onEsc);
+    return () => {
+      document.removeEventListener("mousedown", onClick);
+      document.removeEventListener("keydown", onEsc);
+    };
+  }, [open]);
+
+  const menu = open ? (
+    <div
+      ref={menuRef}
+      className="fixed z-50 w-52 rounded-md border border-ink-200 bg-white py-1 text-sm shadow-lg"
+      style={
+        pos.openUp
+          ? { bottom: window.innerHeight - pos.top, right: pos.right }
+          : { top: pos.top, right: pos.right }
+      }
+    >
+      <button
+        type="button"
+        onClick={() => {
+          setModal("name");
+          setOpen(false);
+        }}
+        className="flex w-full items-center gap-2 px-3 py-2 text-left text-ink-700 hover:bg-ink-50"
+      >
+        <Pencil className="h-3.5 w-3.5" /> Cambiar nombre
+      </button>
+      {!isSelf && (
+        <button
+          type="button"
+          onClick={() => {
+            setModal("role");
+            setOpen(false);
+          }}
+          className="flex w-full items-center gap-2 px-3 py-2 text-left text-ink-700 hover:bg-ink-50"
+        >
+          <UserCog className="h-3.5 w-3.5" /> Cambiar rol
+        </button>
+      )}
+      <button
+        type="button"
+        onClick={() => {
+          setModal("password");
+          setOpen(false);
+        }}
+        className="flex w-full items-center gap-2 px-3 py-2 text-left text-ink-700 hover:bg-ink-50"
+      >
+        <KeyRound className="h-3.5 w-3.5" /> Resetear contraseña
+      </button>
+      {!isSelf && (
+        <button
+          type="button"
+          onClick={() => {
+            setModal("delete");
+            setOpen(false);
+          }}
+          className="flex w-full items-center gap-2 border-t border-ink-100 px-3 py-2 text-left text-rose-700 hover:bg-rose-50"
+        >
+          <Trash2 className="h-3.5 w-3.5" /> Eliminar usuario
+        </button>
+      )}
+    </div>
+  ) : null;
 
   return (
     <>
-      <div className="relative inline-block">
-        <button
-          type="button"
-          onClick={() => setOpen((v) => !v)}
-          onBlur={() => setTimeout(() => setOpen(false), 150)}
-          className="inline-flex h-8 w-8 items-center justify-center rounded-md text-ink-500 hover:bg-ink-100 hover:text-ink-900"
-          aria-label="Acciones del usuario"
-        >
-          <MoreVertical className="h-4 w-4" />
-        </button>
-        {open && (
-          <div className="absolute right-0 z-10 mt-1 w-52 rounded-md border border-ink-200 bg-white py-1 text-sm shadow-lg">
-            <button
-              type="button"
-              onMouseDown={() => {
-                setModal("name");
-                setOpen(false);
-              }}
-              className="flex w-full items-center gap-2 px-3 py-2 text-left text-ink-700 hover:bg-ink-50"
-            >
-              <Pencil className="h-3.5 w-3.5" /> Cambiar nombre
-            </button>
-            {!isSelf && (
-              <button
-                type="button"
-                onMouseDown={() => {
-                  setModal("role");
-                  setOpen(false);
-                }}
-                className="flex w-full items-center gap-2 px-3 py-2 text-left text-ink-700 hover:bg-ink-50"
-              >
-                <UserCog className="h-3.5 w-3.5" /> Cambiar rol
-              </button>
-            )}
-            <button
-              type="button"
-              onMouseDown={() => {
-                setModal("password");
-                setOpen(false);
-              }}
-              className="flex w-full items-center gap-2 px-3 py-2 text-left text-ink-700 hover:bg-ink-50"
-            >
-              <KeyRound className="h-3.5 w-3.5" /> Resetear contraseña
-            </button>
-            {!isSelf && (
-              <button
-                type="button"
-                onMouseDown={() => {
-                  setModal("delete");
-                  setOpen(false);
-                }}
-                className="flex w-full items-center gap-2 border-t border-ink-100 px-3 py-2 text-left text-rose-700 hover:bg-rose-50"
-              >
-                <Trash2 className="h-3.5 w-3.5" /> Eliminar usuario
-              </button>
-            )}
-          </div>
-        )}
-      </div>
+      <button
+        ref={buttonRef}
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        className="inline-flex h-8 w-8 items-center justify-center rounded-md text-ink-500 hover:bg-ink-100 hover:text-ink-900"
+        aria-label="Acciones del usuario"
+        aria-expanded={open}
+      >
+        <MoreVertical className="h-4 w-4" />
+      </button>
+      {mounted && menu && createPortal(menu, document.body)}
 
       {modal === "name" && (
         <ChangeNameModal
