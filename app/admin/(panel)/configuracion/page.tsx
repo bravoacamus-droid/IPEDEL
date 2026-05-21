@@ -1,6 +1,8 @@
 import { createClient } from "@/lib/supabase/server";
+import { requireSectionAccess } from "@/lib/auth/rbac";
 
 export default async function ConfiguracionPage() {
+  await requireSectionAccess("configuracion");
   const supabase = await createClient();
   const {
     data: { user },

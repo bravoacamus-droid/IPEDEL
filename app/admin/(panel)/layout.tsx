@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { redirect } from "next/navigation";
+import Image from "next/image";
 import {
   LayoutDashboard,
   Package,
@@ -8,41 +8,42 @@ import {
   Users,
   FileEdit,
   Settings,
+  UserCog,
+  ShieldCheck,
   LogOut,
+  type LucideIcon,
 } from "lucide-react";
-import Image from "next/image";
-import { createClient } from "@/lib/supabase/server";
+import { requireStaff } from "@/lib/auth/rbac";
+import { SECTION_ACCESS, type Section } from "@/lib/auth/rbac";
+import type { UserRole } from "@/lib/types/database";
 
 export const dynamic = "force-dynamic";
 
+type NavItem = {
+  section: Section;
+  href: string;
+  label: string;
+  icon: LucideIcon;
+};
+
+const NAV: NavItem[] = [
+  { section: "dashboard", href: "/admin", label: "Panel", icon: LayoutDashboard },
+  { section: "embarques", href: "/admin/embarques", label: "Embarques", icon: Package },
+  { section: "reclamaciones", href: "/admin/reclamaciones", label: "Reclamaciones", icon: FileText },
+  { section: "tarifario", href: "/admin/tarifario", label: "Tarifario", icon: DollarSign },
+  { section: "agentes", href: "/admin/agentes", label: "Agentes", icon: Users },
+  { section: "contenido", href: "/admin/contenido", label: "Contenido web", icon: FileEdit },
+  { section: "usuarios", href: "/admin/usuarios", label: "Usuarios", icon: UserCog },
+  { section: "configuracion", href: "/admin/configuracion", label: "Configuración", icon: Settings },
+];
+
+function navFor(role: UserRole): NavItem[] {
+  return NAV.filter((n) => SECTION_ACCESS[n.section].includes(role));
+}
+
 export default async function AdminPanelLayout({ children }: { children: React.ReactNode }) {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) redirect("/admin/login");
-
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("full_name, role, email")
-    .eq("id", user.id)
-    .maybeSingle();
-
-  // Hard gate: must be staff (admin or operator). Any user without a profile row
-  // shouldn't reach this page, but if they do, send them to login.
-  if (!profile || (profile.role !== "admin" && profile.role !== "operator")) {
-    redirect("/admin/login?error=role");
-  }
-
-  const nav = [
-    { href: "/admin", label: "Panel", icon: LayoutDashboard },
-    { href: "/admin/embarques", label: "Embarques", icon: Package },
-    { href: "/admin/reclamaciones", label: "Reclamaciones", icon: FileText },
-    { href: "/admin/tarifario", label: "Tarifario", icon: DollarSign },
-    { href: "/admin/agentes", label: "Agentes", icon: Users },
-    { href: "/admin/contenido", label: "Contenido web", icon: FileEdit },
-    { href: "/admin/configuracion", label: "Configuración", icon: Settings },
-  ];
+  const staff = await requireStaff();
+  const nav = navFor(staff.role);
 
   return (
     <div className="flex min-h-screen bg-ink-50">
@@ -70,9 +71,31 @@ export default async function AdminPanelLayout({ children }: { children: React.R
           ))}
         </nav>
         <div className="border-t border-ink-800 px-4 py-4 text-xs">
-          <p className="text-ink-300">{profile.full_name || user.email}</p>
-          <p className="text-ink-500 capitalize">{profile.role}</p>
-          <form action="/admin/logout" method="post" className="mt-3">
+          <Link
+            href="/admin/mi-cuenta"
+            className="-mx-2 mb-3 block rounded-md px-2 py-2 hover:bg-ink-800"
+          >
+            <p className="flex items-center gap-1.5 text-ink-300">
+              <ShieldCheck
+                className={
+                  staff.role === "admin"
+                    ? "h-3 w-3 text-brand-400"
+                    : "h-3 w-3 text-ink-500"
+                }
+              />
+              <span className="truncate">{staff.fullName || staff.email}</span>
+            </p>
+            <p
+              className={
+                staff.role === "admin"
+                  ? "mt-0.5 capitalize text-brand-300 font-medium"
+                  : "mt-0.5 capitalize text-ink-500"
+              }
+            >
+              {staff.role === "admin" ? "Administrador" : "Operador"}
+            </p>
+          </Link>
+          <form action="/admin/logout" method="post">
             <button
               type="submit"
               className="inline-flex items-center gap-2 text-ink-300 hover:text-white"

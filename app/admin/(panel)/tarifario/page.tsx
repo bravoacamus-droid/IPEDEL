@@ -1,8 +1,10 @@
 import { createClient } from "@/lib/supabase/server";
 import type { Tarifa } from "@/lib/types/database";
 import { TarifaEditor } from "./TarifaEditor";
+import { requireSectionAccess } from "@/lib/auth/rbac";
 
 export default async function AdminTarifarioPage() {
+  await requireSectionAccess("tarifario");
   const supabase = await createClient();
   const { data } = await supabase
     .from("tarifario")

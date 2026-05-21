@@ -1,8 +1,10 @@
 import { createClient } from "@/lib/supabase/server";
 import type { SiteContent } from "@/lib/types/database";
 import { ContentEditor } from "./ContentEditor";
+import { requireSectionAccess } from "@/lib/auth/rbac";
 
 export default async function ContenidoPage() {
+  await requireSectionAccess("contenido");
   const supabase = await createClient();
   const { data } = await supabase
     .from("site_content")

@@ -3,8 +3,10 @@ import { Plus } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import type { Agent } from "@/lib/types/database";
 import { AgentToggle } from "./AgentToggle";
+import { requireSectionAccess } from "@/lib/auth/rbac";
 
 export default async function AdminAgentesPage() {
+  await requireSectionAccess("agentes");
   const supabase = await createClient();
   const { data } = await supabase.from("agents").select("*").order("display_order");
   const list = (data as Agent[]) || [];

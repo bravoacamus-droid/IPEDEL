@@ -1,8 +1,10 @@
 import Link from "next/link";
 import { Package, FileText, DollarSign, Users, ArrowRight } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
+import { requireSectionAccess } from "@/lib/auth/rbac";
 
 export default async function AdminDashboard() {
+  await requireSectionAccess("dashboard");
   const supabase = await createClient();
 
   const [shipmentsActive, shipmentsDelivered, reclamacionesPend, agentes, tarifas] =
