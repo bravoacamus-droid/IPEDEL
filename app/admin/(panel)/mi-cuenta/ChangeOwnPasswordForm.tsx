@@ -1,20 +1,20 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import { toast } from "sonner";
 import { changeOwnPassword } from "../usuarios/actions";
 
 export function ChangeOwnPasswordForm() {
   const [pending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<string | null>(null);
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const fd = new FormData(e.currentTarget);
+    const form = e.currentTarget;
+    const fd = new FormData(form);
     const pwd = String(fd.get("password") || "");
     const confirm = String(fd.get("password_confirm") || "");
     setError(null);
-    setSuccess(null);
 
     if (pwd !== confirm) {
       setError("Las contraseñas no coinciden.");
@@ -27,8 +27,10 @@ export function ChangeOwnPasswordForm() {
         setError(res.error);
         return;
       }
-      setSuccess("Contraseña actualizada correctamente.");
-      (e.target as HTMLFormElement).reset();
+      toast.success("Contraseña actualizada", {
+        description: "Cerrá sesión y volvé a entrar para usarla.",
+      });
+      form.reset();
     });
   }
 
@@ -61,7 +63,6 @@ export function ChangeOwnPasswordForm() {
         />
       </div>
       {error && <p className="text-sm text-rose-600">{error}</p>}
-      {success && <p className="text-sm text-brand-700">{success}</p>}
       <button type="submit" disabled={pending} className="btn-primary">
         {pending ? "Guardando…" : "Cambiar contraseña"}
       </button>

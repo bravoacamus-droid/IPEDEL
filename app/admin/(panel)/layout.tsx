@@ -13,6 +13,7 @@ import {
   LogOut,
   type LucideIcon,
 } from "lucide-react";
+import { Toaster } from "sonner";
 import { requireStaff } from "@/lib/auth/rbac";
 import { SECTION_ACCESS, type Section } from "@/lib/auth/rbac";
 import type { UserRole } from "@/lib/types/database";
@@ -116,6 +117,7 @@ export default async function AdminPanelLayout({ children }: { children: React.R
         </header>
         <main className="p-6 lg:p-8">{children}</main>
       </div>
+      <Toaster position="top-right" richColors closeButton />
     </div>
   );
 }

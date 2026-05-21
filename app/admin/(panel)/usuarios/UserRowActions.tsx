@@ -3,6 +3,7 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { MoreVertical, KeyRound, UserCog, Trash2, Pencil } from "lucide-react";
+import { toast } from "sonner";
 import type { UserRole } from "@/lib/types/database";
 import {
   deleteUser,
@@ -181,6 +182,7 @@ function ChangeNameModal({
         setError(res.error);
         return;
       }
+      toast.success("Nombre actualizado");
       onClose();
       router.refresh();
     });
@@ -236,6 +238,7 @@ function ChangeRoleModal({
         setError(res.error);
         return;
       }
+      toast.success("Rol actualizado");
       onClose();
       router.refresh();
     });
@@ -349,6 +352,7 @@ function DeleteUserModal({
         setError(res.error);
         return;
       }
+      toast.success("Usuario eliminado");
       onClose();
       router.refresh();
     });

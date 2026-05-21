@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Pencil, Plus } from "lucide-react";
+import { Download, Pencil, Plus } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import {
   ACTIVE_SHIPMENT_STATUSES,
@@ -32,9 +32,17 @@ export default async function EmbarquesPage({
           <h1 className="text-2xl font-semibold text-ink-900">Embarques</h1>
           <p className="text-sm text-ink-600">{shipments.length} resultados</p>
         </div>
-        <Link href="/admin/embarques/nuevo" className="btn-primary">
-          <Plus className="h-4 w-4" /> Nuevo embarque
-        </Link>
+        <div className="flex items-center gap-2">
+          <a
+            href={`/admin/embarques/export${status || q ? `?${new URLSearchParams({ ...(status ? { status } : {}), ...(q ? { q } : {}) }).toString()}` : ""}`}
+            className="inline-flex items-center gap-2 rounded-md border border-ink-200 bg-white px-3 py-2 text-sm font-medium text-ink-700 hover:bg-ink-50"
+          >
+            <Download className="h-4 w-4" /> Exportar CSV
+          </a>
+          <Link href="/admin/embarques/nuevo" className="btn-primary">
+            <Plus className="h-4 w-4" /> Nuevo embarque
+          </Link>
+        </div>
       </div>
 
       <form className="card p-4 flex flex-wrap items-end gap-3">
