@@ -10,12 +10,14 @@ import {
   Settings,
   UserCog,
   ShieldCheck,
+  ScrollText,
   LogOut,
   type LucideIcon,
 } from "lucide-react";
 import { Toaster } from "sonner";
 import { requireStaff } from "@/lib/auth/rbac";
 import { SECTION_ACCESS, type Section } from "@/lib/auth/rbac";
+import { createClient } from "@/lib/supabase/server";
 import type { UserRole } from "@/lib/types/database";
 
 export const dynamic = "force-dynamic";
@@ -35,6 +37,7 @@ const NAV: NavItem[] = [
   { section: "agentes", href: "/admin/agentes", label: "Agentes", icon: Users },
   { section: "contenido", href: "/admin/contenido", label: "Contenido web", icon: FileEdit },
   { section: "usuarios", href: "/admin/usuarios", label: "Usuarios", icon: UserCog },
+  { section: "auditoria", href: "/admin/auditoria", label: "Auditoría", icon: ScrollText },
   { section: "configuracion", href: "/admin/configuracion", label: "Configuración", icon: Settings },
 ];
 
@@ -45,6 +48,20 @@ function navFor(role: UserRole): NavItem[] {
 export default async function AdminPanelLayout({ children }: { children: React.ReactNode }) {
   const staff = await requireStaff();
   const nav = navFor(staff.role);
+
+  // Contador de reclamaciones pendientes para mostrar como badge
+  // junto al item "Reclamaciones". Solo se calcula si el rol tiene
+  // acceso a esa sección.
+  let pendingReclamaciones = 0;
+  if (SECTION_ACCESS.reclamaciones.includes(staff.role)) {
+    const supabase = await createClient();
+    const { count } = await supabase
+      .from("reclamaciones")
+      .select("id", { count: "exact", head: true })
+      .eq("estado", "pendiente")
+      .is("deleted_at", null);
+    pendingReclamaciones = count ?? 0;
+  }
 
   return (
     <div className="flex min-h-screen bg-ink-50">
@@ -60,16 +77,28 @@ export default async function AdminPanelLayout({ children }: { children: React.R
           <span className="text-xs uppercase tracking-wider text-brand-300">Admin</span>
         </div>
         <nav className="flex-1 px-3 py-4 space-y-1">
-          {nav.map((n) => (
-            <Link
-              key={n.href}
-              href={n.href}
-              className="flex items-center gap-3 rounded-md px-3 py-2 text-sm text-ink-200 hover:bg-ink-800 hover:text-white"
-            >
-              <n.icon className="h-4 w-4" />
-              {n.label}
-            </Link>
-          ))}
+          {nav.map((n) => {
+            const showBadge =
+              n.section === "reclamaciones" && pendingReclamaciones > 0;
+            return (
+              <Link
+                key={n.href}
+                href={n.href}
+                className="flex items-center gap-3 rounded-md px-3 py-2 text-sm text-ink-200 hover:bg-ink-800 hover:text-white"
+              >
+                <n.icon className="h-4 w-4" />
+                <span className="flex-1">{n.label}</span>
+                {showBadge && (
+                  <span
+                    className="inline-flex min-w-[1.25rem] items-center justify-center rounded-full bg-rose-500 px-1.5 py-0.5 text-[10px] font-bold text-white"
+                    aria-label={`${pendingReclamaciones} reclamaciones pendientes`}
+                  >
+                    {pendingReclamaciones > 99 ? "99+" : pendingReclamaciones}
+                  </span>
+                )}
+              </Link>
+            );
+          })}
         </nav>
         <div className="border-t border-ink-800 px-4 py-4 text-xs">
           <Link

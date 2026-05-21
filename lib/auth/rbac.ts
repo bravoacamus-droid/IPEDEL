@@ -20,6 +20,7 @@ export const SECTION_ACCESS = {
   contenido: ["admin"] as UserRole[],
   configuracion: ["admin"] as UserRole[],
   usuarios: ["admin"] as UserRole[],
+  auditoria: ["admin"] as UserRole[],
 } as const;
 
 export type Section = keyof typeof SECTION_ACCESS;

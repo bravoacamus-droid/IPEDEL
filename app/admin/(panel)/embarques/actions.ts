@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
+import { logAudit } from "@/lib/auth/audit";
 
 const ShipmentSchema = z.object({
   hbl_number: z.string().min(3),
@@ -68,6 +69,14 @@ export async function createShipment(formData: FormData) {
 
   if (error) return { error: { _form: [error.message] } } as const;
 
+  await logAudit({
+    action: "create",
+    entityType: "shipment",
+    entityId: data.id,
+    entityLabel: parsed.data.hbl_number,
+    changes: { status: parsed.data.status, mode: parsed.data.mode },
+  });
+
   revalidatePath("/admin/embarques");
   redirect(`/admin/embarques/${data.id}`);
 }
@@ -88,6 +97,14 @@ export async function updateShipment(id: string, formData: FormData) {
   const { error } = await supabase.from("shipments").update(payload).eq("id", id);
   if (error) return { error: { _form: [error.message] } } as const;
 
+  await logAudit({
+    action: "update",
+    entityType: "shipment",
+    entityId: id,
+    entityLabel: parsed.data.hbl_number,
+    changes: { status: parsed.data.status, mode: parsed.data.mode },
+  });
+
   revalidatePath("/admin/embarques");
   revalidatePath(`/admin/embarques/${id}`);
   return { ok: true } as const;
@@ -95,8 +112,22 @@ export async function updateShipment(id: string, formData: FormData) {
 
 export async function deleteShipment(id: string) {
   const supabase = await createClient();
+  const { data: before } = await supabase
+    .from("shipments")
+    .select("hbl_number, status")
+    .eq("id", id)
+    .maybeSingle();
   const { error } = await supabase.from("shipments").delete().eq("id", id);
   if (error) return { error: error.message } as const;
+
+  await logAudit({
+    action: "delete",
+    entityType: "shipment",
+    entityId: id,
+    entityLabel: before?.hbl_number ?? id,
+    changes: before ? { status: before.status } : null,
+  });
+
   revalidatePath("/admin/embarques");
   redirect("/admin/embarques");
 }
@@ -142,6 +173,18 @@ export async function addShipmentEvent(formData: FormData) {
   });
   if (error) return { error: { _form: [error.message] } } as const;
 
+  await logAudit({
+    action: "create",
+    entityType: "shipment_event",
+    entityId: parsed.data.shipment_id,
+    entityLabel: parsed.data.status_label,
+    changes: {
+      event_date: parsed.data.event_date,
+      location: parsed.data.location || null,
+      is_current: isCurrent,
+    },
+  });
+
   revalidatePath(`/admin/embarques/${parsed.data.shipment_id}`);
   return { ok: true } as const;
 }
@@ -150,6 +193,12 @@ export async function deleteShipmentEvent(eventId: string, shipmentId: string) {
   const supabase = await createClient();
   const { error } = await supabase.from("shipment_events").delete().eq("id", eventId);
   if (error) return { error: error.message } as const;
+  await logAudit({
+    action: "delete",
+    entityType: "shipment_event",
+    entityId: shipmentId,
+    entityLabel: `evento ${eventId.slice(0, 8)}`,
+  });
   revalidatePath(`/admin/embarques/${shipmentId}`);
   return { ok: true } as const;
 }
