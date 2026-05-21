@@ -8,9 +8,14 @@ import { DeleteReclamacionButton } from "./DeleteReclamacionButton";
 export default async function ReclamacionesPage({
   searchParams,
 }: {
-  searchParams: Promise<{ q?: string; estado?: string }>;
+  searchParams: Promise<{
+    q?: string;
+    estado?: string;
+    from?: string;
+    to?: string;
+  }>;
 }) {
-  const { q, estado } = await searchParams;
+  const { q, estado, from, to } = await searchParams;
   const supabase = await createClient();
 
   // Solo trae reclamaciones activas (no soft-deleted). Las eliminadas
@@ -24,6 +29,8 @@ export default async function ReclamacionesPage({
     .order("fecha", { ascending: false })
     .limit(200);
   if (estado) query = query.eq("estado", estado);
+  if (from) query = query.gte("fecha", `${from}T00:00:00`);
+  if (to) query = query.lte("fecha", `${to}T23:59:59`);
   if (q) {
     const num = Number(q.replace(/\D/g, ""));
     if (!Number.isNaN(num) && num > 0) {
@@ -49,7 +56,16 @@ export default async function ReclamacionesPage({
           </p>
         </div>
         <a
-          href={`/admin/reclamaciones/export${q || estado ? `?${new URLSearchParams({ ...(q ? { q } : {}), ...(estado ? { estado } : {}) }).toString()}` : ""}`}
+          href={`/admin/reclamaciones/export${
+            q || estado || from || to
+              ? `?${new URLSearchParams({
+                  ...(q ? { q } : {}),
+                  ...(estado ? { estado } : {}),
+                  ...(from ? { from } : {}),
+                  ...(to ? { to } : {}),
+                }).toString()}`
+              : ""
+          }`}
           className="inline-flex items-center gap-2 rounded-md border border-ink-200 bg-white px-3 py-2 text-sm font-medium text-ink-700 hover:bg-ink-50"
         >
           <Download className="h-4 w-4" /> Exportar CSV
@@ -85,10 +101,34 @@ export default async function ReclamacionesPage({
             <option value="cerrado">Cerrado</option>
           </select>
         </div>
+        <div>
+          <label className="label" htmlFor="from">
+            Desde
+          </label>
+          <input
+            id="from"
+            name="from"
+            type="date"
+            defaultValue={from || ""}
+            className="input"
+          />
+        </div>
+        <div>
+          <label className="label" htmlFor="to">
+            Hasta
+          </label>
+          <input
+            id="to"
+            name="to"
+            type="date"
+            defaultValue={to || ""}
+            className="input"
+          />
+        </div>
         <button type="submit" className="btn-primary">
           Filtrar
         </button>
-        {(q || estado) && (
+        {(q || estado || from || to) && (
           <Link
             href="/admin/reclamaciones"
             className="text-sm text-ink-500 hover:text-ink-900"

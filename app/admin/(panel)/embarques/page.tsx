@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Download, Pencil, Plus } from "lucide-react";
+import { Download, FileSpreadsheet, Pencil, Plus } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import {
   ACTIVE_SHIPMENT_STATUSES,
@@ -11,9 +11,14 @@ import { formatDate } from "@/lib/utils";
 export default async function EmbarquesPage({
   searchParams,
 }: {
-  searchParams: Promise<{ status?: string; q?: string }>;
+  searchParams: Promise<{
+    status?: string;
+    q?: string;
+    from?: string;
+    to?: string;
+  }>;
 }) {
-  const { status, q } = await searchParams;
+  const { status, q, from, to } = await searchParams;
   const supabase = await createClient();
   let query = supabase
     .from("shipments")
@@ -22,8 +27,19 @@ export default async function EmbarquesPage({
     .limit(200);
   if (status) query = query.eq("status", status);
   if (q) query = query.ilike("hbl_number", `%${q}%`);
+  if (from) query = query.gte("created_at", `${from}T00:00:00`);
+  if (to) query = query.lte("created_at", `${to}T23:59:59`);
   const { data } = await query;
   const shipments = (data as Shipment[]) || [];
+
+  // URLSearchParams compartido para los 3 destinos (lista / CSV / XLSX)
+  const queryString = new URLSearchParams({
+    ...(status ? { status } : {}),
+    ...(q ? { q } : {}),
+    ...(from ? { from } : {}),
+    ...(to ? { to } : {}),
+  }).toString();
+  const exportSuffix = queryString ? `?${queryString}` : "";
 
   return (
     <div className="space-y-6">
@@ -34,10 +50,18 @@ export default async function EmbarquesPage({
         </div>
         <div className="flex items-center gap-2">
           <a
-            href={`/admin/embarques/export${status || q ? `?${new URLSearchParams({ ...(status ? { status } : {}), ...(q ? { q } : {}) }).toString()}` : ""}`}
+            href={`/admin/embarques/export${exportSuffix}`}
             className="inline-flex items-center gap-2 rounded-md border border-ink-200 bg-white px-3 py-2 text-sm font-medium text-ink-700 hover:bg-ink-50"
+            title="Exportar a CSV"
           >
-            <Download className="h-4 w-4" /> Exportar CSV
+            <Download className="h-4 w-4" /> CSV
+          </a>
+          <a
+            href={`/admin/embarques/export/xlsx${exportSuffix}`}
+            className="inline-flex items-center gap-2 rounded-md border border-brand-300 bg-brand-50 px-3 py-2 text-sm font-medium text-brand-800 hover:bg-brand-100"
+            title="Exportar a Excel branded"
+          >
+            <FileSpreadsheet className="h-4 w-4" /> Excel
           </a>
           <Link href="/admin/embarques/nuevo" className="btn-primary">
             <Plus className="h-4 w-4" /> Nuevo embarque
@@ -61,8 +85,28 @@ export default async function EmbarquesPage({
             ))}
           </select>
         </div>
+        <div>
+          <label className="label" htmlFor="from">Desde</label>
+          <input
+            id="from"
+            name="from"
+            type="date"
+            defaultValue={from || ""}
+            className="input"
+          />
+        </div>
+        <div>
+          <label className="label" htmlFor="to">Hasta</label>
+          <input
+            id="to"
+            name="to"
+            type="date"
+            defaultValue={to || ""}
+            className="input"
+          />
+        </div>
         <button type="submit" className="btn-primary">Filtrar</button>
-        {(status || q) && (
+        {(status || q || from || to) && (
           <Link href="/admin/embarques" className="text-sm text-ink-500 hover:text-ink-900">
             Limpiar
           </Link>

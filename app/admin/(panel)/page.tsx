@@ -56,12 +56,12 @@ export default async function AdminDashboard() {
     nextEtas,
     recentShipments,
   ] = await Promise.all([
-    // Embarques de los últimos 12 meses (para charts + deltas).
+    // Embarques de los últimos 12 meses (para charts + deltas + tops).
     supabase
       .from("shipments")
-      .select("id, status, mode, created_at, weight_kg, volumen_cbm, eta")
+      .select("id, status, mode, created_at, weight_kg, volumen_cbm, eta, origin, destination")
       .gte("created_at", last12Start.toISOString()),
-    // Reclamaciones activas para alertas + SLA.
+    // Reclamaciones activas para alertas + SLA + chart por mes.
     supabase
       .from("reclamaciones")
       .select("id, numero_correlativo, nombres, apellidos, fecha, estado, bien_servicio")
@@ -86,7 +86,7 @@ export default async function AdminDashboard() {
 
   const allShipments = (shipmentsLast12.data ?? []) as Pick<
     Shipment,
-    "id" | "status" | "mode" | "created_at" | "weight_kg" | "volumen_cbm" | "eta"
+    "id" | "status" | "mode" | "created_at" | "weight_kg" | "volumen_cbm" | "eta" | "origin" | "destination"
   >[];
   const allReclamaciones = (reclamacionesActivas.data ?? []) as Pick<
     Reclamacion,
@@ -183,6 +183,31 @@ export default async function AdminDashboard() {
     label: SHIPMENT_STATUS_LABELS[st].es,
     value: allShipments.filter((s) => s.status === st).length,
   })).filter((b) => b.value > 0);
+
+  // Reclamaciones por mes (últimos 6 meses), bar chart en paralelo
+  // al de embarques.
+  const recBuckets: { key: string; label: string; count: number }[] = [];
+  for (let i = 5; i >= 0; i--) {
+    const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+    recBuckets.push({
+      key: `${d.getFullYear()}-${d.getMonth()}`,
+      label: MONTHS_ES[d.getMonth()],
+      count: 0,
+    });
+  }
+  for (const r of allReclamaciones) {
+    const d = new Date(r.fecha);
+    const k = `${d.getFullYear()}-${d.getMonth()}`;
+    const bucket = recBuckets.find((b) => b.key === k);
+    if (bucket) bucket.count++;
+  }
+
+  // Top destinos / orígenes — útil para identificar rutas dominantes
+  // y enfocar negociaciones con líneas / agentes. Normaliza el string
+  // y agrupa por valor exacto. Toma top 6.
+  const TOP_N = 6;
+  const topDest = topGroupBy(allShipments, (s) => s.destination, TOP_N);
+  const topOri = topGroupBy(allShipments, (s) => s.origin, TOP_N);
 
   // ---------- Render ----------
 
@@ -337,6 +362,82 @@ export default async function AdminDashboard() {
                 value: byMode.reduce((a, s) => a + s.value, 0),
                 sub: "total",
               }}
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* Reclamaciones por mes — paralelo al chart de embarques */}
+      <div className="grid gap-6 lg:grid-cols-3">
+        <div className="card p-6 lg:col-span-2">
+          <h2 className="text-sm font-semibold text-ink-700">
+            Reclamaciones por mes — últimos 6 meses
+          </h2>
+          <p className="mt-0.5 text-xs text-ink-500">
+            Total {recBuckets.reduce((a, b) => a + b.count, 0)} reclamaciones
+            recibidas
+          </p>
+          <div className="mt-4">
+            <BarChart
+              data={recBuckets.map((b) => ({ label: b.label, value: b.count }))}
+              height={200}
+              emptyMessage="Sin reclamaciones en los últimos 6 meses"
+            />
+          </div>
+        </div>
+        <div className="card p-6">
+          <h2 className="text-sm font-semibold text-ink-700">
+            Reclamaciones por estado
+          </h2>
+          <p className="mt-0.5 text-xs text-ink-500">Activas en sistema</p>
+          <div className="mt-5">
+            <HorizontalBars
+              data={[
+                {
+                  label: "Pendientes",
+                  value: reclamacionesPendientes.length,
+                  color: "#e11d48",
+                },
+                {
+                  label: "Atendidas",
+                  value: allReclamaciones.filter((r) => r.estado === "atendido").length,
+                  color: "#f59e0b",
+                },
+                {
+                  label: "Cerradas",
+                  value: allReclamaciones.filter((r) => r.estado === "cerrado").length,
+                  color: "#96c600",
+                },
+              ].filter((d) => d.value > 0)}
+              emptyMessage="Sin reclamaciones activas"
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* Top destinos y orígenes */}
+      <div className="grid gap-6 lg:grid-cols-2">
+        <div className="card p-6">
+          <h2 className="text-sm font-semibold text-ink-700">Top destinos</h2>
+          <p className="mt-0.5 text-xs text-ink-500">
+            Ciudades / puertos más frecuentes — últimos 12 meses
+          </p>
+          <div className="mt-5">
+            <HorizontalBars
+              data={topDest}
+              emptyMessage="Aún no hay datos de destinos"
+            />
+          </div>
+        </div>
+        <div className="card p-6">
+          <h2 className="text-sm font-semibold text-ink-700">Top orígenes</h2>
+          <p className="mt-0.5 text-xs text-ink-500">
+            Ciudades / puertos más frecuentes — últimos 12 meses
+          </p>
+          <div className="mt-5">
+            <HorizontalBars
+              data={topOri.map((d) => ({ ...d, color: "#0ea5e9" }))}
+              emptyMessage="Aún no hay datos de orígenes"
             />
           </div>
         </div>
@@ -630,4 +731,26 @@ function formatDelta(curr: number, prev: number): string {
   const pct = ((curr - prev) / prev) * 100;
   const arrow = pct >= 0 ? "↑" : "↓";
   return `${arrow} ${Math.abs(pct).toFixed(0)}% vs mes anterior`;
+}
+
+// Agrupa un array por la clave que devuelve el accessor, cuenta
+// ocurrencias y devuelve los top N como { label, value } listos para
+// HorizontalBars. Ignora valores nulos/vacíos.
+function topGroupBy<T>(
+  rows: T[],
+  accessor: (row: T) => string | null | undefined,
+  n: number,
+): { label: string; value: number }[] {
+  const counts = new Map<string, number>();
+  for (const r of rows) {
+    const v = accessor(r);
+    if (!v) continue;
+    const key = v.trim();
+    if (!key) continue;
+    counts.set(key, (counts.get(key) ?? 0) + 1);
+  }
+  return [...counts.entries()]
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, n)
+    .map(([label, value]) => ({ label, value }));
 }
