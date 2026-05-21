@@ -142,7 +142,7 @@ export function ReclamacionPDF({
             <Text>IPE DEL PERU S.A.C.</Text>
             <Text>RUC 20197900378</Text>
             <Text>Calle el Boulevard 182, of. 901, Surco — Lima 33</Text>
-            <Text>+511 304-5520 · ventas@ipedelperu.com</Text>
+            <Text>+511 304-5520 · consultas@ipeperu.com</Text>
           </View>
         </View>
 
@@ -217,7 +217,7 @@ export function ReclamacionPDF({
         </Text>
 
         <Text style={styles.footer}>
-          IPE DEL PERU S.A.C. · RUC 20197900378 · ventas@ipedelperu.com · ipedelperu.com
+          IPE DEL PERU S.A.C. · RUC 20197900378 · consultas@ipeperu.com · ipeperu.com
         </Text>
       </Page>
     </Document>

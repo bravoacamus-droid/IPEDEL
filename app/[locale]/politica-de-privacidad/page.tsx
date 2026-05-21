@@ -87,16 +87,16 @@ export default async function PoliticaPrivacidad({
           {isEs ? (
             <>
               El titular puede ejercer sus derechos de Acceso, Rectificación, Cancelación y Oposición escribiendo a{" "}
-              <a className="text-brand-700 underline" href="mailto:ventas@ipedelperu.com">
-                ventas@ipedelperu.com
+              <a className="text-brand-700 underline" href="mailto:consultas@ipeperu.com">
+                consultas@ipeperu.com
               </a>
               .
             </>
           ) : (
             <>
               Data subjects can exercise their rights of Access, Rectification, Cancellation and Objection by writing to{" "}
-              <a className="text-brand-700 underline" href="mailto:ventas@ipedelperu.com">
-                ventas@ipedelperu.com
+              <a className="text-brand-700 underline" href="mailto:consultas@ipeperu.com">
+                consultas@ipeperu.com
               </a>
               .
             </>

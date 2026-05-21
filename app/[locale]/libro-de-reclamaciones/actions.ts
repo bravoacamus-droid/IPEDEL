@@ -109,7 +109,7 @@ export async function submitReclamacion(
     const summary = `Reclamación N° ${data.numero_correlativo}\nTipo: ${d.tipo}\nNombre: ${d.nombres} ${d.apellidos}\nDocumento: ${d.tipo_documento} ${d.numero_documento}\nUbicación: ${ubicacion}\nEmail: ${d.email}\nServicio: ${d.bien_servicio}\n\nDetalle:\n${d.detalle}\n\nPedido:\n${d.pedido_consumidor}`;
     await Promise.all([
       sendMail({
-        to: process.env.RECLAMOS_NOTIFY_TO || "ventas@ipedelperu.com",
+        to: process.env.EMAIL_TO_CONSULTAS || "consultas@ipeperu.com",
         subject: `[LDR] Nueva reclamación N° ${data.numero_correlativo}`,
         text: summary,
       }),

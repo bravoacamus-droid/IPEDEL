@@ -75,7 +75,7 @@ export default function OG() {
           }}
         >
           <span>RUC 20197900378</span>
-          <span>ipedelperu.com</span>
+          <span>ipeperu.com</span>
         </div>
       </div>
     ),

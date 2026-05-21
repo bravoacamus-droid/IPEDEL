@@ -10,7 +10,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://ipedelperu.com"),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://ipeperu.com"),
   title: {
     default: "IPE del Perú SAC — Agente de carga internacional",
     template: "%s · IPE del Perú",

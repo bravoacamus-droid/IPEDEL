@@ -21,7 +21,7 @@ const STATIC_ROUTES = [
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const base = process.env.NEXT_PUBLIC_SITE_URL || "https://ipedelperu.com";
+  const base = process.env.NEXT_PUBLIC_SITE_URL || "https://ipeperu.com";
   const now = new Date();
   const entries: MetadataRoute.Sitemap = [];
 

@@ -34,7 +34,7 @@ export type SendMailInput = {
 export async function sendMail(input: SendMailInput) {
   const t = getTransporter();
   if (!t) throw new Error("SMTP no configurado (faltan SMTP_HOST/USER/PASS).");
-  const from = process.env.SMTP_FROM || "IPE del Perú <noreply@ipedelperu.com>";
+  const from = process.env.SMTP_FROM || "IPE del Perú <noreply@ipeperu.com>";
   return t.sendMail({ from, ...input });
 }
 

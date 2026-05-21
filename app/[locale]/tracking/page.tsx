@@ -223,7 +223,7 @@ export default async function TrackingPage({
               </div>
               <div className="card p-6 text-sm text-ink-700">
                 <p className="font-semibold">+511 304-5520</p>
-                <p className="text-ink-500">ventas@ipedelperu.com</p>
+                <p className="text-ink-500">consultas@ipeperu.com</p>
               </div>
             </aside>
           </div>

@@ -36,7 +36,7 @@ export default async function ConfiguracionPage() {
           </div>
           <div>
             <dt className="text-ink-500">Email</dt>
-            <dd className="text-ink-900">ventas@ipedelperu.com</dd>
+            <dd className="text-ink-900">consultas@ipeperu.com</dd>
           </div>
           <div className="col-span-2">
             <dt className="text-ink-500">Dirección</dt>

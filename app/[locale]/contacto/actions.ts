@@ -56,7 +56,7 @@ export async function submitContact(_prev: ContactState, formData: FormData): Pr
   // Best-effort email notification — don't fail the form if SMTP isn't configured.
   try {
     await sendMail({
-      to: process.env.CONTACTO_NOTIFY_TO || "ventas@ipedelperu.com",
+      to: process.env.EMAIL_TO_CONSULTAS || "consultas@ipeperu.com",
       subject: `[Web] Contacto: ${asunto}`,
       text: `Nombre: ${nombre}\nEmpresa: ${empresa}\nEmail: ${email}\nTeléfono: ${telefono}\n\n${mensaje}`,
     });

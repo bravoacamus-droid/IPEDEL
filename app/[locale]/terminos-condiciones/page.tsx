@@ -23,8 +23,8 @@ export default async function TerminosCondiciones({
       <section className="container-page max-w-3xl py-10 text-ink-700 space-y-4">
         <p>
           {isEs
-            ? "El presente documento regula el uso del sitio web ipedelperu.com, operado por IPE del Perú SAC (RUC 20197900378). El acceso al sitio implica la aceptación de estos términos."
-            : "This document governs the use of the ipedelperu.com website, operated by IPE del Perú SAC (RUC 20197900378). Accessing the site implies acceptance of these terms."}
+            ? "El presente documento regula el uso del sitio web ipeperu.com, operado por IPE del Perú SAC (RUC 20197900378). El acceso al sitio implica la aceptación de estos términos."
+            : "This document governs the use of the ipeperu.com website, operated by IPE del Perú SAC (RUC 20197900378). Accessing the site implies acceptance of these terms."}
         </p>
         <h2 className="text-lg font-semibold text-ink-900">
           {isEs ? "1. Servicios" : "1. Services"}
