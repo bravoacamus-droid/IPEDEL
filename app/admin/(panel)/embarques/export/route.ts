@@ -22,6 +22,8 @@ export async function GET(req: NextRequest) {
   const q = req.nextUrl.searchParams.get("q") || undefined;
   const from = req.nextUrl.searchParams.get("from") || undefined;
   const to = req.nextUrl.searchParams.get("to") || undefined;
+  const dfParam = req.nextUrl.searchParams.get("df") || "eta";
+  const df = ["created_at", "etd", "eta"].includes(dfParam) ? dfParam : "eta";
 
   const supabase = await createClient();
   let query = supabase
@@ -30,8 +32,12 @@ export async function GET(req: NextRequest) {
     .order("created_at", { ascending: false });
   if (status) query = query.eq("status", status);
   if (q) query = query.ilike("hbl_number", `%${q}%`);
-  if (from) query = query.gte("created_at", `${from}T00:00:00`);
-  if (to) query = query.lte("created_at", `${to}T23:59:59`);
+  if (from) {
+    query = query.gte(df, df === "created_at" ? `${from}T00:00:00` : from);
+  }
+  if (to) {
+    query = query.lte(df, df === "created_at" ? `${to}T23:59:59` : to);
+  }
   const { data } = await query;
   const rows = (data as Shipment[]) || [];
 

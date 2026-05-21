@@ -8,6 +8,16 @@ import {
 } from "@/lib/types/database";
 import { formatDate } from "@/lib/utils";
 
+// Campos de fecha disponibles para filtrar embarques. La eleccion se
+// pasa por URL (df=created_at|etd|eta) y se respeta en lista + exports.
+const DATE_FIELDS = ["created_at", "etd", "eta"] as const;
+type DateField = (typeof DATE_FIELDS)[number];
+const DATE_FIELD_LABELS: Record<DateField, string> = {
+  created_at: "Fecha de creación",
+  etd: "Fecha de salida (ETD)",
+  eta: "Fecha de arribo (ETA)",
+};
+
 export default async function EmbarquesPage({
   searchParams,
 }: {
@@ -16,9 +26,14 @@ export default async function EmbarquesPage({
     q?: string;
     from?: string;
     to?: string;
+    df?: string;
   }>;
 }) {
-  const { status, q, from, to } = await searchParams;
+  const { status, q, from, to, df: dfParam } = await searchParams;
+  const df: DateField = (DATE_FIELDS as readonly string[]).includes(dfParam ?? "")
+    ? (dfParam as DateField)
+    : "eta";
+
   const supabase = await createClient();
   let query = supabase
     .from("shipments")
@@ -27,8 +42,14 @@ export default async function EmbarquesPage({
     .limit(200);
   if (status) query = query.eq("status", status);
   if (q) query = query.ilike("hbl_number", `%${q}%`);
-  if (from) query = query.gte("created_at", `${from}T00:00:00`);
-  if (to) query = query.lte("created_at", `${to}T23:59:59`);
+  // Date filter aplicado al campo elegido. Para etd/eta (DATE) no
+  // hace falta sufijo de hora — Postgres acepta YYYY-MM-DD directo.
+  if (from) {
+    query = query.gte(df, df === "created_at" ? `${from}T00:00:00` : from);
+  }
+  if (to) {
+    query = query.lte(df, df === "created_at" ? `${to}T23:59:59` : to);
+  }
   const { data } = await query;
   const shipments = (data as Shipment[]) || [];
 
@@ -38,6 +59,7 @@ export default async function EmbarquesPage({
     ...(q ? { q } : {}),
     ...(from ? { from } : {}),
     ...(to ? { to } : {}),
+    ...(df !== "eta" ? { df } : {}),
   }).toString();
   const exportSuffix = queryString ? `?${queryString}` : "";
 
@@ -86,6 +108,14 @@ export default async function EmbarquesPage({
           </select>
         </div>
         <div>
+          <label className="label" htmlFor="df">Filtrar fecha por</label>
+          <select id="df" name="df" defaultValue={df} className="input">
+            <option value="eta">ETA (arribo)</option>
+            <option value="etd">ETD (salida)</option>
+            <option value="created_at">Creación</option>
+          </select>
+        </div>
+        <div>
           <label className="label" htmlFor="from">Desde</label>
           <input
             id="from"
@@ -106,7 +136,7 @@ export default async function EmbarquesPage({
           />
         </div>
         <button type="submit" className="btn-primary">Filtrar</button>
-        {(status || q || from || to) && (
+        {(status || q || from || to || df !== "eta") && (
           <Link href="/admin/embarques" className="text-sm text-ink-500 hover:text-ink-900">
             Limpiar
           </Link>
