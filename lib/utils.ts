@@ -5,12 +5,18 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+// Forzamos zona Lima para que la fecha mostrada coincida con la hora
+// peruana, sin depender de la zona del servidor (Vercel: UTC) ni del
+// navegador del usuario.
+const LIMA_TZ = "America/Lima";
+
 export function formatDate(date: string | Date, locale: "es" | "en" = "es") {
   const d = typeof date === "string" ? new Date(date) : date;
   return d.toLocaleDateString(locale === "es" ? "es-PE" : "en-US", {
     year: "numeric",
     month: "long",
     day: "numeric",
+    timeZone: LIMA_TZ,
   });
 }
 
@@ -22,5 +28,6 @@ export function formatDateTime(date: string | Date, locale: "es" | "en" = "es") 
     day: "numeric",
     hour: "2-digit",
     minute: "2-digit",
+    timeZone: LIMA_TZ,
   });
 }

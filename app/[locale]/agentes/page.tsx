@@ -32,8 +32,8 @@ export default async function AgentesPage({
           </h1>
           <p className="mt-3 max-w-2xl text-ink-300">
             {locale === "es"
-              ? "Una red global de socios estratégicos en más de 40 países que respaldan cada operación de IPE del Perú."
-              : "A global network of strategic partners in 40+ countries backing every IPE del Perú operation."}
+              ? "Una red de agentes en más de 40 países que fortalece nuestras operaciones."
+              : "A network of agents in more than 40 countries that strengthens our operations."}
           </p>
         </div>
       </section>

@@ -5,6 +5,7 @@ import { createClient } from "@/lib/supabase/server";
 import type { Reclamacion } from "@/lib/types/database";
 import { formatDateTime } from "@/lib/utils";
 import { RespuestaForm } from "./RespuestaForm";
+import { DeleteReclamacionButton } from "../DeleteReclamacionButton";
 
 export default async function ReclamacionDetail({
   params,
@@ -50,14 +51,21 @@ export default async function ReclamacionDetail({
             </span>
           </p>
         </div>
-        <a
-          href={`/api/reclamaciones/${id}/pdf`}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="btn-primary"
-        >
-          <Download className="h-4 w-4" /> Descargar PDF
-        </a>
+        <div className="flex flex-wrap items-center gap-2">
+          <a
+            href={`/api/reclamaciones/${id}/pdf`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-primary"
+          >
+            <Download className="h-4 w-4" /> Descargar PDF
+          </a>
+          <DeleteReclamacionButton
+            id={r.id}
+            numero={r.numero_correlativo}
+            variant="full"
+          />
+        </div>
       </div>
 
       <div className="grid gap-6 lg:grid-cols-3">

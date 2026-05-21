@@ -18,10 +18,7 @@ export default async function ContactPage({
 
   return (
     <div className="bg-ink-50">
-      <PageBanner
-        title={dict.contact.title}
-        subtitle={dict.contact.subtitle}
-      />
+      <PageBanner title={dict.contact.title} />
 
       <section className="container-page py-16 grid gap-8 lg:grid-cols-3">
         <div className="lg:col-span-2 card p-6 sm:p-8">

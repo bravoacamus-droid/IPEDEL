@@ -2,12 +2,16 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import type { Reclamacion } from "@/lib/types/database";
 import { formatDateTime } from "@/lib/utils";
+import { DeleteReclamacionButton } from "./DeleteReclamacionButton";
 
 export default async function ReclamacionesPage() {
   const supabase = await createClient();
+  // Solo trae reclamaciones activas (no soft-deleted). Las eliminadas
+  // permanecen en DB para cumplir el plazo legal de 2 años (Indecopi).
   const { data } = await supabase
     .from("reclamaciones")
     .select("*")
+    .is("deleted_at", null)
     .order("fecha", { ascending: false })
     .limit(200);
   const list = (data as Reclamacion[]) || [];
@@ -30,6 +34,7 @@ export default async function ReclamacionesPage() {
               <th className="px-4 py-3 text-left">Consumidor</th>
               <th className="px-4 py-3 text-left">Servicio</th>
               <th className="px-4 py-3 text-left">Estado</th>
+              <th className="px-4 py-3 text-right">Acciones</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-ink-100">
@@ -63,11 +68,14 @@ export default async function ReclamacionesPage() {
                     {r.estado}
                   </span>
                 </td>
+                <td className="px-4 py-3 text-right">
+                  <DeleteReclamacionButton id={r.id} numero={r.numero_correlativo} />
+                </td>
               </tr>
             ))}
             {list.length === 0 && (
               <tr>
-                <td colSpan={6} className="px-4 py-12 text-center text-ink-500">
+                <td colSpan={7} className="px-4 py-12 text-center text-ink-500">
                   Sin reclamaciones registradas.
                 </td>
               </tr>

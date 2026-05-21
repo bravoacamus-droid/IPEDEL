@@ -293,16 +293,14 @@ export function AgentMap({
                   <span className="font-semibold text-ink-900">
                     {validAgents.length}
                   </span>{" "}
-                  socios destacados en{" "}
-                  <span className="font-semibold text-ink-900">+40 países</span>.
+                  agentes destacados de nuestra red.
                 </>
               ) : (
                 <>
                   <span className="font-semibold text-ink-900">
                     {validAgents.length}
                   </span>{" "}
-                  featured partners across{" "}
-                  <span className="font-semibold text-ink-900">40+ countries</span>.
+                  featured agents from our network.
                 </>
               )}
             </p>

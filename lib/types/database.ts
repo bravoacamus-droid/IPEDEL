@@ -39,6 +39,9 @@ export type Shipment = {
   etd: string | null;
   client_name: string | null;
   weight_kg: number | null;
+  /** Volumen en metros cúbicos (CBM), 2 decimales. Reemplaza al campo
+   *  "carrier"/"containers" como dato principal — observación cliente. */
+  volumen_cbm: number | null;
   containers: string | null;
   notes: string | null;
   created_by: string | null;
@@ -106,6 +109,9 @@ export type Reclamacion = {
   pdf_path: string | null;
   ip_address: string | null;
   created_at: string;
+  /** Soft-delete: si != null, la reclamación está oculta del panel
+   *  pero se conserva en DB por los 2 años legales (Indecopi). */
+  deleted_at: string | null;
 };
 
 export type Contact = {
@@ -169,3 +175,21 @@ export const ACTIVE_SHIPMENT_STATUSES: ShipmentStatus[] = [
   "en_almacen",
   "entregado",
 ];
+
+// Traduce un status_label libre (escrito por el admin en el timeline)
+// al locale solicitado. Busca matches contra los labels conocidos
+// en SHIPMENT_STATUS_LABELS (sea en español o inglés) y retorna la
+// versión traducida. Si no encuentra match, devuelve el original.
+export function translateEventLabel(
+  label: string,
+  locale: "es" | "en",
+): string {
+  const normalized = label.trim().toLowerCase();
+  for (const status of Object.keys(SHIPMENT_STATUS_LABELS) as ShipmentStatus[]) {
+    const { es, en } = SHIPMENT_STATUS_LABELS[status];
+    if (es.toLowerCase() === normalized || en.toLowerCase() === normalized) {
+      return locale === "es" ? es : en;
+    }
+  }
+  return label;
+}

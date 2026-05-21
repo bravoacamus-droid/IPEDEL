@@ -35,10 +35,7 @@ export function LibroReclamacionesForm({ dict }: { dict: Dictionary }) {
             <p className="text-base font-semibold text-brand-900">
               {dict.ldr.success.replace("{n}", String(state.numero))}
             </p>
-            <p className="mt-2 text-sm text-brand-800">
-              Conserva esta hoja como constancia. También enviamos una copia al
-              correo electrónico que indicaste.
-            </p>
+            <p className="mt-2 text-sm text-brand-800">{dict.ldr.keep_constancia}</p>
             <div className="mt-5 flex flex-wrap gap-3">
               <a
                 href={state.pdfUrl}
@@ -47,16 +44,16 @@ export function LibroReclamacionesForm({ dict }: { dict: Dictionary }) {
                 className="inline-flex items-center gap-2 rounded-full bg-black px-5 py-2.5 text-sm font-semibold text-white shadow-md hover:bg-ink-800"
               >
                 <Download className="h-4 w-4" strokeWidth={1.6} />
-                Descargar copia (PDF)
+                {dict.ldr.download_copy}
               </a>
               <span className="inline-flex items-center gap-2 rounded-full border border-brand-300 bg-white px-5 py-2.5 text-sm text-brand-900">
                 <Mail className="h-4 w-4" strokeWidth={1.6} />
-                Copia enviada por correo
+                {dict.ldr.copy_sent_by_email}
               </span>
             </div>
             <p className="mt-4 text-xs text-brand-700">
-              Hoja N° <span className="font-semibold">{state.numero}</span> · IPE
-              DEL PERU S.A.C. · RUC 20197900378
+              {dict.ldr.sheet_number} <span className="font-semibold">{state.numero}</span> ·
+              IPE DEL PERU S.A.C. · RUC 20197900378
             </p>
           </div>
         </div>

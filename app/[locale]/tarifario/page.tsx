@@ -1,5 +1,6 @@
+import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Plane, Ship } from "lucide-react";
+import { ArrowRight, Plane, Ship } from "lucide-react";
 import { isLocale } from "@/lib/i18n/config";
 import { getDictionary } from "@/lib/i18n/get-dictionary";
 import { createClient } from "@/lib/supabase/server";
@@ -35,9 +36,8 @@ export default async function TarifarioPage({
       <section className="bg-ink-900 text-white">
         <div className="container-page pt-32 pb-16">
           <h1 className="text-4xl font-semibold tracking-tight">{dict.tarifario.title}</h1>
-          <p className="mt-3 max-w-3xl text-ink-300">{dict.tarifario.subtitle}</p>
           {lastUpdate && (
-            <p className="mt-2 text-xs text-ink-400">
+            <p className="mt-3 text-xs text-ink-400">
               {dict.tarifario.last_update}: {formatDate(lastUpdate, locale)}
             </p>
           )}
@@ -57,11 +57,20 @@ export default async function TarifarioPage({
           rows={maritimo}
           dict={dict}
         />
-        <p className="rounded-md border border-ink-200 bg-white p-4 text-sm text-ink-700">
-          {locale === "es"
-            ? "Para mayor información contáctenos."
-            : "For more information, please contact us."}
-        </p>
+        <div className="flex flex-col items-start justify-between gap-4 rounded-md border border-ink-200 bg-white p-4 text-sm text-ink-700 sm:flex-row sm:items-center">
+          <p>
+            {locale === "es"
+              ? "Para mayor información contáctenos."
+              : "For more information, please contact us."}
+          </p>
+          <Link
+            href={`/${locale}/contacto`}
+            className="inline-flex shrink-0 items-center gap-2 rounded-full bg-brand-500 px-5 py-2.5 text-sm font-semibold text-black shadow-sm transition-colors hover:bg-brand-400"
+          >
+            {locale === "es" ? "Contáctanos" : "Contact us"}
+            <ArrowRight className="h-4 w-4" />
+          </Link>
+        </div>
       </section>
     </div>
   );

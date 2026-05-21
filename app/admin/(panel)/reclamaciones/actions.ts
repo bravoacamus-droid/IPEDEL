@@ -52,3 +52,23 @@ export async function cambiarEstadoReclamacion(
   revalidatePath(`/admin/reclamaciones/${id}`);
   return { ok: true } as const;
 }
+
+// Soft-delete: oculta la reclamación del panel pero la conserva en
+// DB. Indecopi (DS 011-2011-PCM Art. 12) exige preservar los reclamos
+// 2 años — un hard-delete violaría esa obligación.
+export async function softDeleteReclamacion(id: string) {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return { error: "No autenticado" } as const;
+
+  const { error } = await supabase
+    .from("reclamaciones")
+    .update({ deleted_at: new Date().toISOString() })
+    .eq("id", id);
+  if (error) return { error: error.message } as const;
+
+  revalidatePath("/admin/reclamaciones");
+  return { ok: true } as const;
+}

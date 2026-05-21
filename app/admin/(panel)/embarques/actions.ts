@@ -11,6 +11,9 @@ const ShipmentSchema = z.object({
   description: z.string().optional().or(z.literal("")),
   origin: z.string().optional().or(z.literal("")),
   destination: z.string().optional().or(z.literal("")),
+  // carrier y containers permanecen en DB para histórico pero ya no
+  // se envían desde el form. Se aceptan opcionalmente para no romper
+  // payloads externos. Volumen reemplaza al "transportista" en UI.
   carrier: z.string().optional().or(z.literal("")),
   mode: z.enum(["aereo", "maritimo", "terrestre"]),
   status: z.enum([
@@ -27,6 +30,7 @@ const ShipmentSchema = z.object({
   etd: z.string().optional().or(z.literal("")),
   client_name: z.string().optional().or(z.literal("")),
   weight_kg: z.string().optional().or(z.literal("")),
+  volumen_cbm: z.string().optional().or(z.literal("")),
   containers: z.string().optional().or(z.literal("")),
   notes: z.string().optional().or(z.literal("")),
 });
@@ -52,6 +56,7 @@ export async function createShipment(formData: FormData) {
   const payload = emptyToNull({
     ...parsed.data,
     weight_kg: parsed.data.weight_kg ? Number(parsed.data.weight_kg) : null,
+    volumen_cbm: parsed.data.volumen_cbm ? Number(parsed.data.volumen_cbm) : null,
     created_by: user.id,
   });
 
@@ -77,6 +82,7 @@ export async function updateShipment(id: string, formData: FormData) {
   const payload = emptyToNull({
     ...parsed.data,
     weight_kg: parsed.data.weight_kg ? Number(parsed.data.weight_kg) : null,
+    volumen_cbm: parsed.data.volumen_cbm ? Number(parsed.data.volumen_cbm) : null,
   });
 
   const { error } = await supabase.from("shipments").update(payload).eq("id", id);

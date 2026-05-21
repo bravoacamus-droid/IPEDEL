@@ -12,7 +12,12 @@ import {
 import { isLocale } from "@/lib/i18n/config";
 import { getDictionary } from "@/lib/i18n/get-dictionary";
 import { createClient } from "@/lib/supabase/server";
-import { SHIPMENT_STATUS_LABELS, type Shipment, type ShipmentEvent } from "@/lib/types/database";
+import {
+  SHIPMENT_STATUS_LABELS,
+  translateEventLabel,
+  type Shipment,
+  type ShipmentEvent,
+} from "@/lib/types/database";
 import { HBLTracker } from "@/components/public/HBLTracker";
 import { formatDate, formatDateTime } from "@/lib/utils";
 
@@ -131,7 +136,14 @@ export default async function TrackingPage({
                 <dl className="mt-6 grid grid-cols-2 gap-4 text-sm sm:grid-cols-3">
                   <Field label={dict.tracking.origin} value={shipment.origin} />
                   <Field label={dict.tracking.destination} value={shipment.destination} />
-                  <Field label={dict.tracking.carrier} value={shipment.carrier} />
+                  <Field
+                    label={dict.tracking.volume}
+                    value={
+                      shipment.volumen_cbm != null
+                        ? `${shipment.volumen_cbm} M3`
+                        : null
+                    }
+                  />
                   <Field label={dict.tracking.mode} value={modeLabel(shipment.mode, locale)} />
                   <Field
                     label={dict.tracking.eta}
@@ -139,7 +151,7 @@ export default async function TrackingPage({
                   />
                   <Field
                     label={dict.tracking.weight}
-                    value={shipment.weight_kg ? `${shipment.weight_kg} kg` : null}
+                    value={shipment.weight_kg ? `${shipment.weight_kg} KG` : null}
                   />
                 </dl>
               </div>
@@ -163,7 +175,9 @@ export default async function TrackingPage({
                         <span className="absolute left-[5px] top-4 h-full w-px bg-ink-200" />
                       )}
                       <div className="flex flex-wrap items-baseline gap-x-3">
-                        <p className="text-sm font-semibold text-ink-900">{e.status_label}</p>
+                        <p className="text-sm font-semibold text-ink-900">
+                          {translateEventLabel(e.status_label, locale)}
+                        </p>
                         {e.is_current && (
                           <span className="badge bg-brand-100 text-brand-800">
                             {locale === "es" ? "Actual" : "Current"}

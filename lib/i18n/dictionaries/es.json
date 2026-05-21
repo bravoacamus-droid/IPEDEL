@@ -73,7 +73,8 @@
     "destination": "Destino",
     "mode": "Modo",
     "eta": "ETA estimada",
-    "weight": "Peso"
+    "weight": "Peso",
+    "volume": "Volumen"
   },
   "tarifario": {
     "title": "Tarifario",
@@ -126,6 +127,10 @@
     "consent": "Declaro que la información proporcionada es veraz.",
     "submit": "Enviar al libro de reclamaciones",
     "success": "Tu reclamación N° {n} fue registrada. Recibirás una copia por correo en pocos minutos.",
+    "keep_constancia": "Conserva esta hoja como constancia. También enviamos una copia al correo electrónico que indicaste.",
+    "download_copy": "Descargar copia (PDF)",
+    "copy_sent_by_email": "Copia enviada por correo",
+    "sheet_number": "Hoja N°",
     "legal_note": "El proveedor responderá en un plazo no mayor de 30 días calendario."
   },
   "auth": {

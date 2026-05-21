@@ -49,7 +49,13 @@ export function ShipmentForm({
         />
         <Field name="mbl_number" label="MBL" defaultValue={shipment?.mbl_number ?? ""} />
         <Field name="client_name" label="Cliente" defaultValue={shipment?.client_name ?? ""} />
-        <Field name="carrier" label="Transportista" defaultValue={shipment?.carrier ?? ""} />
+        <Field
+          name="volumen_cbm"
+          type="number"
+          step="0.01"
+          label="Volumen (CBM)"
+          defaultValue={shipment?.volumen_cbm?.toString() ?? ""}
+        />
         <Select
           name="mode"
           label="Modo"
@@ -73,10 +79,9 @@ export function ShipmentForm({
         <Field
           name="weight_kg"
           type="number"
-          label="Peso (kg)"
+          label="Peso (KG)"
           defaultValue={shipment?.weight_kg?.toString() ?? ""}
         />
-        <Field name="containers" label="Contenedores" defaultValue={shipment?.containers ?? ""} />
       </div>
       <div>
         <label className="label">Descripción</label>
@@ -110,6 +115,7 @@ function Field({
   name,
   label,
   type = "text",
+  step,
   required,
   defaultValue,
   error,
@@ -117,6 +123,7 @@ function Field({
   name: string;
   label: string;
   type?: string;
+  step?: string;
   required?: boolean;
   defaultValue?: string;
   error?: string;
@@ -131,6 +138,7 @@ function Field({
         id={name}
         name={name}
         type={type}
+        step={step}
         required={required}
         defaultValue={defaultValue}
         className="input"

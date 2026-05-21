@@ -73,7 +73,8 @@
     "destination": "Destination",
     "mode": "Mode",
     "eta": "Estimated ETA",
-    "weight": "Weight"
+    "weight": "Weight",
+    "volume": "Volume"
   },
   "tarifario": {
     "title": "Tariffs",
@@ -126,6 +127,10 @@
     "consent": "I declare that the information provided is true.",
     "submit": "Submit complaint",
     "success": "Your complaint #{n} has been registered. You'll receive a copy by email shortly.",
+    "keep_constancia": "Keep this sheet as proof. We've also sent a copy to the email address you provided.",
+    "download_copy": "Download copy (PDF)",
+    "copy_sent_by_email": "Copy sent by email",
+    "sheet_number": "Sheet No.",
     "legal_note": "The provider will respond within 30 calendar days."
   },
   "auth": {
