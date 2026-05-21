@@ -6,6 +6,8 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { sendMail } from "@/lib/email/mail";
 import { resolveUbigeo } from "@/lib/peru/ubigeo";
 import { signReclamacionToken } from "@/lib/utils/sign";
+import { renderReclamacionPdf } from "@/lib/pdf/render-reclamacion";
+import type { Reclamacion } from "@/lib/types/database";
 
 const ReclamacionSchema = z.object({
   tipo: z.enum(["reclamo", "queja"]),
@@ -89,44 +91,57 @@ export async function submitReclamacion(
       pedido_consumidor: d.pedido_consumidor,
       ip_address: ip,
     })
-    .select("id, numero_correlativo")
+    .select("*")
     .single();
 
   if (error || !data) {
     return { ok: false, message: "No pudimos registrar la reclamación. Intenta nuevamente." };
   }
 
+  const reclamacion = data as Reclamacion;
+
   // Token HMAC firmado para que el consumidor pueda descargar su copia
   // (DS 011-2011-PCM Art. 4 — derecho de imprimir copia gratuita).
-  const token = signReclamacionToken(data.id);
-  const pdfUrl = `/api/reclamaciones/${data.id}/pdf?token=${token}`;
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") || "";
-  const absolutePdfUrl = `${siteUrl}${pdfUrl}`;
+  const token = signReclamacionToken(reclamacion.id);
+  const pdfUrl = `/api/reclamaciones/${reclamacion.id}/pdf?token=${token}`;
 
-  // Best-effort notifications
+  // Genera el PDF una sola vez y se reusa: en la respuesta del action
+  // para descarga inmediata y como adjunto del correo al consumidor.
+  // Si falla la generación o el envío, no aborta el flujo (la
+  // reclamación ya quedó registrada en DB y el consumidor puede
+  // descargar la copia con el link firmado).
   try {
+    const pdfBuffer = await renderReclamacionPdf(reclamacion);
     const ubicacion = `${ubigeo.distrito_nombre}, ${ubigeo.provincia_nombre}, ${ubigeo.departamento_nombre}`;
-    const summary = `Reclamación N° ${data.numero_correlativo}\nTipo: ${d.tipo}\nNombre: ${d.nombres} ${d.apellidos}\nDocumento: ${d.tipo_documento} ${d.numero_documento}\nUbicación: ${ubicacion}\nEmail: ${d.email}\nServicio: ${d.bien_servicio}\n\nDetalle:\n${d.detalle}\n\nPedido:\n${d.pedido_consumidor}`;
+    const summary = `Reclamación N° ${reclamacion.numero_correlativo}\nTipo: ${d.tipo}\nNombre: ${d.nombres} ${d.apellidos}\nDocumento: ${d.tipo_documento} ${d.numero_documento}\nUbicación: ${ubicacion}\nEmail: ${d.email}\nServicio: ${d.bien_servicio}\n\nDetalle:\n${d.detalle}\n\nPedido:\n${d.pedido_consumidor}`;
+    const filename = `reclamacion-${reclamacion.numero_correlativo}.pdf`;
+
     await Promise.all([
+      // Notificación interna a consultas@
       sendMail({
         to: process.env.EMAIL_TO_CONSULTAS || "consultas@ipeperu.com",
-        subject: `[LDR] Nueva reclamación N° ${data.numero_correlativo}`,
+        subject: `[LDR] Nueva reclamación N° ${reclamacion.numero_correlativo}`,
         text: summary,
+        replyTo: d.email,
+        attachments: [{ filename, content: pdfBuffer, contentType: "application/pdf" }],
       }),
+      // Copia oficial al consumidor con el PDF adjunto
+      // (DS 011-2011-PCM Art. 4 — copia gratuita en soporte duradero).
       sendMail({
         to: d.email,
-        subject: `IPE del Perú — Confirmación de reclamación N° ${data.numero_correlativo}`,
+        subject: `IPE del Perú — Confirmación de reclamación N° ${reclamacion.numero_correlativo}`,
         text:
           `Estimado(a) ${d.nombres},\n\n` +
-          `Hemos recibido tu reclamación con número correlativo ${data.numero_correlativo}. ` +
+          `Hemos recibido tu reclamación con número correlativo ${reclamacion.numero_correlativo}. ` +
           `Te responderemos en un plazo no mayor de 30 días calendario, conforme a la Ley 29571.\n\n` +
-          `Puedes descargar tu copia oficial en formato PDF aquí:\n${absolutePdfUrl}\n\n` +
+          `Adjuntamos tu copia oficial en formato PDF para tu constancia.\n\n` +
           `${summary}\n\nIPE del Perú SAC`,
+        attachments: [{ filename, content: pdfBuffer, contentType: "application/pdf" }],
       }),
     ]);
   } catch (e) {
     console.warn("Reclamación email notify failed (non-fatal):", e);
   }
 
-  return { ok: true, numero: data.numero_correlativo, pdfUrl };
+  return { ok: true, numero: reclamacion.numero_correlativo, pdfUrl };
 }

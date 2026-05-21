@@ -1,12 +1,9 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { readFile } from "node:fs/promises";
-import path from "node:path";
-import { renderToBuffer } from "@react-pdf/renderer";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { verifyReclamacionToken } from "@/lib/utils/sign";
 import type { Reclamacion } from "@/lib/types/database";
-import { ReclamacionPDF } from "@/lib/pdf/reclamacion-pdf";
+import { renderReclamacionPdf } from "@/lib/pdf/render-reclamacion";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -55,17 +52,7 @@ export async function GET(
     return NextResponse.json({ error: "No encontrada" }, { status: 404 });
   }
 
-  let logoSrc: Buffer | undefined;
-  try {
-    const logoPath = path.join(process.cwd(), "public", "logo-horizontal.png");
-    logoSrc = await readFile(logoPath);
-  } catch {
-    logoSrc = undefined;
-  }
-
-  const buffer = await renderToBuffer(
-    <ReclamacionPDF reclamacion={reclamacion} logoSrc={logoSrc} />,
-  );
+  const buffer = await renderReclamacionPdf(reclamacion);
 
   return new NextResponse(new Uint8Array(buffer), {
     status: 200,

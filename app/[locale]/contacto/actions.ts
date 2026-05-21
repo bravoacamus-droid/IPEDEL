@@ -2,7 +2,6 @@
 
 import { z } from "zod";
 import { headers } from "next/headers";
-import { createAdminClient } from "@/lib/supabase/admin";
 import { sendMail } from "@/lib/email/mail";
 
 const ContactSchema = z.object({
@@ -20,7 +19,14 @@ export type ContactState =
   | { ok: false; errors?: Record<string, string[]>; message?: string }
   | undefined;
 
-export async function submitContact(_prev: ContactState, formData: FormData): Promise<ContactState> {
+// Observación del cliente (audio 21 may 2026): los mensajes del
+// formulario de contacto deben llegar al correo consultas@ipeperu.com
+// directamente, no guardarse en el panel admin. Resend hace el envío;
+// la tabla contacts en DB queda como histórico pero ya no se inserta.
+export async function submitContact(
+  _prev: ContactState,
+  formData: FormData,
+): Promise<ContactState> {
   const parsed = ContactSchema.safeParse({
     nombre: formData.get("nombre"),
     empresa: formData.get("empresa") ?? "",
@@ -32,36 +38,39 @@ export async function submitContact(_prev: ContactState, formData: FormData): Pr
   });
 
   if (!parsed.success) {
-    return { ok: false, errors: parsed.error.flatten().fieldErrors as Record<string, string[]> };
+    return {
+      ok: false,
+      errors: parsed.error.flatten().fieldErrors as Record<string, string[]>,
+    };
   }
 
   const { nombre, empresa, email, telefono, asunto, mensaje } = parsed.data;
   const ip = (await headers()).get("x-forwarded-for")?.split(",")[0].trim() || null;
 
-  const supabase = createAdminClient();
-  const { error } = await supabase.from("contacts").insert({
-    nombre,
-    empresa: empresa || null,
-    email,
-    telefono: telefono || null,
-    asunto,
-    mensaje,
-    ip_address: ip,
-  });
+  const body =
+    `Nombre: ${nombre}\n` +
+    `Empresa: ${empresa || "—"}\n` +
+    `Email: ${email}\n` +
+    `Teléfono: ${telefono || "—"}\n` +
+    `IP: ${ip || "—"}\n\n` +
+    `Asunto: ${asunto}\n\n` +
+    `${mensaje}`;
 
-  if (error) {
-    return { ok: false, message: "No pudimos guardar tu mensaje. Intenta nuevamente." };
-  }
-
-  // Best-effort email notification — don't fail the form if SMTP isn't configured.
   try {
     await sendMail({
       to: process.env.EMAIL_TO_CONSULTAS || "consultas@ipeperu.com",
       subject: `[Web] Contacto: ${asunto}`,
-      text: `Nombre: ${nombre}\nEmpresa: ${empresa}\nEmail: ${email}\nTeléfono: ${telefono}\n\n${mensaje}`,
+      text: body,
+      // Reply-to apunta al consumidor para que el equipo pueda
+      // responder directamente desde Zoho con un solo click.
+      replyTo: email,
     });
   } catch (e) {
-    console.warn("Email notify failed (non-fatal):", e);
+    console.error("Contact email failed:", e);
+    return {
+      ok: false,
+      message: "No pudimos enviar tu mensaje. Intenta nuevamente más tarde.",
+    };
   }
 
   return { ok: true };

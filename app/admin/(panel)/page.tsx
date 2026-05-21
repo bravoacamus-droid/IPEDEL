@@ -1,16 +1,19 @@
 import Link from "next/link";
-import { Package, FileText, MessageSquare, DollarSign, Users, ArrowRight } from "lucide-react";
+import { Package, FileText, DollarSign, Users, ArrowRight } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 
 export default async function AdminDashboard() {
   const supabase = await createClient();
 
-  const [shipmentsActive, shipmentsDelivered, reclamacionesPend, mensajesUnread, agentes, tarifas] =
+  const [shipmentsActive, shipmentsDelivered, reclamacionesPend, agentes, tarifas] =
     await Promise.all([
       supabase.from("shipments").select("id", { count: "exact", head: true }).neq("status", "entregado"),
       supabase.from("shipments").select("id", { count: "exact", head: true }).eq("status", "entregado"),
-      supabase.from("reclamaciones").select("id", { count: "exact", head: true }).eq("estado", "pendiente"),
-      supabase.from("contacts").select("id", { count: "exact", head: true }).eq("is_read", false),
+      supabase
+        .from("reclamaciones")
+        .select("id", { count: "exact", head: true })
+        .eq("estado", "pendiente")
+        .is("deleted_at", null),
       supabase.from("agents").select("id", { count: "exact", head: true }),
       supabase.from("tarifario").select("id", { count: "exact", head: true }).eq("is_active", true),
     ]);
@@ -19,7 +22,6 @@ export default async function AdminDashboard() {
     { href: "/admin/embarques", label: "Embarques activos", value: shipmentsActive.count ?? 0, icon: Package, accent: "bg-brand-500" },
     { href: "/admin/embarques?status=entregado", label: "Embarques entregados", value: shipmentsDelivered.count ?? 0, icon: Package, accent: "bg-ink-200" },
     { href: "/admin/reclamaciones", label: "Reclamaciones pendientes", value: reclamacionesPend.count ?? 0, icon: FileText, accent: "bg-rose-500" },
-    { href: "/admin/mensajes", label: "Mensajes no leídos", value: mensajesUnread.count ?? 0, icon: MessageSquare, accent: "bg-amber-500" },
     { href: "/admin/agentes", label: "Agentes registrados", value: agentes.count ?? 0, icon: Users, accent: "bg-ink-300" },
     { href: "/admin/tarifario", label: "Tarifas publicadas", value: tarifas.count ?? 0, icon: DollarSign, accent: "bg-ink-300" },
   ];
