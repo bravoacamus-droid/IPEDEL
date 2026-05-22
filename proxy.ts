@@ -9,9 +9,18 @@ export async function proxy(request: NextRequest) {
   const { response, user } = await updateSession(request);
 
   // 2. Admin gating
+  // Rutas publicas (sin sesion requerida): login + flujo de
+  // recuperacion de contrasena. El usuario que olvido su clave NO
+  // tiene sesion — por definicion no puede pasar el gate.
+  const ADMIN_PUBLIC_PATHS = new Set([
+    "/admin/login",
+    "/admin/recuperar",
+    "/admin/restablecer",
+  ]);
+
   if (pathname.startsWith("/admin")) {
-    if (pathname === "/admin/login") {
-      return response; // login page is public
+    if (ADMIN_PUBLIC_PATHS.has(pathname)) {
+      return response;
     }
     if (!user) {
       const url = request.nextUrl.clone();
