@@ -28,6 +28,7 @@ export function HeroVideo({
       <div aria-hidden="true" className="absolute inset-0 -z-10 bg-ink-900" />
       <video
         className="absolute inset-0 -z-10 h-full w-full object-cover"
+        style={{ objectPosition: "center 75%" }}
         autoPlay
         loop
         muted
