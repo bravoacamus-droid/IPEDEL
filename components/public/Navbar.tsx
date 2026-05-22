@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
 import type { Locale } from "@/lib/i18n/config";
@@ -30,8 +29,8 @@ export function Navbar({ locale, dict }: { locale: Locale; dict: Dictionary }) {
     cn(
       "rounded-md px-3 py-2 text-sm font-medium transition-colors",
       scrolled
-        ? "text-ink-700 hover:bg-brand-50 hover:text-ink-900"
-        : "text-white/90 hover:bg-white/10 hover:text-white",
+        ? "text-ink-800 hover:bg-brand-50 hover:text-ink-900"
+        : "text-white hover:bg-white/15 hover:text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.35)]",
       active && "text-brand-700",
     );
 
@@ -45,38 +44,41 @@ export function Navbar({ locale, dict }: { locale: Locale; dict: Dictionary }) {
       )}
     >
       <div className="container-page flex items-center justify-between py-3">
-        {/* Logo izquierda — crece animadamente al hacer scroll, con halo
-            sutil cuando está sobre el hero (en lugar de un cuadro blanco). */}
+        {/* Logo: dos versiones del archivo en /public con cross-fade vía
+            opacity. Usamos <img> nativo (no next/image) porque
+            next/image stackeado tenía interacción mala con el adapter
+            de Vercel en Next 16.2 (path argument undefined en
+            modifyConfig). El asset es pequeño (~45 KB) y la
+            optimización no es crítica acá. */}
         <Link href={`/${locale}`} className="group flex items-center gap-3">
-          <div className="relative flex items-center justify-center transition-all duration-300 ease-out">
-            {/* Halo de iluminación detrás del logo cuando está sobre el video */}
-            <span
-              aria-hidden="true"
-              className={cn(
-                "pointer-events-none absolute inset-[-30%] -z-10 rounded-full transition-opacity duration-300",
-                scrolled ? "opacity-0" : "opacity-100",
-              )}
-              style={{
-                background:
-                  "radial-gradient(closest-side, rgba(255,255,255,0.55), rgba(255,255,255,0.15) 55%, transparent 75%)",
-                filter: "blur(8px)",
-              }}
-            />
-            <Image
-              src="/logo-horizontal.png"
+          <div
+            className={cn(
+              "relative flex items-center justify-center transition-all duration-300 ease-out",
+              scrolled ? "h-11" : "h-9",
+            )}
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/logo-horizontal-white.png"
               alt="IPE del Perú SAC"
               width={200}
               height={48}
-              priority
               className={cn(
-                "relative w-auto transition-all duration-300 ease-out",
-                scrolled ? "h-11" : "h-9",
+                "h-full w-auto transition-opacity duration-300",
+                scrolled ? "opacity-0" : "opacity-100",
               )}
-              style={
-                scrolled
-                  ? undefined
-                  : { filter: "drop-shadow(0 1px 6px rgba(255,255,255,0.55)) brightness(1.05)" }
-              }
+            />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/logo-horizontal.png"
+              alt=""
+              aria-hidden="true"
+              width={200}
+              height={48}
+              className={cn(
+                "absolute inset-0 m-auto h-full w-auto transition-opacity duration-300",
+                scrolled ? "opacity-100" : "opacity-0",
+              )}
             />
           </div>
         </Link>
