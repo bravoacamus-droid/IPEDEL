@@ -30,8 +30,8 @@ export function Navbar({ locale, dict }: { locale: Locale; dict: Dictionary }) {
     cn(
       "rounded-md px-3 py-2 text-sm font-medium transition-colors",
       scrolled
-        ? "text-ink-800 hover:bg-brand-50 hover:text-ink-900"
-        : "text-white hover:bg-white/15 hover:text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.35)]",
+        ? "text-ink-700 hover:bg-brand-50 hover:text-ink-900"
+        : "text-white/90 hover:bg-white/10 hover:text-white",
       active && "text-brand-700",
     );
 
@@ -45,40 +45,38 @@ export function Navbar({ locale, dict }: { locale: Locale; dict: Dictionary }) {
       )}
     >
       <div className="container-page flex items-center justify-between py-3">
-        {/* Logo izquierda — swap entre versión blanca (sobre el video del
-            hero) y versión a color (cuando el header pasa a fondo blanco
-            al scrollear). Stack de dos <Image> con cross-fade vía
-            opacidad para que la transición sea fluida. Cada versión es
-            un archivo distinto en /public — no usamos filtros CSS para
-            preservar la nitidez del logo. */}
+        {/* Logo izquierda — crece animadamente al hacer scroll, con halo
+            sutil cuando está sobre el hero (en lugar de un cuadro blanco). */}
         <Link href={`/${locale}`} className="group flex items-center gap-3">
-          <div
-            className={cn(
-              "relative flex items-center justify-center transition-all duration-300 ease-out",
-              scrolled ? "h-11" : "h-9",
-            )}
-          >
+          <div className="relative flex items-center justify-center transition-all duration-300 ease-out">
+            {/* Halo de iluminación detrás del logo cuando está sobre el video */}
+            <span
+              aria-hidden="true"
+              className={cn(
+                "pointer-events-none absolute inset-[-30%] -z-10 rounded-full transition-opacity duration-300",
+                scrolled ? "opacity-0" : "opacity-100",
+              )}
+              style={{
+                background:
+                  "radial-gradient(closest-side, rgba(255,255,255,0.55), rgba(255,255,255,0.15) 55%, transparent 75%)",
+                filter: "blur(8px)",
+              }}
+            />
             <Image
-              src="/logo-horizontal-white.png"
+              src="/logo-horizontal.png"
               alt="IPE del Perú SAC"
               width={200}
               height={48}
               priority
               className={cn(
-                "h-full w-auto transition-opacity duration-300",
-                scrolled ? "opacity-0" : "opacity-100",
+                "relative w-auto transition-all duration-300 ease-out",
+                scrolled ? "h-11" : "h-9",
               )}
-            />
-            <Image
-              src="/logo-horizontal.png"
-              alt=""
-              aria-hidden="true"
-              width={200}
-              height={48}
-              className={cn(
-                "absolute inset-0 m-auto h-full w-auto transition-opacity duration-300",
-                scrolled ? "opacity-100" : "opacity-0",
-              )}
+              style={
+                scrolled
+                  ? undefined
+                  : { filter: "drop-shadow(0 1px 6px rgba(255,255,255,0.55)) brightness(1.05)" }
+              }
             />
           </div>
         </Link>

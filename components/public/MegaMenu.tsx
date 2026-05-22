@@ -114,8 +114,8 @@ export function MegaMenu({
         className={cn(
           "inline-flex items-center gap-1 rounded-md px-3 py-2 text-sm font-medium transition-colors",
           scrolled
-            ? "text-ink-800 hover:bg-brand-50 hover:text-ink-900"
-            : "text-white hover:bg-white/15 hover:text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.35)]",
+            ? "text-ink-700 hover:bg-brand-50 hover:text-ink-900"
+            : "text-white/90 hover:bg-white/10 hover:text-white",
         )}
       >
         {label}
