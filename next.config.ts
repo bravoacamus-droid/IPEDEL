@@ -7,6 +7,10 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "ittwoqrnzvkegeslkymc.supabase.co" },
     ],
   },
+  // Libs server-only que NO deben pasar por el bundler (causan errores
+  // de tracing en Vercel cuando se intenta bundlear sus assets/deps
+  // nativos). Quedan como external require() en runtime Node.
+  serverExternalPackages: ["exceljs", "@react-pdf/renderer"],
   experimental: {
     serverActions: { bodySizeLimit: "5mb" },
   },
