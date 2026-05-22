@@ -36,11 +36,12 @@ export function Navbar({ locale, dict }: { locale: Locale; dict: Dictionary }) {
 
   return (
     <header
+      style={!scrolled ? { backgroundColor: "#22c55e" } : undefined}
       className={cn(
         "fixed inset-x-0 top-0 z-40 transition-[background,backdrop-filter,box-shadow,border-color] duration-300",
         scrolled
           ? "border-b border-ink-100 bg-white/95 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"
-          : "border-b border-transparent bg-transparent",
+          : "border-b border-transparent",
       )}
     >
       <div className="container-page flex items-center justify-between py-3">
