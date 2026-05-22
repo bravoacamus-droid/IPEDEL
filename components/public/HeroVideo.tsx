@@ -38,12 +38,12 @@ export function HeroVideo({
         <source src="/hero.mp4" type="video/mp4" />
       </video>
 
-      {/* Overlay: arranca transparente arriba (para que el header
-          transparente no muestre una banda) y se oscurece hacia el
-          medio/abajo para legibilidad del texto del hero. */}
+      {/* Overlay: el primer 30% es TOTALMENTE transparente (sin banda
+          oscura sobre el area del header). A partir de ahi recien
+          arranca a oscurecer para legibilidad del texto centrado. */}
       <div
         aria-hidden="true"
-        className="absolute inset-0 -z-10 bg-gradient-to-b from-transparent via-black/40 to-black/70"
+        className="absolute inset-0 -z-10 bg-[linear-gradient(to_bottom,rgba(0,0,0,0)_0%,rgba(0,0,0,0)_30%,rgba(0,0,0,0.35)_60%,rgba(0,0,0,0.6)_100%)]"
       />
       <div
         aria-hidden="true"
