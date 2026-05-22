@@ -1,7 +1,11 @@
 import "server-only";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
-import ExcelJS from "exceljs";
+
+// exceljs se importa dinamicamente DENTRO de la funcion para evitar
+// que Next.js 16.2 + Turbopack/adapter de Vercel intente bundlear
+// sus assets durante el tracing (causa "path argument undefined" en
+// modifyConfig from Vercel — issue conocido vercel/next.js#91642).
 
 // Paleta corporativa IPE del Perú
 const BRAND_GREEN = "FF96C600";
@@ -33,6 +37,7 @@ export type XlsxExportInput<T> = {
 // destacado en verde brand, fila de filtros y datos. Diseñado para
 // ser enviado como descarga directa desde una route handler.
 export async function buildBrandedXlsx<T>(input: XlsxExportInput<T>): Promise<Buffer> {
+  const ExcelJS = (await import("exceljs")).default;
   const wb = new ExcelJS.Workbook();
   wb.creator = "IPE del Perú SAC";
   wb.created = new Date();
