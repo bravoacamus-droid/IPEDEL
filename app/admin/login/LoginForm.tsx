@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { use, useActionState, useState } from "react";
 import { ArrowRight, Eye, EyeOff, Lock, Mail, ShieldAlert } from "lucide-react";
 import { signIn, type LoginState } from "./actions";
@@ -55,12 +56,12 @@ export function LoginForm({
           >
             Contraseña
           </label>
-          <span
-            className="text-[11px] text-ink-400"
-            title="La recuperación se gestiona desde el dashboard de Supabase"
+          <Link
+            href="/admin/recuperar"
+            className="text-[11px] font-medium text-brand-700 hover:text-brand-900 hover:underline"
           >
             ¿Olvidaste tu clave?
-          </span>
+          </Link>
         </div>
         <div className="relative mt-1.5">
           <Lock
