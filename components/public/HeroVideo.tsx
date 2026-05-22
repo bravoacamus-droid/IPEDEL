@@ -28,7 +28,11 @@ export function HeroVideo({
       <div aria-hidden="true" className="absolute inset-0 -z-10 bg-ink-900" />
       <video
         className="absolute inset-0 -z-10 h-full w-full object-cover"
-        style={{ objectPosition: "center 60%" }}
+        // El archivo MP4 trae barras negras horneadas (letterbox)
+        // en el top y bottom. transform:scale(1.12) hace zoom in al
+        // video desde el centro, mandando las barras fuera del
+        // viewport visible. objectPosition default (centro).
+        style={{ transform: "scale(1.12)" }}
         autoPlay
         loop
         muted
