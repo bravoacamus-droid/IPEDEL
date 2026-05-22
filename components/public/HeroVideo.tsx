@@ -28,7 +28,7 @@ export function HeroVideo({
       <div aria-hidden="true" className="absolute inset-0 -z-10 bg-ink-900" />
       <video
         className="absolute inset-0 -z-10 h-full w-full object-cover"
-        style={{ objectPosition: "center 75%" }}
+        style={{ objectPosition: "center 60%" }}
         autoPlay
         loop
         muted
@@ -39,12 +39,13 @@ export function HeroVideo({
         <source src="/hero.mp4" type="video/mp4" />
       </video>
 
-      {/* Overlay: el primer 30% es TOTALMENTE transparente (sin banda
-          oscura sobre el area del header). A partir de ahi recien
-          arranca a oscurecer para legibilidad del texto centrado. */}
+      {/* Overlay tipo "spotlight central": transparente arriba Y abajo,
+          solo oscurece la zona del medio donde esta el texto del hero.
+          Asi no se forman bandas oscuras ni arriba (donde esta el
+          header) ni abajo (transicion a Stats). */}
       <div
         aria-hidden="true"
-        className="absolute inset-0 -z-10 bg-[linear-gradient(to_bottom,rgba(0,0,0,0)_0%,rgba(0,0,0,0)_30%,rgba(0,0,0,0.35)_60%,rgba(0,0,0,0.6)_100%)]"
+        className="absolute inset-0 -z-10 bg-[linear-gradient(to_bottom,rgba(0,0,0,0)_0%,rgba(0,0,0,0)_25%,rgba(0,0,0,0.4)_50%,rgba(0,0,0,0.25)_85%,rgba(0,0,0,0)_100%)]"
       />
       <div
         aria-hidden="true"
