@@ -38,10 +38,12 @@ export function HeroVideo({
         <source src="/hero.mp4" type="video/mp4" />
       </video>
 
-      {/* Overlay: gradiente vertical (legibilidad del texto) + glow brand sutil */}
+      {/* Overlay: arranca transparente arriba (para que el header
+          transparente no muestre una banda) y se oscurece hacia el
+          medio/abajo para legibilidad del texto del hero. */}
       <div
         aria-hidden="true"
-        className="absolute inset-0 -z-10 bg-gradient-to-b from-black/55 via-black/30 to-black/75"
+        className="absolute inset-0 -z-10 bg-gradient-to-b from-transparent via-black/40 to-black/70"
       />
       <div
         aria-hidden="true"
