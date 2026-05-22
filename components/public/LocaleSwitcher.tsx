@@ -47,8 +47,8 @@ export function LocaleSwitcher({
         className={cn(
           "px-2.5 py-1.5 transition-colors",
           scrolled
-            ? "text-ink-700 hover:bg-ink-100"
-            : "text-white/80 hover:bg-white/10 hover:text-white",
+            ? "text-ink-800 hover:bg-ink-100"
+            : "text-white hover:bg-white/15",
         )}
       >
         {other.toUpperCase()}
