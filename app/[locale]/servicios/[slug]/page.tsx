@@ -146,8 +146,8 @@ const CONTENT: Record<Slug, ServiceContent> = {
     side_image_hint_en: "Logistics operation (air or sea cargo)",
     side_image_path: "/services/agenciamiento-side.jpg",
     side_image_real: "/serviciocomprende2.webp",
-    highlights_title_es: "Por qué IPE del Perú",
-    highlights_title_en: "Why IPE del Perú",
+    highlights_title_es: "¿Por qué IPE del Perú?",
+    highlights_title_en: "Why IPE del Perú?",
     highlights: [
       {
         icon: ShieldCheck,
@@ -371,8 +371,8 @@ const CONTENT: Record<Slug, ServiceContent> = {
     side_image_hint_en: "Logistics operator — SUNAT customs clearance",
     side_image_path: "/services/especializados-side.jpg",
     side_image_real: "/especializados2.webp",
-    highlights_title_es: "Por qué IPE del Perú",
-    highlights_title_en: "Why IPE del Perú",
+    highlights_title_es: "¿Por qué IPE del Perú?",
+    highlights_title_en: "Why IPE del Perú?",
     highlights: [
       {
         icon: ShieldCheck,
