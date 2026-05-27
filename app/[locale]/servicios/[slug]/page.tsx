@@ -103,8 +103,8 @@ const CONTENT: Record<Slug, ServiceContent> = {
       "We provide specialized advisory to optimize your costs and select a suitable transport mode for your cargo.",
       "We offer effective control and updated information on your cargo through our alliances and worldwide network of specialized agents.",
     ],
-    bullets_title_es: "El servicio incluye",
-    bullets_title_en: "The service includes",
+    bullets_title_es: "Características del servicio",
+    bullets_title_en: "Service Features",
     bullets: [
       {
         icon: Plane,
@@ -206,26 +206,24 @@ const CONTENT: Record<Slug, ServiceContent> = {
   almacenamiento: {
     eyebrow_es: "Servicios IPEDEL",
     eyebrow_en: "IPEDEL Services",
-    title_es: "Servicio de almacenamiento",
-    title_en: "Warehousing service",
+    title_es: "Almacenamiento",
+    title_en: "Warehousing",
     subtitle_es:
-      "Capacidad para desarrollar y ejecutar el servicio de almacenamiento prestando un servicio impecable, con áreas exclusivas y compartidas adaptadas a cada cliente.",
+      "Capacidad para ejecutar el servicio de almacenamiento con áreas exclusivas y compartidas, manteniendo el orden y control de su carga.",
     subtitle_en:
-      "Capability to develop and execute warehousing service flawlessly, with exclusive and shared areas adapted to each client.",
+      "Capacity to execute warehousing services with exclusive and shared areas, maintaining order and control of your cargo.",
     hero_image_hint_es: "Almacén / racks / contenedores en bodega",
     hero_image_hint_en: "Warehouse / racks / containers indoors",
     hero_image_path: "/services/almacenamiento-hero.jpg",
     hero_background: "/almacenamientohero2.webp",
     intro_es: [
-      "IPE del Perú SAC está en la capacidad de desarrollar y ejecutar el servicio de almacenamiento prestando un servicio impecable.",
-      "Empleamos un sistema de seguimiento donde usted estará informado de manera permanente desde el primer contacto con el proveedor en origen hasta la llegada de la mercancía y los almacenamientos en general.",
+      "Nuestro almacén está diseñado para gestionar diferentes volúmenes y rotaciones de carga, con infraestructura adaptable y personal capacitado para su adecuado manejo.",
     ],
     intro_en: [
-      "IPE del Perú SAC is fully capable of developing and executing flawless warehousing operations.",
-      "We use a tracking system that keeps you continuously informed from the first contact with the supplier at origin through cargo arrival and storage.",
+      "Our warehouse is designed to manage different cargo volumes and turnover, with adaptable infrastructure and trained staff for its proper handling.",
     ],
-    bullets_title_es: "Lo que incluye",
-    bullets_title_en: "What's included",
+    bullets_title_es: "Características del servicio",
+    bullets_title_en: "Service Features",
     bullets: [
       {
         icon: Warehouse,
@@ -234,82 +232,53 @@ const CONTENT: Record<Slug, ServiceContent> = {
       },
       {
         icon: Boxes,
-        es: "Áreas que se ajustan a los requerimientos de los clientes",
-        en: "Areas tailored to client requirements",
+        es: "Manejo especializado según el tipo de carga",
+        en: "Specialized handling based on cargo type",
       },
       {
         icon: PackageCheck,
-        es: "Adecuado manejo de productos controlados",
-        en: "Proper handling of controlled products",
-      },
-      {
-        icon: ClipboardCheck,
-        es: "Trazabilidad e informes permanentes de inventario",
-        en: "Traceability and continuous inventory reports",
+        es: "Coordinación para el ingreso y salida de carga",
+        en: "Coordination for cargo receipt and dispatch",
       },
       {
         icon: ShieldCheck,
-        es: "Custodia y seguridad de la mercadería en bodega",
-        en: "Custody and safekeeping in warehouse",
+        es: "Organización y control de carga almacenada",
+        en: "Organization and control of stored cargo",
       },
     ],
     side_image_hint_es: "Vista interna del almacén — IPEDEL",
     side_image_hint_en: "Interior warehouse view — IPEDEL",
     side_image_path: "/services/almacenamiento-side.jpg",
     side_image_real: "/almacenamiento2.webp",
-    highlights_title_es: "Beneficios",
-    highlights_title_en: "Benefits",
+    highlights_title_es: "¿Por qué IPE del Perú?",
+    highlights_title_en: "Why IPE del Perú?",
     highlights: [
       {
         icon: Sparkles,
-        title_es: "Áreas a medida",
-        title_en: "Custom areas",
-        desc_es: "Espacios diseñados según el volumen y la rotación de su carga.",
-        desc_en: "Spaces designed according to your cargo volume and turnover.",
-        bullets_es: [
-          "Espacios escalables según necesidad",
-          "Diseño según volumen y rotación",
-          "Layout optimizado por tipo de producto",
-        ],
-        bullets_en: [
-          "Scalable spaces per need",
-          "Layout designed by volume and turnover",
-          "Optimized layout per product type",
-        ],
+        title_es: "Espacios a medida",
+        title_en: "Tailored Spaces",
+        desc_es: "Espacios organizados según el volumen y el tipo de carga, con infraestructura adaptable.",
+        desc_en: "Spaces organized by cargo volume and type, with adaptable infrastructure.",
+        bullets_es: [],
+        bullets_en: [],
       },
       {
         icon: ShieldCheck,
-        title_es: "Productos controlados",
-        title_en: "Controlled products",
-        desc_es: "Manejo apropiado para mercaderías que requieren autorizaciones.",
-        desc_en: "Proper handling for goods that need permits.",
-        bullets_es: [
-          "Permisos vigentes con autoridades",
-          "Personal capacitado para manipulación",
-          "Custodia documentada con trazabilidad",
-        ],
-        bullets_en: [
-          "Up-to-date permits with authorities",
-          "Staff trained for handling",
-          "Documented custody with traceability",
-        ],
+        title_es: "Manejo especializado",
+        title_en: "Specialized Handling",
+        desc_es: "Cada carga recibe el cuidado necesario según sus características y requerimientos.",
+        desc_en: "Each cargo receives proper care based on its characteristics and requirements.",
+        bullets_es: [],
+        bullets_en: [],
       },
       {
         icon: Plug,
-        title_es: "Seguimiento permanente",
-        title_en: "Continuous tracking",
-        desc_es: "Información en tiempo real del estado de su mercadería.",
-        desc_en: "Real-time information about your cargo status.",
-        bullets_es: [
-          "Inventario en tiempo real",
-          "Reportes mensuales detallados",
-          "Tu ejecutivo de cuenta a un click",
-        ],
-        bullets_en: [
-          "Real-time inventory",
-          "Detailed monthly reports",
-          "Your account executive one click away",
-        ],
+        title_es: "Personal experimentado",
+        title_en: "Experienced Staff",
+        desc_es: "Personal con amplia experiencia atendiendo las exigencias de cada operación.",
+        desc_en: "Staff with extensive experience attending to the demands of each operation.",
+        bullets_es: [],
+        bullets_en: [],
       },
     ],
   },
@@ -335,8 +304,8 @@ const CONTENT: Record<Slug, ServiceContent> = {
       "With over 30 years in the industry, we have extensive experience in international operations, including air and ocean consolidations.",
       "Our trained staff and a network of agents across multiple countries allow us to handle each operation with safety, efficiency and effectiveness.",
     ],
-    bullets_title_es: "El servicio incluye",
-    bullets_title_en: "The service includes",
+    bullets_title_es: "Características del servicio",
+    bullets_title_en: "Service Features",
     bullets: [
       {
         icon: FileCheck,
@@ -709,39 +678,42 @@ export default async function ServiceDetail({
                     </p>
                   )}
 
-                  {/* Divider con accent gradient */}
-                  <span
-                    aria-hidden="true"
-                    className="relative mt-6 mb-6 block h-px w-12 bg-gradient-to-r from-brand-500 to-transparent"
-                  />
-
-                  {/* Bullets con check brand */}
-                  <ul className="relative space-y-2.5">
-                    {(isEs ? h.bullets_es : h.bullets_en).map((b) => (
-                      <li
-                        key={b}
-                        className="flex items-start gap-2.5 text-sm text-ink-700"
-                      >
-                        <span
-                          aria-hidden="true"
-                          className="mt-0.5 inline-flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-brand-500 text-black"
-                        >
-                          <svg
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="3.5"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            className="h-2.5 w-2.5"
+                  {/* Divider + bullets — solo si hay bullets (algunos
+                      servicios usan solo descripción sin lista). */}
+                  {(isEs ? h.bullets_es : h.bullets_en).length > 0 && (
+                    <>
+                      <span
+                        aria-hidden="true"
+                        className="relative mt-6 mb-6 block h-px w-12 bg-gradient-to-r from-brand-500 to-transparent"
+                      />
+                      <ul className="relative space-y-2.5">
+                        {(isEs ? h.bullets_es : h.bullets_en).map((b) => (
+                          <li
+                            key={b}
+                            className="flex items-start gap-2.5 text-sm text-ink-700"
                           >
-                            <polyline points="20 6 9 17 4 12" />
-                          </svg>
-                        </span>
-                        <span>{b}</span>
-                      </li>
-                    ))}
-                  </ul>
+                            <span
+                              aria-hidden="true"
+                              className="mt-0.5 inline-flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-brand-500 text-black"
+                            >
+                              <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="3.5"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                className="h-2.5 w-2.5"
+                              >
+                                <polyline points="20 6 9 17 4 12" />
+                              </svg>
+                            </span>
+                            <span>{b}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </>
+                  )}
                 </article>
               );
             })}

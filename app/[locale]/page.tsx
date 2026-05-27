@@ -230,11 +230,11 @@ const SERVICE_CARDS: ServiceCard[] = [
     title_es: "Agenciamiento de carga",
     title_en: "Freight forwarding",
     desc_es:
-      "Soluciones a la medida en transporte aéreo, marítimo y terrestre — incluida consolidación y carga de proyecto.",
+      "Atendemos sus necesidades de carga internacional con soluciones de transporte aéreo, marítimo y terrestre.",
     desc_en:
-      "Tailored solutions across air, sea and land — including consolidation and project cargo.",
-    tags_es: ["Aéreo", "FCL/LCL", "Multimodal", "Door to Door"],
-    tags_en: ["Air", "FCL/LCL", "Multimodal", "Door to Door"],
+      "We handle your international cargo needs with air, sea and land transport solutions.",
+    tags_es: ["Aéreo", "Marítimo", "Terrestre", "Multimodal"],
+    tags_en: ["Air", "Sea", "Land", "Multimodal"],
     imagePath: "/agenciadecarga2.png",
     gradient:
       "bg-[linear-gradient(135deg,#ffffff_0%,#f4faea_30%,#d2e89f_75%,#aacd3e_100%)]",
@@ -245,11 +245,11 @@ const SERVICE_CARDS: ServiceCard[] = [
     title_es: "Almacenamiento",
     title_en: "Warehousing",
     desc_es:
-      "Áreas exclusivas y compartidas a medida del requerimiento, con manejo seguro de productos controlados.",
+      "Almacén con espacios a medida y personal capacitado para el manejo de carga.",
     desc_en:
-      "Exclusive and shared areas tailored to your needs, with safe handling of controlled products.",
-    tags_es: ["Bodegaje", "Custodia", "Productos controlados"],
-    tags_en: ["Storage", "Custody", "Controlled goods"],
+      "Warehouse with tailored spaces and trained staff for cargo handling.",
+    tags_es: ["Almacenamiento", "Manejo adecuado", "Personal experimentado"],
+    tags_en: ["Storage", "Proper Handling", "Experienced Staff"],
     imagePath: "/almacengrid.png",
     gradient:
       "bg-[linear-gradient(135deg,#f4faea_0%,#d2e89f_60%,#96c600_100%)]",
@@ -480,7 +480,7 @@ function ServiceCardItem({
         </span>
         <h3
           className={cn(
-            "mt-5 font-semibold leading-tight tracking-tight text-ink-900",
+            "mt-5 text-balance font-semibold leading-tight tracking-tight text-ink-900",
             tall ? "text-2xl lg:text-3xl" : "text-xl lg:text-2xl",
           )}
         >
