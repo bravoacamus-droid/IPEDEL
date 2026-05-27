@@ -2,7 +2,6 @@
 
 import { z } from "zod";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { logAudit } from "@/lib/auth/audit";
 
 const Schema = z.object({
   email: z.string().email("Correo inválido."),
@@ -43,15 +42,6 @@ export async function requestPasswordReset(
     type: "recovery",
     email: parsed.data.email,
     options: { redirectTo: `${siteUrl}/admin/restablecer` },
-  });
-
-  // Audit best-effort (puede no haber sesion).
-  await logAudit({
-    action: "password_reset",
-    entityType: "auth",
-    entityId: data?.user?.id ?? null,
-    entityLabel: parsed.data.email,
-    changes: { requested: true, success: !error },
   });
 
   if (error) {

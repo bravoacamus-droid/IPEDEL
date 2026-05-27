@@ -3,7 +3,6 @@ import { Download } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import type { Reclamacion } from "@/lib/types/database";
 import { formatDateTime } from "@/lib/utils";
-import { DeleteReclamacionButton } from "./DeleteReclamacionButton";
 
 export default async function ReclamacionesPage({
   searchParams,
@@ -18,14 +17,13 @@ export default async function ReclamacionesPage({
   const { q, estado, from, to } = await searchParams;
   const supabase = await createClient();
 
-  // Solo trae reclamaciones activas (no soft-deleted). Las eliminadas
-  // permanecen en DB para cumplir el plazo legal de 2 años (Indecopi).
   // El filtro `q` busca por nombre, apellido, email o número
-  // correlativo (si es numérico).
+  // correlativo (si es numérico). Las reclamaciones NO se pueden
+  // eliminar desde el panel — quedan registradas permanentemente
+  // por imposicion legal (Indecopi 2 anos minimo).
   let query = supabase
     .from("reclamaciones")
     .select("*")
-    .is("deleted_at", null)
     .order("fecha", { ascending: false })
     .limit(200);
   if (estado) query = query.eq("estado", estado);
@@ -147,7 +145,6 @@ export default async function ReclamacionesPage({
               <th className="px-4 py-3 text-left">Consumidor</th>
               <th className="px-4 py-3 text-left">Servicio</th>
               <th className="px-4 py-3 text-left">Estado</th>
-              <th className="px-4 py-3 text-right">Acciones</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-ink-100">
@@ -181,14 +178,11 @@ export default async function ReclamacionesPage({
                     {r.estado}
                   </span>
                 </td>
-                <td className="px-4 py-3 text-right">
-                  <DeleteReclamacionButton id={r.id} numero={r.numero_correlativo} />
-                </td>
               </tr>
             ))}
             {list.length === 0 && (
               <tr>
-                <td colSpan={7} className="px-4 py-12 text-center text-ink-500">
+                <td colSpan={6} className="px-4 py-12 text-center text-ink-500">
                   Sin reclamaciones registradas.
                 </td>
               </tr>

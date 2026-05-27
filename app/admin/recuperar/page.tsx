@@ -112,7 +112,7 @@ export default function RecoverPasswordPage() {
             </span>
             <span className="ml-auto inline-flex items-center gap-1.5 text-white/40">
               <ShieldCheck className="h-3.5 w-3.5" />
-              Acceso registrado en auditoría
+              Solo personal autorizado
             </span>
           </div>
         </div>

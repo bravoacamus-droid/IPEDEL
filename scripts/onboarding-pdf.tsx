@@ -492,18 +492,6 @@ export function OnboardingDocument({
 
         <Feature
           number="04"
-          title="Sistema de auditoría completo"
-          bullets={[
-            "Toda acción queda registrada: quién la hizo, desde qué IP, en qué fecha y con qué rol.",
-            "Eventos auditados: login, logout, creación / edición / eliminación de usuarios, cambios de rol, reseteos de contraseña, alta y modificación de embarques, eventos del timeline, respuestas y cierre de reclamaciones, cambios en tarifario, agentes y contenido web.",
-            "Página /admin/auditoría con filtros por usuario, acción y entidad, paginación de 50 registros por página.",
-            "Preview visual de los cambios (campo: anterior → nuevo).",
-            "Útil para fiscalización Indecopi / SUNAT y para trazabilidad interna.",
-          ]}
-        />
-
-        <Feature
-          number="05"
           title="Exportación de datos a Excel y CSV"
           bullets={[
             "Embarques exportable a Excel branded (.xlsx) con logo IPE, colores corporativos, freeze pane y formato profesional listo para enviar.",
@@ -514,7 +502,7 @@ export function OnboardingDocument({
         />
 
         <Feature
-          number="06"
+          number="05"
           title="Filtros avanzados con rango de fechas"
           bullets={[
             "Embarques: búsqueda por HBL, filtro por estado, rango de fechas configurable.",
@@ -524,66 +512,45 @@ export function OnboardingDocument({
         />
 
         <Feature
-          number="07"
+          number="06"
           title="Login y UX mejorados"
           bullets={[
             "Diseño split-screen profesional con branding corporativo.",
             "Toggle de visibilidad de contraseña.",
             "Flujo completo de recuperación de contraseña por correo.",
-            "Aviso visible de que el ingreso queda registrado en auditoría.",
             "Mensajes neutrales para evitar enumeración de cuentas.",
           ]}
         />
 
-        <PageFooter />
-      </Page>
-
-      <Page size="A4" style={styles.page}>
-        <PageHeader logoColor={logoColor} />
-
         <Feature
-          number="08"
+          number="07"
           title="Notificaciones y feedback visual"
           bullets={[
-            "Toasts (mensajes flotantes) confirman cada acción: guardado, eliminación, error.",
+            "Toasts (mensajes flotantes) confirman cada acción: guardado, error.",
             "Modal de confirmación con doble verificación en acciones destructivas.",
             "Badge rojo en el sidebar con el contador de reclamaciones pendientes — visible siempre.",
           ]}
         />
 
         <Feature
-          number="09"
-          title="Reclamaciones: soft-delete legal"
+          number="08"
+          title="Reclamaciones: registro permanente"
           bullets={[
-            "Las reclamaciones eliminadas no se borran físicamente — se ocultan con un flag deleted_at.",
-            "Cumple la obligación legal de Indecopi de conservar reclamos por 2 años (Art. 12 DS 011-2011-PCM).",
-            "El panel admin solo muestra las activas, pero los datos quedan en base de datos para fiscalización.",
-            "El PDF firmado con HMAC del consumidor sigue válido aunque la reclamación se archive.",
+            "Las reclamaciones NO se pueden eliminar desde el panel (ni administrador ni operador).",
+            "Política intencional para cumplir la obligación legal de Indecopi de conservar reclamos por 2 años como mínimo (Art. 12 DS 011-2011-PCM).",
+            "Se puede cambiar el estado (pendiente / atendido / cerrado) y registrar respuesta, pero no borrar.",
+            "El PDF firmado con HMAC del consumidor queda válido permanentemente.",
           ]}
         />
 
         <Feature
-          number="10"
+          number="09"
           title="Correo transaccional con Resend"
           bullets={[
             "Formulario de contacto envía automáticamente a consultas@ipeperu.com.",
             "Libro de reclamaciones envía copia con PDF adjunto al consumidor + notificación interna.",
             "Recuperación de contraseña vía correo profesional desde el dominio ipeperu.com.",
             "Plan free de Resend: 3000 correos/mes (sobra para el volumen operativo).",
-          ]}
-        />
-
-        <Feature
-          number="11"
-          title="Sitio público — actualizaciones"
-          bullets={[
-            "Nuevo hero video institucional.",
-            "Mapa interactivo de agentes con tarjetas flotantes legibles.",
-            "Sección 'Importaciones' con sus secciones y fotos institucionales reales.",
-            "9 imágenes propias del cliente reemplazaron placeholders (servicios, nosotros, importaciones).",
-            "Logo blanco propio para el header sobre el video (mejor legibilidad).",
-            "Bilingüe completo (ES / EN) en toda la web y en el panel.",
-            "Cumplimiento DS 011-2011-PCM: libro de reclamaciones con ubigeo INEI obligatorio, generación de PDF oficial.",
           ]}
         />
 

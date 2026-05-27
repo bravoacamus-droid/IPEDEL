@@ -123,7 +123,7 @@ export default async function ResetPasswordPage() {
           <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-xs text-white/60">
             <span className="inline-flex items-center gap-1.5 text-white/40">
               <ShieldCheck className="h-3.5 w-3.5" />
-              Cambio de contraseña registrado en auditoría
+              Acceso seguro
             </span>
           </div>
         </div>

@@ -61,11 +61,10 @@ export default async function AdminDashboard() {
       .from("shipments")
       .select("id, status, mode, created_at, weight_kg, volumen_cbm, eta, origin, destination")
       .gte("created_at", last12Start.toISOString()),
-    // Reclamaciones activas para alertas + SLA + chart por mes.
+    // Reclamaciones para alertas + SLA + chart por mes.
     supabase
       .from("reclamaciones")
       .select("id, numero_correlativo, nombres, apellidos, fecha, estado, bien_servicio")
-      .is("deleted_at", null)
       .order("fecha", { ascending: true }),
     // Próximos ETAs (7 días).
     supabase

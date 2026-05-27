@@ -4,7 +4,6 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { requireSectionAccess } from "@/lib/auth/rbac";
-import { logAudit } from "@/lib/auth/audit";
 
 const CreateSchema = z.object({
   email: z.string().email("Correo inválido."),
@@ -69,14 +68,6 @@ export async function createUser(formData: FormData): Promise<ActionResult> {
     return { ok: false, error: `Error al asignar rol: ${profErr.message}` };
   }
 
-  await logAudit({
-    action: "create",
-    entityType: "user",
-    entityId: created.user.id,
-    entityLabel: parsed.data.email,
-    changes: { role: parsed.data.role, full_name: parsed.data.full_name },
-  });
-
   revalidatePath("/admin/usuarios");
   return { ok: true, message: "Usuario creado correctamente." };
 }
@@ -96,26 +87,11 @@ export async function updateUserRole(
   }
 
   const admin = createAdminClient();
-  // Snapshot anterior para registrar el diff en auditoría.
-  const { data: before } = await admin
-    .from("profiles")
-    .select("email, role")
-    .eq("id", userId)
-    .maybeSingle();
-
   const { error } = await admin
     .from("profiles")
     .update({ role: parsed.data.role })
     .eq("id", userId);
   if (error) return { ok: false, error: error.message };
-
-  await logAudit({
-    action: "role_change",
-    entityType: "user",
-    entityId: userId,
-    entityLabel: before?.email ?? userId,
-    changes: { role: { from: before?.role, to: parsed.data.role } },
-  });
 
   revalidatePath("/admin/usuarios");
   return { ok: true, message: "Rol actualizado." };
@@ -132,25 +108,11 @@ export async function updateUserName(
   }
 
   const admin = createAdminClient();
-  const { data: before } = await admin
-    .from("profiles")
-    .select("email, full_name")
-    .eq("id", userId)
-    .maybeSingle();
-
   const { error } = await admin
     .from("profiles")
     .update({ full_name: parsed.data.full_name })
     .eq("id", userId);
   if (error) return { ok: false, error: error.message };
-
-  await logAudit({
-    action: "update",
-    entityType: "user",
-    entityId: userId,
-    entityLabel: before?.email ?? userId,
-    changes: { full_name: { from: before?.full_name, to: parsed.data.full_name } },
-  });
 
   revalidatePath("/admin/usuarios");
   return { ok: true, message: "Nombre actualizado." };
@@ -167,23 +129,10 @@ export async function resetUserPassword(
   }
 
   const admin = createAdminClient();
-  const { data: profileBefore } = await admin
-    .from("profiles")
-    .select("email")
-    .eq("id", userId)
-    .maybeSingle();
-
   const { error } = await admin.auth.admin.updateUserById(userId, {
     password: parsed.data.password,
   });
   if (error) return { ok: false, error: error.message };
-
-  await logAudit({
-    action: "password_reset",
-    entityType: "user",
-    entityId: userId,
-    entityLabel: profileBefore?.email ?? userId,
-  });
 
   return { ok: true, message: "Contraseña actualizada." };
 }
@@ -195,26 +144,9 @@ export async function deleteUser(userId: string): Promise<ActionResult> {
   }
 
   const admin = createAdminClient();
-  // Snapshot antes de borrar para auditoría.
-  const { data: before } = await admin
-    .from("profiles")
-    .select("email, full_name, role")
-    .eq("id", userId)
-    .maybeSingle();
-
   // Borrar de auth.users dispara CASCADE en profiles (FK on delete cascade).
   const { error } = await admin.auth.admin.deleteUser(userId);
   if (error) return { ok: false, error: error.message };
-
-  await logAudit({
-    action: "delete",
-    entityType: "user",
-    entityId: userId,
-    entityLabel: before?.email ?? userId,
-    changes: before
-      ? { full_name: before.full_name, role: before.role }
-      : null,
-  });
 
   revalidatePath("/admin/usuarios");
   return { ok: true, message: "Usuario eliminado." };
@@ -236,14 +168,6 @@ export async function changeOwnPassword(formData: FormData): Promise<ActionResul
     password: parsed.data.password,
   });
   if (error) return { ok: false, error: error.message };
-
-  await logAudit({
-    action: "password_reset",
-    entityType: "user",
-    entityId: staff.userId,
-    entityLabel: staff.email,
-    changes: { self: true },
-  });
 
   return { ok: true, message: "Contraseña cambiada correctamente." };
 }

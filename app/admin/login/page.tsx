@@ -49,8 +49,7 @@ export default function AdminLoginPage({
             />
             <p>
               Esta zona está reservada al personal autorizado de IPE del Perú
-              SAC. Todos los accesos quedan registrados en auditoría con tu
-              correo, IP y fecha.
+              SAC. Cualquier acceso sin permiso queda registrado.
             </p>
           </div>
         </div>

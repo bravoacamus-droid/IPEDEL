@@ -2,7 +2,6 @@
 
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { logAudit } from "@/lib/auth/audit";
 
 export type LoginState = { ok: false; message: string } | undefined;
 
@@ -21,13 +20,6 @@ export async function signIn(_prev: LoginState, formData: FormData): Promise<Log
   if (error) {
     return { ok: false, message: "Credenciales inválidas." };
   }
-
-  // logAudit() lee la sesión recién creada en cookies.
-  await logAudit({
-    action: "login",
-    entityType: "auth",
-    entityLabel: email,
-  });
 
   redirect(next);
 }

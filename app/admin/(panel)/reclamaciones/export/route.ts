@@ -9,7 +9,7 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 // Exporta el listado de reclamaciones a CSV (mismos filtros que la
-// página: q + estado + rango de fechas sobre fecha). Excluye soft-deleted.
+// página: q + estado + rango de fechas sobre fecha).
 export async function GET(req: NextRequest) {
   await requireSectionAccess("reclamaciones");
 
@@ -22,7 +22,6 @@ export async function GET(req: NextRequest) {
   let query = supabase
     .from("reclamaciones")
     .select("*")
-    .is("deleted_at", null)
     .order("fecha", { ascending: false });
   if (estado) query = query.eq("estado", estado);
   if (from) query = query.gte("fecha", `${from}T00:00:00`);

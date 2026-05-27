@@ -4,7 +4,6 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
-import { logAudit } from "@/lib/auth/audit";
 
 const AgentSchema = z.object({
   name: z.string().min(2),
@@ -44,19 +43,8 @@ export async function createAgent(formData: FormData) {
   if (!parsed.success) {
     return { error: parsed.error.flatten().fieldErrors } as const;
   }
-  const payload = payloadFrom(parsed.data);
-  const { data, error } = await supabase
-    .from("agents")
-    .insert(payload)
-    .select("id")
-    .single();
+  const { error } = await supabase.from("agents").insert(payloadFrom(parsed.data));
   if (error) return { error: { _form: [error.message] } } as const;
-  await logAudit({
-    action: "create",
-    entityType: "agent",
-    entityId: data.id,
-    entityLabel: `${payload.name} (${payload.country})`,
-  });
   revalidatePath("/admin/agentes");
   revalidatePath("/[locale]/agentes", "page");
   redirect("/admin/agentes");
@@ -68,15 +56,8 @@ export async function updateAgent(id: string, formData: FormData) {
   if (!parsed.success) {
     return { error: parsed.error.flatten().fieldErrors } as const;
   }
-  const payload = payloadFrom(parsed.data);
-  const { error } = await supabase.from("agents").update(payload).eq("id", id);
+  const { error } = await supabase.from("agents").update(payloadFrom(parsed.data)).eq("id", id);
   if (error) return { error: { _form: [error.message] } } as const;
-  await logAudit({
-    action: "update",
-    entityType: "agent",
-    entityId: id,
-    entityLabel: `${payload.name} (${payload.country})`,
-  });
   revalidatePath("/admin/agentes");
   revalidatePath("/[locale]/agentes", "page");
   return { ok: true } as const;
@@ -84,19 +65,8 @@ export async function updateAgent(id: string, formData: FormData) {
 
 export async function deleteAgent(id: string) {
   const supabase = await createClient();
-  const { data: before } = await supabase
-    .from("agents")
-    .select("name, country")
-    .eq("id", id)
-    .maybeSingle();
   const { error } = await supabase.from("agents").delete().eq("id", id);
   if (error) return { error: error.message } as const;
-  await logAudit({
-    action: "delete",
-    entityType: "agent",
-    entityId: id,
-    entityLabel: before ? `${before.name} (${before.country})` : id,
-  });
   revalidatePath("/admin/agentes");
   revalidatePath("/[locale]/agentes", "page");
   redirect("/admin/agentes");
@@ -104,23 +74,11 @@ export async function deleteAgent(id: string) {
 
 export async function toggleAgent(id: string, current: boolean) {
   const supabase = await createClient();
-  const { data: before } = await supabase
-    .from("agents")
-    .select("name")
-    .eq("id", id)
-    .maybeSingle();
   const { error } = await supabase
     .from("agents")
     .update({ is_active: !current })
     .eq("id", id);
   if (error) return { error: error.message } as const;
-  await logAudit({
-    action: "toggle_active",
-    entityType: "agent",
-    entityId: id,
-    entityLabel: before?.name ?? id,
-    changes: { is_active: { from: current, to: !current } },
-  });
   revalidatePath("/admin/agentes");
   revalidatePath("/[locale]/agentes", "page");
   return { ok: true } as const;

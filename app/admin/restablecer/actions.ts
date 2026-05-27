@@ -3,7 +3,6 @@
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
-import { logAudit } from "@/lib/auth/audit";
 
 const Schema = z
   .object({
@@ -49,13 +48,8 @@ export async function setNewPassword(
     return { ok: false, message: error.message };
   }
 
-  await logAudit({
-    action: "password_reset",
-    entityType: "auth",
-    entityId: user.id,
-    entityLabel: user.email ?? user.id,
-    changes: { via: "recovery_link" },
-  });
-
+  // user destructured arriba garantiza que la sesion existe; el
+  // redirect cierra el flujo.
+  void user;
   redirect("/admin?reset=1");
 }

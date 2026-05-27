@@ -10,7 +10,6 @@ import {
   Settings,
   UserCog,
   ShieldCheck,
-  ScrollText,
   LogOut,
   type LucideIcon,
 } from "lucide-react";
@@ -37,7 +36,6 @@ const NAV: NavItem[] = [
   { section: "agentes", href: "/admin/agentes", label: "Agentes", icon: Users },
   { section: "contenido", href: "/admin/contenido", label: "Contenido web", icon: FileEdit },
   { section: "usuarios", href: "/admin/usuarios", label: "Usuarios", icon: UserCog },
-  { section: "auditoria", href: "/admin/auditoria", label: "Auditoría", icon: ScrollText },
   { section: "configuracion", href: "/admin/configuracion", label: "Configuración", icon: Settings },
 ];
 
@@ -58,8 +56,7 @@ export default async function AdminPanelLayout({ children }: { children: React.R
     const { count } = await supabase
       .from("reclamaciones")
       .select("id", { count: "exact", head: true })
-      .eq("estado", "pendiente")
-      .is("deleted_at", null);
+      .eq("estado", "pendiente");
     pendingReclamaciones = count ?? 0;
   }
 
