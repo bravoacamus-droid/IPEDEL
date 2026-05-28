@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import {
@@ -14,7 +15,6 @@ import type { LucideIcon } from "lucide-react";
 import { isLocale, type Locale } from "@/lib/i18n/config";
 import { getDictionary } from "@/lib/i18n/get-dictionary";
 import { PageBanner } from "@/components/public/PageBanner";
-import { ImageSlot } from "@/components/public/ImageSlot";
 import { CTAFooter } from "@/components/public/CTAFooter";
 
 type Service = {
@@ -26,9 +26,9 @@ type Service = {
   short_en: string;
   features_es: string[];
   features_en: string[];
-  imageSuggested: string;
-  imageHint_es: string;
-  imageHint_en: string;
+  image: string;
+  imageAlt_es: string;
+  imageAlt_en: string;
 };
 
 const SERVICES: Service[] = [
@@ -41,9 +41,9 @@ const SERVICES: Service[] = [
     short_en: "Air · Sea (FCL/LCL) · Land.",
     features_es: [],
     features_en: [],
-    imageSuggested: "/services/agenciamiento-card.jpg",
-    imageHint_es: "Avión cargo + contenedor — operación premium",
-    imageHint_en: "Cargo plane + container — premium operation",
+    image: "/serviciocomprende2.webp",
+    imageAlt_es: "Agenciamiento de carga — operación IPE del Perú",
+    imageAlt_en: "Freight forwarding — IPE del Perú operation",
   },
   {
     slug: "almacenamiento",
@@ -54,9 +54,9 @@ const SERVICES: Service[] = [
     short_en: "Exclusive and shared areas.",
     features_es: [],
     features_en: [],
-    imageSuggested: "/services/almacenamiento-card.jpg",
-    imageHint_es: "Almacén / racks — vista institucional",
-    imageHint_en: "Warehouse / racks — institutional view",
+    image: "/almacenamiento2.webp",
+    imageAlt_es: "Almacén IPE del Perú — áreas exclusivas y compartidas",
+    imageAlt_en: "IPE del Perú warehouse — exclusive and shared areas",
   },
   {
     slug: "especializados",
@@ -67,9 +67,9 @@ const SERVICES: Service[] = [
     short_en: "Logistics operators.",
     features_es: [],
     features_en: [],
-    imageSuggested: "/services/especializados-card.jpg",
-    imageHint_es: "Desaduanaje / agentes / SUNAT",
-    imageHint_en: "Customs clearance / agents / SUNAT",
+    image: "/especializados2.webp",
+    imageAlt_es: "Operadores logísticos — IPE del Perú",
+    imageAlt_en: "Logistics operators — IPE del Perú",
   },
   {
     slug: "internacional",
@@ -80,9 +80,9 @@ const SERVICES: Service[] = [
     short_en: "International moving.",
     features_es: [],
     features_en: [],
-    imageSuggested: "/services/internacional-card.jpg",
-    imageHint_es: "Mudanza internacional — embalaje y traslado",
-    imageHint_en: "International moving — packing and transport",
+    image: "/mudanzas2.webp",
+    imageAlt_es: "Mudanza internacional — embalaje y traslado IPE del Perú",
+    imageAlt_en: "International moving — IPE del Perú packing and transport",
   },
 ];
 
@@ -99,7 +99,6 @@ export default async function ServiciosPage({
   return (
     <div className="bg-white">
       <PageBanner
-        eyebrow={isEs ? "Nuestros servicios" : "Our services"}
         title={dict.home.services_title}
         subtitle={
           isEs
@@ -146,11 +145,19 @@ export default async function ServiciosPage({
                 className="grid items-center gap-8 lg:grid-cols-12 lg:gap-12"
               >
                 <div className={`lg:col-span-5 ${reverse ? "lg:order-last" : ""}`}>
-                  <ImageSlot
-                    hint={isEs ? s.imageHint_es : s.imageHint_en}
-                    suggested={s.imageSuggested}
-                    ratio="aspect-[4/3]"
-                  />
+                  <div className="group relative aspect-[4/3] overflow-hidden rounded-2xl shadow-lg ring-1 ring-black/5">
+                    <Image
+                      src={s.image}
+                      alt={isEs ? s.imageAlt_es : s.imageAlt_en}
+                      fill
+                      sizes="(min-width: 1024px) 40vw, 100vw"
+                      className="object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.06]"
+                    />
+                    <div
+                      aria-hidden="true"
+                      className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/40 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+                    />
+                  </div>
                 </div>
                 <div className="lg:col-span-7">
                   <div className="flex items-center gap-3">
