@@ -58,8 +58,8 @@ export default async function NosotrosPage({
         title={title}
         subtitle={
           locale === "es"
-            ? "Más de tres décadas siendo el puente logístico entre el Perú y el mundo."
-            : "Over three decades bridging Peru and the world."
+            ? "Más de 30 años conectando al Perú con el mundo."
+            : "Over 30 years connecting Peru and the world."
         }
         backgroundImage="/heronosotros2.webp"
         backgroundAlt={
@@ -80,10 +80,9 @@ export default async function NosotrosPage({
                 <span className="font-semibold text-ink-900">
                   IPE del Perú SAC
                 </span>{" "}
-                es Consolidador Aéreo y Marítimo, dedicada a la logística
-                nacional e internacional para importación, exportación y
-                tratamientos especiales. Siendo representantes de
-                transnacionales japonesas, contamos con una red de agentes en{" "}
+                es un agente de carga con más de 30 años de experiencia en
+                logística internacional, representante de transnacionales
+                japonesas, con una red de agentes en{" "}
                 <strong>más de 40 países</strong>.
               </p>
             ) : (
@@ -91,11 +90,10 @@ export default async function NosotrosPage({
                 <span className="font-semibold text-ink-900">
                   IPE del Perú SAC
                 </span>{" "}
-                is an Air and Maritime Consolidator dedicated to national and
-                international logistics for imports, exports and specialized
-                treatments. As representatives of Japanese multinationals, we
-                count on a network of agents in{" "}
-                <strong>40+ countries</strong>.
+                is a freight forwarder with over 30 years of experience in
+                international logistics, representative of Japanese
+                multinationals, with a network of agents in more than{" "}
+                <strong>40 countries</strong>.
               </p>
             )}
 
@@ -184,25 +182,25 @@ export default async function NosotrosPage({
               label={locale === "es" ? "Misión" : "Mission"}
               title={
                 locale === "es"
-                  ? "Soluciones logísticas a la medida del cliente."
-                  : "Logistics solutions tailored to each client."
+                  ? "Logística a medida"
+                  : "Tailored Logistics"
               }
               body={
                 locale === "es"
-                  ? "Brindar soluciones logísticas internacionales confiables, eficientes y a la medida del cliente."
-                  : "Deliver reliable, efficient and tailored international logistics solutions."
+                  ? "Brindar soluciones logísticas internacionales a la medida de cada operación."
+                  : "To provide international logistics solutions tailored to each operation."
               }
               bullets={
                 locale === "es"
                   ? [
-                      "Asesoría experta para optimizar costos",
-                      "Acompañamiento en cada etapa de la operación",
-                      "Trazabilidad permanente de tu carga",
+                      "Calidad operativa",
+                      "Coordinación logística",
+                      "Conexión internacional",
                     ]
                   : [
-                      "Expert advisory to optimize costs",
-                      "Support at every stage of the operation",
-                      "Continuous cargo traceability",
+                      "Operational quality",
+                      "Logistics coordination",
+                      "International connection",
                     ]
               }
               delay={0}
@@ -212,25 +210,25 @@ export default async function NosotrosPage({
               label={locale === "es" ? "Visión" : "Vision"}
               title={
                 locale === "es"
-                  ? "Ser el agente de carga referente por trayectoria y red global."
-                  : "Be the reference freight forwarder by track record and global network."
+                  ? "Trayectoria global"
+                  : "Global Trajectory"
               }
               body={
                 locale === "es"
-                  ? "Sostener nuestra trayectoria con compromiso y una red internacional de socios estratégicos."
-                  : "Sustain our track record with commitment and an international network of strategic partners."
+                  ? "Ser el agente de carga referente por trayectoria y red global."
+                  : "Be the reference freight forwarder by track record and global network."
               }
               bullets={
                 locale === "es"
                   ? [
-                      "Trayectoria reconocida en logística internacional",
-                      "Red de agentes en más de 40 países",
-                      "Adaptación constante al cambio del mercado",
+                      "Red de agentes",
+                      "Cobertura global",
+                      "Experiencia internacional",
                     ]
                   : [
-                      "Recognized track record in international logistics",
-                      "Agent network in 40+ countries",
-                      "Continuous adaptation to market change",
+                      "Agent Network",
+                      "Global coverage",
+                      "International Experience",
                     ]
               }
               delay={0.1}
@@ -240,27 +238,25 @@ export default async function NosotrosPage({
               label={locale === "es" ? "Valores" : "Values"}
               title={
                 locale === "es"
-                  ? "Cinco principios que rigen cada operación."
-                  : "Five principles that guide every operation."
+                  ? "Principios operativos"
+                  : "Operational Principles"
               }
               body={
                 locale === "es"
-                  ? "Cada embarque pasa por estos cinco filtros antes, durante y después de la operación."
-                  : "Every shipment passes through these five filters before, during and after the operation."
+                  ? "Principios que guían las decisiones y acciones de nuestro equipo."
+                  : "Principles that guide the decisions and actions of our team."
               }
               tags={
                 locale === "es"
                   ? [
-                      "Confianza",
+                      "Eficiencia",
                       "Calidad operativa",
-                      "Transparencia",
                       "Adaptabilidad",
                       "Compromiso",
                     ]
                   : [
-                      "Trust",
+                      "Efficiency",
                       "Operational quality",
-                      "Transparency",
                       "Adaptability",
                       "Commitment",
                     ]
@@ -300,13 +296,13 @@ export default async function NosotrosPage({
                 delay={0}
                 title={
                   locale === "es"
-                    ? "Trato directo y personalizado"
-                    : "Direct and personalized service"
+                    ? "Ejecutivo asignado"
+                    : "Assigned executive"
                 }
                 desc={
                   locale === "es"
-                    ? "Cada cliente cuenta con un ejecutivo asignado que conoce su negocio y le acompaña en cada embarque."
-                    : "Every client has a dedicated executive who knows their business and supports each shipment."
+                    ? "Cada cliente cuenta con un ejecutivo asignado para atender sus embarques."
+                    : "Each client has an assigned executive to support their shipments."
                 }
               />
               <Diff
@@ -314,8 +310,8 @@ export default async function NosotrosPage({
                 delay={0.08}
                 title={
                   locale === "es"
-                    ? "Red mundial de socios estratégicos"
-                    : "Global strategic partner network"
+                    ? "Red global de agentes"
+                    : "Global agent network"
                 }
                 desc={
                   locale === "es"
@@ -328,13 +324,13 @@ export default async function NosotrosPage({
                 delay={0.16}
                 title={
                   locale === "es"
-                    ? "Equipo altamente calificado"
-                    : "Highly qualified team"
+                    ? "Equipo calificado"
+                    : "Qualified team"
                 }
                 desc={
                   locale === "es"
-                    ? "Profesionales con conocimiento profundo en legislación aduanera y operación internacional."
-                    : "Professionals with deep expertise in customs legislation and international operations."
+                    ? "Profesionales con conocimiento en legislación aduanera y operaciones internacionales."
+                    : "Professionals with knowledge in customs legislation and international operations."
                 }
               />
               <Diff
@@ -342,13 +338,13 @@ export default async function NosotrosPage({
                 delay={0.24}
                 title={
                   locale === "es"
-                    ? "Trazabilidad del embarque"
-                    : "Shipment traceability"
+                    ? "Seguimiento del embarque"
+                    : "Shipment tracking"
                 }
                 desc={
                   locale === "es"
-                    ? "Sistema de seguimiento desde la coordinación hasta la entrega del embarque."
-                    : "Tracking system from coordination through shipment delivery."
+                    ? "Seguimiento desde la coordinación hasta la entrega del embarque."
+                    : "Tracking from coordination to shipment delivery."
                 }
               />
             </ul>

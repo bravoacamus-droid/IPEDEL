@@ -29,8 +29,8 @@ export default async function ImportacionesPage({
         title={isEs ? "Importaciones" : "Imports"}
         subtitle={
           isEs
-            ? "Acompañamos al importador y al consolidador internacional con servicios de carga aérea y marítima durante la operación."
-            : "We support importers and international consolidators with air and sea freight services throughout the operation."
+            ? "Atendemos sus operaciones de importación en modalidades aérea y marítima, apoyados por un equipo capacitado y una red global de agentes."
+            : "We handle your import operations in air and sea modalities, supported by a qualified team and a global network of agents."
         }
         backgroundImage="/importacioneshero2.webp"
         backgroundAlt={isEs ? "Importaciones IPEDEL" : "IPEDEL imports"}
@@ -187,7 +187,7 @@ export default async function ImportacionesPage({
               {isEs ? "Quiénes somos en importaciones" : "Who we are in imports"}
             </span>
             <h2 className="mt-3 text-3xl font-semibold leading-tight tracking-tight text-ink-900 sm:text-4xl">
-              {isEs ? "Agente logístico" : "Logistics agent"}
+              {isEs ? "Agente de carga internacional" : "International freight forwarder"}
               <span className="block h-1 w-20 bg-brand-500 mt-3" />
             </h2>
             <div className="mt-6 space-y-4 text-ink-700 leading-relaxed">
@@ -195,36 +195,51 @@ export default async function ImportacionesPage({
                 {isEs ? (
                   <>
                     <strong className="text-ink-900">IPE del Perú SAC</strong> es
-                    Consolidador Aéreo y Marítimo, dedicada a la logística
-                    nacional e internacional para importación, exportación y
-                    tratamientos especiales.
+                    un agente de carga con amplia experiencia en logística
+                    internacional, incluyendo operaciones de importación y
+                    exportación.
                   </>
                 ) : (
                   <>
                     <strong className="text-ink-900">IPE del Perú SAC</strong> is
-                    an Air and Maritime Consolidator dedicated to national and
-                    international logistics for imports, exports and specialized
-                    treatments.
+                    a freight forwarder with extensive experience in
+                    international logistics, including import and export
+                    operations.
                   </>
                 )}
               </p>
               <p>
                 {isEs
-                  ? "Siendo representantes de transnacionales japonesas, contamos con una red de agentes en más de 40 países."
-                  : "As representatives of Japanese multinationals, we count on a network of agents in 40+ countries."}
-              </p>
-              <p>
-                {isEs
-                  ? "IPE del Perú SAC cuenta con la capacidad de adaptarse a las necesidades particulares de cada cliente para cubrir de forma individual los requerimientos de cada uno de ellos."
-                  : "IPE del Perú SAC adapts to the particular needs of every client, covering each requirement individually."}
+                  ? "Contamos con una red global de agentes y un equipo capacitado que nos permite brindar soluciones logísticas de calidad a nuestros clientes."
+                  : "We have a global network of agents and a qualified team that allows us to provide quality logistics solutions to our clients."}
               </p>
             </div>
 
-            <div className="mt-8 grid grid-cols-2 gap-4 border-t border-ink-200 pt-8 sm:grid-cols-4">
-              <Stat value="30+" label={isEs ? "Años" : "Years"} />
-              <Stat value="40+" label={isEs ? "Países" : "Countries"} />
-              <Stat value="3" label={isEs ? "Aéreo · Marítimo · Terrestre" : "Air · Sea · Land"} />
-              <Stat value="JP" label={isEs ? "Especialidad" : "Expertise"} />
+            <div className="mt-6 flex flex-wrap gap-2">
+              <span className="rounded-full bg-brand-50 px-3 py-1 text-xs font-medium text-brand-800 ring-1 ring-brand-200">
+                {isEs ? "Trayectoria logística" : "Logistics track record"}
+              </span>
+              <span className="rounded-full bg-brand-50 px-3 py-1 text-xs font-medium text-brand-800 ring-1 ring-brand-200">
+                {isEs ? "Calidad operativa" : "Operational quality"}
+              </span>
+            </div>
+
+            <div className="mt-8 rounded-2xl border border-ink-100 bg-white p-6 shadow-sm">
+              <h3 className="text-lg font-semibold text-ink-900">
+                {isEs ? "Servicios logísticos" : "Logistics Services"}
+              </h3>
+              <div className="mt-3 space-y-3 text-sm leading-relaxed text-ink-700">
+                <p>
+                  {isEs
+                    ? "Con más de 30 años en el rubro, nuestra trayectoria se refleja en operaciones internacionales, incluyendo consolidaciones aéreas y marítimas."
+                    : "With over 30 years in the industry, our track record is reflected in international operations, including air and sea consolidations."}
+                </p>
+                <p>
+                  {isEs
+                    ? "Nuestro equipo atiende cada embarque con eficiencia y eficacia, brindando soluciones orientadas a las necesidades del cliente."
+                    : "Our team handles each shipment with efficiency and efficacy, providing solutions oriented to the client's needs."}
+                </p>
+              </div>
             </div>
           </div>
         </div>
@@ -275,13 +290,11 @@ export default async function ImportacionesPage({
                   desc_en: "We discuss your cargo, route and timing.",
                   bullets_es: [
                     "Análisis del requerimiento",
-                    "Definición de plazos",
                     "Propuesta inicial",
                   ],
                   bullets_en: [
-                    "Requirement analysis",
-                    "Timeline definition",
-                    "Initial proposal",
+                    "Requirement Analysis",
+                    "Initial Proposal",
                   ],
                 },
                 {
@@ -292,13 +305,11 @@ export default async function ImportacionesPage({
                   desc_en: "We design the best combination of mode and rate.",
                   bullets_es: [
                     "Modalidad óptima",
-                    "Negociación de tarifas",
-                    "Cronograma detallado",
+                    "Planificación logística",
                   ],
                   bullets_en: [
-                    "Optimal mode",
-                    "Rate negotiation",
-                    "Detailed schedule",
+                    "Optimal Mode",
+                    "Logistics Planning",
                   ],
                 },
                 {
@@ -308,14 +319,12 @@ export default async function ImportacionesPage({
                   desc_es: "Coordinamos origen, tránsito, aduana y entrega.",
                   desc_en: "We coordinate origin, transit, customs and delivery.",
                   bullets_es: [
-                    "Booking con transportistas",
+                    "Coordinación logística",
                     "Trámite documentario",
-                    "Coordinación con aduana",
                   ],
                   bullets_en: [
-                    "Booking with carriers",
-                    "Documentary processing",
-                    "Customs coordination",
+                    "Logistics Coordination",
+                    "Documentation Handling",
                   ],
                 },
                 {
@@ -326,13 +335,11 @@ export default async function ImportacionesPage({
                   desc_en: "We keep you informed every step of the way.",
                   bullets_es: [
                     "Seguimiento por HBL",
-                    "Reportes durante el tránsito",
-                    "Confirmación de entrega",
+                    "Actualización de estado",
                   ],
                   bullets_en: [
-                    "HBL tracking",
-                    "Reports during transit",
-                    "Delivery confirmation",
+                    "HBL Tracking",
+                    "Status Updates",
                   ],
                 },
               ].map((step) => {
@@ -396,17 +403,6 @@ export default async function ImportacionesPage({
       </section>
 
       <CTAFooter locale={locale as Locale} />
-    </div>
-  );
-}
-
-function Stat({ value, label }: { value: string; label: string }) {
-  return (
-    <div>
-      <p className="text-2xl font-semibold tracking-tight text-ink-900">{value}</p>
-      <p className="mt-1 text-xs uppercase tracking-[0.16em] text-ink-500">
-        {label}
-      </p>
     </div>
   );
 }

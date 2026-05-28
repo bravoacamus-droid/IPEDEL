@@ -102,8 +102,8 @@ export default async function HomePage({
             </h2>
             <p className="mt-5 max-w-lg text-base text-black/85 sm:text-lg">
               {locale === "es"
-                ? "Cuéntanos sobre tu carga y te enviamos una propuesta a la medida de tu operación."
-                : "Tell us about your shipment and we'll send a proposal tailored to your operation."}
+                ? "Cuéntanos sobre tu embarque y te respondemos."
+                : "Tell us about your shipment and we will get back to you."}
             </p>
           </div>
           <div className="flex flex-wrap gap-3">
@@ -270,11 +270,11 @@ const SERVICE_CARDS: ServiceCard[] = [
     title_es: "Especializados",
     title_en: "Specialized",
     desc_es:
-      "Operadores logísticos: desaduanaje, consolidaciones aéreas y conocimiento profundo en legislación aduanera.",
+      "Operadores logísticos con experiencia internacional y red de agentes.",
     desc_en:
-      "Logistics operators: customs clearance, air consolidations and deep customs-legislation expertise.",
-    tags_es: ["Desaduanaje", "Consolidación aérea", "Asia ↔ Perú"],
-    tags_en: ["Customs clearance", "Air consolidation", "Asia ↔ Peru"],
+      "Logistics operators with international experience and agent network.",
+    tags_es: ["Coordinación logística", "Alcance internacional", "Red de agentes"],
+    tags_en: ["Logistics coordination", "International reach", "Agent network"],
     imagePath: "/especializados.png",
     gradient:
       "bg-[linear-gradient(135deg,#ffffff_0%,#e6f3cf_50%,#c2d971_100%)]",
@@ -285,9 +285,9 @@ const SERVICE_CARDS: ServiceCard[] = [
     title_es: "Internacional",
     title_en: "International",
     desc_es:
-      "Mudanzas internacionales con agentes acreditados en el extranjero. Embalaje profesional y trazabilidad.",
+      "Mudanzas internacionales con un equipo capacitado y alcance global.",
     desc_en:
-      "International moving with accredited agents abroad. Professional packing and full traceability.",
+      "International moving with a trained team and global reach.",
     tags_es: ["Door to Port", "Door to Door", "Room to Room"],
     tags_en: ["Door to Port", "Door to Door", "Room to Room"],
     imagePath: "/internacional.png",

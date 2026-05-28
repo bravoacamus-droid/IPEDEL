@@ -77,8 +77,8 @@ export default async function TrackingPage({
             </p>
             <p className="mt-2 text-sm leading-relaxed text-white/80">
               {locale === "es"
-                ? "¿Tu carga está gestionada por Nippon Express? Ingresa tu código directamente en su sistema de tracking."
-                : "Is your cargo handled by Nippon Express? Enter your code directly in their tracking system."}
+                ? "¿Tu carga está gestionada por Nippon Express? Ingresa tu código directamente en su sistema."
+                : "Is your cargo handled by Nippon Express? Enter your code directly in their system."}
             </p>
             <a
               href={NIPPON_EXPRESS_TRACKING_URL}

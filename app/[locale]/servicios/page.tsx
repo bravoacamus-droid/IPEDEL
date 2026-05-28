@@ -37,24 +37,10 @@ const SERVICES: Service[] = [
     icon: Container,
     title_es: "Agenciamiento de carga",
     title_en: "Freight forwarding",
-    short_es:
-      "Soluciones adaptadas al negocio del cliente, con asesoría experta para reducir costos y elegir la modalidad correcta.",
-    short_en:
-      "Solutions tailored to the client's business, with expert advisory to reduce costs and choose the right transport mode.",
-    features_es: [
-      "Aéreo · marítimo (FCL/LCL) · terrestre · multimodal",
-      "Consolidación / desconsolidación",
-      "Carga de proyecto",
-      "Door to Door",
-      "Asesoría documentaria",
-    ],
-    features_en: [
-      "Air · sea (FCL/LCL) · land · multimodal",
-      "Consolidation / deconsolidation",
-      "Project cargo",
-      "Door to Door",
-      "Documentary advisory",
-    ],
+    short_es: "Aéreo · Marítimo (FCL/LCL) · Terrestre.",
+    short_en: "Air · Sea (FCL/LCL) · Land.",
+    features_es: [],
+    features_en: [],
     imageSuggested: "/services/agenciamiento-card.jpg",
     imageHint_es: "Avión cargo + contenedor — operación premium",
     imageHint_en: "Cargo plane + container — premium operation",
@@ -64,22 +50,10 @@ const SERVICES: Service[] = [
     icon: Warehouse,
     title_es: "Almacenamiento",
     title_en: "Warehousing",
-    short_es:
-      "Servicio de almacenamiento impecable, con áreas exclusivas y compartidas adaptadas a cada cliente.",
-    short_en:
-      "Flawless warehousing, with exclusive and shared areas adapted to each client.",
-    features_es: [
-      "Áreas exclusivas y compartidas",
-      "Áreas a medida del requerimiento",
-      "Manejo de productos controlados",
-      "Seguimiento permanente",
-    ],
-    features_en: [
-      "Exclusive and shared areas",
-      "Custom-sized areas",
-      "Controlled-product handling",
-      "Continuous tracking",
-    ],
+    short_es: "Áreas exclusivas y compartidas.",
+    short_en: "Exclusive and shared areas.",
+    features_es: [],
+    features_en: [],
     imageSuggested: "/services/almacenamiento-card.jpg",
     imageHint_es: "Almacén / racks — vista institucional",
     imageHint_en: "Warehouse / racks — institutional view",
@@ -89,22 +63,10 @@ const SERVICES: Service[] = [
     icon: Layers,
     title_es: "Especializados",
     title_en: "Specialized",
-    short_es:
-      "Operadores logísticos: desaduanaje, consolidaciones aéreas y conocimiento profundo en legislación aduanera.",
-    short_en:
-      "Logistics operators: customs clearance, air consolidations and deep customs-legislation expertise.",
-    features_es: [
-      "Desaduanaje para cargas en general",
-      "Consolidaciones aéreas (Japón y mundo)",
-      "Personal experto en legislación aduanera",
-      "Socios estratégicos en países de origen",
-    ],
-    features_en: [
-      "Customs clearance for general cargo",
-      "Air consolidations (Japan and worldwide)",
-      "Customs-legislation experts",
-      "Strategic partners at origin",
-    ],
+    short_es: "Operadores logísticos.",
+    short_en: "Logistics operators.",
+    features_es: [],
+    features_en: [],
     imageSuggested: "/services/especializados-card.jpg",
     imageHint_es: "Desaduanaje / agentes / SUNAT",
     imageHint_en: "Customs clearance / agents / SUNAT",
@@ -114,22 +76,10 @@ const SERVICES: Service[] = [
     icon: Globe2,
     title_es: "Internacional",
     title_en: "International",
-    short_es:
-      "Mudanzas internacionales con agentes acreditados en el extranjero. Visita personal, presupuesto detallado y embalaje profesional.",
-    short_en:
-      "International moving with accredited overseas agents. Personal visit, detailed quote and professional packing.",
-    features_es: [
-      "Door to Port",
-      "Door to Door",
-      "Room to Room",
-      "Embalaje profesional certificado",
-    ],
-    features_en: [
-      "Door to Port",
-      "Door to Door",
-      "Room to Room",
-      "Certified professional packing",
-    ],
+    short_es: "Mudanza internacional.",
+    short_en: "International moving.",
+    features_es: [],
+    features_en: [],
     imageSuggested: "/services/internacional-card.jpg",
     imageHint_es: "Mudanza internacional — embalaje y traslado",
     imageHint_en: "International moving — packing and transport",
@@ -153,8 +103,8 @@ export default async function ServiciosPage({
         title={dict.home.services_title}
         subtitle={
           isEs
-            ? "Soluciones logísticas integrales aéreas, marítimas y terrestres, con la confianza forjada en más de tres décadas de operación."
-            : "End-to-end air, sea and land logistics solutions, backed by trust forged through three decades of operation."
+            ? "Soluciones logísticas aéreas, marítimas y terrestres, respaldadas por experiencia internacional y más de 30 años en el rubro."
+            : "Air, sea and land logistics solutions, backed by international experience and over 30 years in the industry."
         }
         breadcrumb={[
           { href: `/${locale}`, label: isEs ? "Inicio" : "Home" },
@@ -217,17 +167,19 @@ export default async function ServiciosPage({
                   <p className="mt-3 text-ink-600">
                     {isEs ? s.short_es : s.short_en}
                   </p>
-                  <ul className="mt-6 space-y-2">
-                    {(isEs ? s.features_es : s.features_en).map((f) => (
-                      <li
-                        key={f}
-                        className="flex items-start gap-2 text-sm text-ink-700"
-                      >
-                        <span className="mt-2 inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-brand-500" />
-                        {f}
-                      </li>
-                    ))}
-                  </ul>
+                  {(isEs ? s.features_es : s.features_en).length > 0 && (
+                    <ul className="mt-6 space-y-2">
+                      {(isEs ? s.features_es : s.features_en).map((f) => (
+                        <li
+                          key={f}
+                          className="flex items-start gap-2 text-sm text-ink-700"
+                        >
+                          <span className="mt-2 inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-brand-500" />
+                          {f}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                   <Link
                     href={`/${locale}/servicios/${s.slug}`}
                     className="mt-6 inline-flex items-center gap-1.5 text-sm font-semibold text-brand-700 hover:text-brand-800"

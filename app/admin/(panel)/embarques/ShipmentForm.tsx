@@ -49,13 +49,6 @@ export function ShipmentForm({
         />
         <Field name="mbl_number" label="MBL" defaultValue={shipment?.mbl_number ?? ""} />
         <Field name="client_name" label="Cliente" defaultValue={shipment?.client_name ?? ""} />
-        <Field
-          name="volumen_cbm"
-          type="number"
-          step="0.01"
-          label="Volumen (CBM)"
-          defaultValue={shipment?.volumen_cbm?.toString() ?? ""}
-        />
         <Select
           name="mode"
           label="Modo"
@@ -66,12 +59,6 @@ export function ShipmentForm({
             { value: "terrestre", label: "Terrestre" },
           ]}
         />
-        <Select
-          name="status"
-          label="Estado"
-          defaultValue={shipment?.status ?? "recibido"}
-          options={ACTIVE_SHIPMENT_STATUSES.map((s) => ({ value: s, label: SHIPMENT_STATUS_LABELS[s].es }))}
-        />
         <Field name="origin" label="Origen" defaultValue={shipment?.origin ?? ""} />
         <Field name="destination" label="Destino" defaultValue={shipment?.destination ?? ""} />
         <Field name="etd" type="date" label="ETD" defaultValue={shipment?.etd ?? ""} />
@@ -81,6 +68,19 @@ export function ShipmentForm({
           type="number"
           label="Peso (KG)"
           defaultValue={shipment?.weight_kg?.toString() ?? ""}
+        />
+        <Field
+          name="volumen_cbm"
+          type="number"
+          step="0.01"
+          label="Volumen (CBM)"
+          defaultValue={shipment?.volumen_cbm?.toString() ?? ""}
+        />
+        <Select
+          name="status"
+          label="Estado"
+          defaultValue={shipment?.status ?? "recibido"}
+          options={ACTIVE_SHIPMENT_STATUSES.map((s) => ({ value: s, label: SHIPMENT_STATUS_LABELS[s].es }))}
         />
       </div>
       <div>
