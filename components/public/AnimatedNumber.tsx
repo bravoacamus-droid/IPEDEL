@@ -20,7 +20,12 @@ export function AnimatedNumber({
   className?: string;
 }) {
   const ref = useRef<HTMLSpanElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-80px" });
+  // amount: 0 dispara apenas el elemento toca el viewport. Antes
+  // usabamos margin "-80px" pero en mobile portrait el elemento casi
+  // nunca llegaba a estar 80px adentro del viewport — el contador se
+  // quedaba en 0 para siempre. Con amount 0 funciona en cualquier
+  // tamaño de pantalla.
+  const inView = useInView(ref, { once: true, amount: 0 });
   const [display, setDisplay] = useState(0);
 
   useEffect(() => {

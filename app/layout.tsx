@@ -37,11 +37,10 @@ export const metadata: Metadata = {
   },
   twitter: { card: "summary_large_image" },
   robots: { index: true, follow: true },
-  icons: {
-    icon: [
-      { url: "/logo-vertical.png", sizes: "any" },
-    ],
-  },
+  // No definimos icons aquí: Next.js auto-detecta app/favicon.ico (un
+  // .ico multi-resolución proper 16x16 + 32x32). Antes había un override
+  // a /logo-vertical.png que a 16px se renderizaba como un triángulo
+  // negro porque el PNG no estaba optimizado para tamaños tan chicos.
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

@@ -17,7 +17,10 @@ import { cn } from "@/lib/utils";
 const fadeUp = {
   initial: { opacity: 0, y: 24 },
   whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true, margin: "-80px" },
+  // amount 0 (en lugar de margin "-80px") evita que en mobile portrait
+  // el elemento nunca llegue a considerarse "en vista" y se quede sin
+  // animar.
+  viewport: { once: true, amount: 0 },
 };
 
 // =============================================================

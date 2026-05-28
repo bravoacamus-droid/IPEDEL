@@ -130,8 +130,18 @@ export default async function HomePage({
 // =============================================================
 // STATS — premium con números animados al hacer scroll
 // =============================================================
-function StatsSection({ locale }: { locale: Locale }) {
+async function StatsSection({ locale }: { locale: Locale }) {
   const isEs = locale === "es";
+  // Sincroniza el contador de "Agentes destacados" con el número real
+  // de agentes activos en DB. Si el cliente agrega/quita agentes desde
+  // el panel admin, el contador del home se actualiza automaticamente.
+  const supabase = await createClient();
+  const { count: agentsCount } = await supabase
+    .from("agents")
+    .select("id", { count: "exact", head: true })
+    .eq("is_active", true);
+  const totalAgents = agentsCount ?? 0;
+
   return (
     <section className="relative -mt-12 px-4 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
@@ -150,7 +160,7 @@ function StatsSection({ locale }: { locale: Locale }) {
           />
           <StatCard
             icon={Users2}
-            value={6}
+            value={totalAgents}
             label={isEs ? "Agentes destacados" : "Featured agents"}
           />
           <StatCard
