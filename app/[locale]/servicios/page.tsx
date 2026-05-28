@@ -37,8 +37,10 @@ const SERVICES: Service[] = [
     icon: Container,
     title_es: "Agenciamiento de carga",
     title_en: "Freight forwarding",
-    short_es: "Aéreo · Marítimo (FCL/LCL) · Terrestre.",
-    short_en: "Air · Sea (FCL/LCL) · Land.",
+    short_es:
+      "Soluciones adaptadas al negocio de nuestros clientes, atendiendo sus necesidades de carga internacional según sus términos de compra-venta.",
+    short_en:
+      "Tailored solutions for our clients' businesses, supporting their international freight needs based on their trade terms.",
     features_es: [],
     features_en: [],
     image: "/serviciocomprende2.webp",
@@ -50,8 +52,10 @@ const SERVICES: Service[] = [
     icon: Warehouse,
     title_es: "Almacenamiento",
     title_en: "Warehousing",
-    short_es: "Áreas exclusivas y compartidas.",
-    short_en: "Exclusive and shared areas.",
+    short_es:
+      "Capacidad para ejecutar el servicio de almacenamiento con áreas exclusivas y compartidas, manteniendo el orden y control de su carga.",
+    short_en:
+      "Capacity to execute warehousing services with exclusive and shared areas, maintaining order and control of your cargo.",
     features_es: [],
     features_en: [],
     image: "/almacenamiento2.webp",
@@ -63,8 +67,10 @@ const SERVICES: Service[] = [
     icon: Layers,
     title_es: "Especializados",
     title_en: "Specialized",
-    short_es: "Operadores logísticos.",
-    short_en: "Logistics operators.",
+    short_es:
+      "Capacidad operativa para ejecutar las acciones necesarias de un servicio de calidad, con el respaldo de un equipo calificado y socios estratégicos.",
+    short_en:
+      "Operational capability to execute the necessary actions for quality service, backed by a qualified team and strategic partners.",
     features_es: [],
     features_en: [],
     image: "/especializados2.webp",
@@ -76,8 +82,10 @@ const SERVICES: Service[] = [
     icon: Globe2,
     title_es: "Internacional",
     title_en: "International",
-    short_es: "Mudanza internacional.",
-    short_en: "International moving.",
+    short_es:
+      "Capacidad para ejecutar el servicio de mudanza internacional, respaldado por experiencia logística, una red de agentes y un equipo capacitado.",
+    short_en:
+      "Capacity to execute the international moving service, backed by logistics experience, an agent network and a qualified team.",
     features_es: [],
     features_en: [],
     image: "/mudanzas2.webp",
