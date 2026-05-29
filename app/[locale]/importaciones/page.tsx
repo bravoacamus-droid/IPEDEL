@@ -82,10 +82,13 @@ export default async function ImportacionesPage({
 
             <ul className="mt-8 grid gap-3 sm:grid-cols-2">
               {[
+                // Orden segun el PDF anotado del cliente:
+                // top-left  Red global de agentes        | top-right    Trayectoria logistica
+                // bot-left  Coordinacion internacional   | bot-right    Calidad operativa
                 {
-                  icon: Handshake,
-                  es: "Coordinación internacional",
-                  en: "International coordination",
+                  icon: Globe2,
+                  es: "Red global de agentes",
+                  en: "Global agent network",
                 },
                 {
                   icon: Award,
@@ -93,9 +96,9 @@ export default async function ImportacionesPage({
                   en: "Logistics track record",
                 },
                 {
-                  icon: Globe2,
-                  es: "Red global de agentes",
-                  en: "Global agent network",
+                  icon: Handshake,
+                  es: "Coordinación internacional",
+                  en: "International coordination",
                 },
                 {
                   icon: ShieldCheck,
@@ -228,6 +231,17 @@ export default async function ImportacionesPage({
                 </p>
               </div>
             </div>
+
+            {/* Row de stats — el cliente pidio ELIMINAR solo el cuarto
+                ("JP - especialidad"). Los otros 3 quedan. */}
+            <div className="mt-8 grid grid-cols-3 gap-4 border-t border-ink-200 pt-8">
+              <Stat value="30+" label={isEs ? "Años" : "Years"} />
+              <Stat value="40+" label={isEs ? "Países" : "Countries"} />
+              <Stat
+                value="3"
+                label={isEs ? "Aéreo · Marítimo · Terrestre" : "Air · Sea · Land"}
+              />
+            </div>
           </div>
         </div>
       </section>
@@ -335,6 +349,17 @@ export default async function ImportacionesPage({
       </section>
 
       <CTAFooter locale={locale as Locale} />
+    </div>
+  );
+}
+
+function Stat({ value, label }: { value: string; label: string }) {
+  return (
+    <div>
+      <p className="text-2xl font-semibold tracking-tight text-ink-900">{value}</p>
+      <p className="mt-1 text-xs uppercase tracking-[0.16em] text-ink-500">
+        {label}
+      </p>
     </div>
   );
 }
