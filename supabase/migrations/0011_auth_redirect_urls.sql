@@ -1,0 +1,21 @@
+-- Documenta el cambio aplicado a la config de Supabase Auth para que el
+-- correo de recuperacion de contrasena ya NO redirija a localhost.
+--
+-- Esta config NO esta en una tabla SQL — vive en la API de management
+-- de Supabase. Se aplica una unica vez via:
+--
+--   PATCH https://api.supabase.com/v1/projects/<ref>/config/auth
+--   {
+--     "site_url": "https://ipeperu.com",
+--     "uri_allow_list": "https://ipeperu.com/**,https://*.ipeperu.com/**,https://*.vercel.app/**,http://localhost:3000/**"
+--   }
+--
+-- Antes el Site URL era "http://localhost:3000" y la allow-list estaba
+-- vacia, por lo que Supabase ignoraba el redirectTo del generateLink
+-- y cargaba siempre el Site URL. El cliente recibia un correo cuyo
+-- enlace apuntaba a localhost y el navegador no podia abrirlo.
+--
+-- Si en el futuro se cambia el dominio, repetir el PATCH con la nueva
+-- URL.
+
+select 1;  -- no-op: la migracion es solo documental

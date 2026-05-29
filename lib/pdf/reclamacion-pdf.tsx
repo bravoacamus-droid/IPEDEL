@@ -109,9 +109,14 @@ const styles = StyleSheet.create({
   },
 });
 
+// Forzamos timezone Lima — sin esto, el PDF se renderea con la zona del
+// host (Vercel/Lambda corren en UTC) y la hora aparece 5h adelantada
+// respecto a la hora local que el cliente ve en el panel. Mismo fix que
+// aplicamos al export CSV/XLSX de embarques.
 function formatDate(d: string | Date) {
   const date = typeof d === "string" ? new Date(d) : d;
   return date.toLocaleString("es-PE", {
+    timeZone: "America/Lima",
     year: "numeric",
     month: "long",
     day: "numeric",

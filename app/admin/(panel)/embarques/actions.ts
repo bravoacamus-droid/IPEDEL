@@ -110,6 +110,17 @@ const EventSchema = z.object({
   is_current: z.union([z.literal("on"), z.literal("")]).optional(),
 });
 
+// El form pinta un <input type="datetime-local"> sin timezone, asi que
+// el browser envia "YYYY-MM-DDTHH:MM" sin offset. Postgres interpreta
+// un timestamptz sin offset como UTC, por lo que sin esta normalizacion
+// la hora se guarda 5h adelantada respecto a la wall-clock Lima del
+// admin. Anclamos el offset Lima (UTC-5, sin DST) para que se almacene
+// el instante correcto.
+function limaLocalToISO(s: string): string {
+  const withSeconds = s.length === 16 ? `${s}:00` : s;
+  return `${withSeconds}-05:00`;
+}
+
 export async function addShipmentEvent(formData: FormData) {
   const supabase = await createClient();
   const {
@@ -133,7 +144,7 @@ export async function addShipmentEvent(formData: FormData) {
 
   const { error } = await supabase.from("shipment_events").insert({
     shipment_id: parsed.data.shipment_id,
-    event_date: parsed.data.event_date,
+    event_date: limaLocalToISO(parsed.data.event_date),
     status_label: parsed.data.status_label,
     location: parsed.data.location || null,
     description: parsed.data.description || null,

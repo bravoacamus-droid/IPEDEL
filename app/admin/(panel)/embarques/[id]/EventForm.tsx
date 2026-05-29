@@ -5,6 +5,25 @@ import { useRouter } from "next/navigation";
 import { addShipmentEvent } from "../actions";
 import { ACTIVE_SHIPMENT_STATUSES, SHIPMENT_STATUS_LABELS } from "@/lib/types/database";
 
+// El input datetime-local pinta la cadena tal cual sin offset, asi que
+// el default debe ser la hora Lima del momento — no UTC. Antes usabamos
+// new Date().toISOString().slice(0,16) que pinta UTC; el cliente lo
+// corregia a mano y al guardar se interpretaba como UTC otra vez,
+// generando los 5h de diferencia que reporto.
+function nowInLimaLocal(): string {
+  const parts = new Intl.DateTimeFormat("sv-SE", {
+    timeZone: "America/Lima",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  }).formatToParts(new Date());
+  const get = (t: string) => parts.find((p) => p.type === t)?.value ?? "00";
+  return `${get("year")}-${get("month")}-${get("day")}T${get("hour")}:${get("minute")}`;
+}
+
 export function EventForm({ shipmentId }: { shipmentId: string }) {
   const formRef = useRef<HTMLFormElement>(null);
   const [isPending, startTransition] = useTransition();
@@ -38,7 +57,7 @@ export function EventForm({ shipmentId }: { shipmentId: string }) {
             type="datetime-local"
             required
             className="input"
-            defaultValue={new Date().toISOString().slice(0, 16)}
+            defaultValue={nowInLimaLocal()}
           />
         </div>
         <div>

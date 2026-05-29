@@ -159,24 +159,7 @@ export default async function NosotrosPage({
           }}
         />
         <div className="container-page relative">
-          <div className="mx-auto max-w-3xl text-center">
-            <span className="inline-flex items-center gap-2 rounded-full border border-brand-200 bg-white px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-brand-700 shadow-sm">
-              <span className="inline-block h-1.5 w-1.5 rounded-full bg-brand-500" />
-              {locale === "es" ? "Nuestro propósito" : "Our purpose"}
-            </span>
-            <h2 className="mt-5 text-balance text-3xl font-semibold leading-tight tracking-tight text-ink-900 sm:text-4xl lg:text-5xl">
-              {locale === "es"
-                ? "Conectamos tu carga con el mundo, una operación a la vez."
-                : "We connect your cargo with the world, one shipment at a time."}
-            </h2>
-            <p className="mx-auto mt-5 max-w-2xl text-base text-ink-600 sm:text-lg">
-              {locale === "es"
-                ? "Más de tres décadas operando con la disciplina de quien entiende que cada embarque es una promesa."
-                : "Over three decades operating with the discipline of someone who understands every shipment is a promise."}
-            </p>
-          </div>
-
-          <div className="mt-14 grid gap-6 md:grid-cols-3 lg:gap-8">
+          <div className="grid gap-6 md:grid-cols-3 lg:gap-8">
             <Pillar
               icon={<Target className="h-5 w-5" strokeWidth={1.6} />}
               label={locale === "es" ? "Misión" : "Mission"}

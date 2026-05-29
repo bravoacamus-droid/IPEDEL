@@ -405,7 +405,7 @@ const CONTENT: Record<Slug, ServiceContent> = {
     subtitle_es:
       "Capacidad para ejecutar el servicio de mudanza internacional, respaldado por experiencia logística, una red de agentes y un equipo capacitado.",
     subtitle_en:
-      "Capacity to execute the international moving service, backed by logistics experience, an agent network and a qualified team.",
+      "Capacity to execute the international moving service, backed by logistics experience, an agent network and a trained team.",
     hero_image_hint_es: "Embalaje y mudanza internacional — caja, camión, vivienda",
     hero_image_hint_en: "International moving — packing, truck, home",
     hero_image_path: "/services/internacional-hero.jpg",

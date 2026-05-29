@@ -32,6 +32,13 @@ export async function requestPasswordReset(
   }
 
   const admin = createAdminClient();
+  // Importante: aunque pasemos redirectTo aqui, Supabase Auth lo IGNORA
+  // si la URL no esta dentro de "URI Allow List" o del "Site URL" del
+  // proyecto (Authentication -> URL Configuration). Cuando se rechaza
+  // cae al Site URL configurado y el enlace del correo termina yendo
+  // a localhost. Por eso la migracion de auth-config (ver migration
+  // 0011_auth_redirect_urls) deja Site URL = https://ipeperu.com y la
+  // allow-list cubriendo ipeperu.com/** y *.vercel.app/**.
   const siteUrl =
     process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") || "https://ipeperu.com";
 
