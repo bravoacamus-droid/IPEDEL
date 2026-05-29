@@ -36,13 +36,12 @@ export default async function ImportacionesPage({
         backgroundAlt={isEs ? "Importaciones IPEDEL" : "IPEDEL imports"}
       />
 
-      {/* Seccion 1 — Consolidaciones aereas desde Asia.
-          Mantiene la estructura original con cuatro bullets renombrados
-          segun el PDF (Coordinacion internacional / Trayectoria
-          logistica / Red global de agentes / Calidad operativa).
-          Se elimino el parrafo "Empleamos un sistema de seguimiento..."
-          y la card chip "Especialistas Japon -> Peru" por pedido del
-          cliente. */}
+      {/* Seccion 1 — Agente de carga internacional.
+          La estructura es la de la antigua "Consolidaciones aereas
+          desde Asia" pero con titulo + body REEMPLAZADOS por el copy
+          del PDF, y los 4 bullets renombrados segun los callouts
+          naranja. El parrafo "Empleamos un sistema de seguimiento..."
+          quedo eliminado (ELIMINAR en PDF). */}
       <section className="container-page py-16 lg:py-24">
         <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
           <div className="lg:col-span-7">
@@ -50,9 +49,7 @@ export default async function ImportacionesPage({
               {isEs ? "Servicio principal" : "Flagship service"}
             </span>
             <h2 className="mt-3 text-3xl font-semibold leading-tight tracking-tight text-ink-900 sm:text-4xl">
-              {isEs
-                ? "Consolidaciones aéreas desde Asia"
-                : "Air consolidations from Asia"}
+              {isEs ? "Agente de carga internacional" : "International freight forwarder"}
               <span className="block h-1 w-20 bg-brand-500 mt-3" />
             </h2>
             <div className="mt-6 space-y-4 text-ink-700 leading-relaxed">
@@ -60,31 +57,31 @@ export default async function ImportacionesPage({
                 {isEs ? (
                   <>
                     <strong className="text-ink-900">IPE del Perú SAC</strong> es
-                    Consolidador Aéreo y Marítimo, está en la capacidad de
-                    desarrollar y ejecutar el conjunto de acciones necesarias
-                    para prestar un servicio de calidad.
+                    un agente de carga con amplia experiencia en logística
+                    internacional, incluyendo operaciones de importación y
+                    exportación.
                   </>
                 ) : (
                   <>
                     <strong className="text-ink-900">IPE del Perú SAC</strong> is
-                    an Air and Maritime Consolidator, fully capable of
-                    developing and executing every action needed to deliver a
-                    quality service.
+                    a freight forwarder with extensive experience in
+                    international logistics, including import and export
+                    operations.
                   </>
                 )}
               </p>
               <p>
                 {isEs
-                  ? "Siendo representantes de grandes transnacionales japonesas en Perú, contamos con gran experiencia en consolidaciones aéreas provenientes de Japón en su mayoría y de los distintos lugares del mundo."
-                  : "As representatives of major Japanese multinationals in Peru, we have extensive experience consolidating air cargo, primarily from Japan and from various worldwide origins."}
+                  ? "Contamos con una red global de agentes y un equipo capacitado que nos permite brindar soluciones logísticas de calidad a nuestros clientes."
+                  : "We have a global network of agents and a qualified team that allows us to provide quality logistics solutions to our clients."}
               </p>
             </div>
 
             <ul className="mt-8 grid gap-3 sm:grid-cols-2">
               {[
-                // Orden segun el PDF anotado del cliente:
-                // top-left  Red global de agentes        | top-right    Trayectoria logistica
-                // bot-left  Coordinacion internacional   | bot-right    Calidad operativa
+                // Orden segun los callouts del PDF:
+                //   top-left   Red global de agentes      | top-right  Trayectoria logistica
+                //   bot-left   Coordinacion internacional | bot-right  Calidad operativa
                 {
                   icon: Globe2,
                   es: "Red global de agentes",
@@ -130,8 +127,8 @@ export default async function ImportacionesPage({
                 src="/importacionesconsolidacion2.webp"
                 alt={
                   isEs
-                    ? "Consolidación aérea — IPEDEL"
-                    : "Air consolidation — IPEDEL"
+                    ? "Agente de carga internacional — IPE del Perú"
+                    : "International freight forwarder — IPE del Perú"
                 }
                 fill
                 priority
@@ -147,10 +144,12 @@ export default async function ImportacionesPage({
         </div>
       </section>
 
-      {/* Seccion 2 — Agente de carga internacional + subseccion
-          "Servicios logisticos" inline (no como card nueva, segun el
-          pedido del cliente: "no quiero una seccion nueva, copiar y
-          pegar"). */}
+      {/* Seccion 2 — Servicios logisticos.
+          Estructura de la antigua "Agente logistico" pero con titulo
+          renombrado y los 2 parrafos reemplazados por el copy del PDF.
+          El 3er parrafo "IPE del Peru SAC cuenta con la capacidad..."
+          quedo eliminado y del row de stats se removio solo el "JP -
+          Especialidad" (los otros 3 quedan). */}
       <section className="bg-ink-50 py-16 lg:py-24">
         <div className="container-page grid gap-12 lg:grid-cols-12 lg:gap-16">
           <div className="lg:col-span-5 lg:order-last">
@@ -159,8 +158,8 @@ export default async function ImportacionesPage({
                 src="/importacionesagente2.webp"
                 alt={
                   isEs
-                    ? "Agente de carga internacional — IPE del Perú"
-                    : "International freight forwarder — IPE del Perú"
+                    ? "Servicios logísticos — IPE del Perú"
+                    : "Logistics services — IPE del Perú"
                 }
                 fill
                 sizes="(min-width: 1024px) 40vw, 100vw"
@@ -177,63 +176,22 @@ export default async function ImportacionesPage({
               {isEs ? "Quiénes somos en importaciones" : "Who we are in imports"}
             </span>
             <h2 className="mt-3 text-3xl font-semibold leading-tight tracking-tight text-ink-900 sm:text-4xl">
-              {isEs ? "Agente de carga internacional" : "International freight forwarder"}
+              {isEs ? "Servicios logísticos" : "Logistics services"}
               <span className="block h-1 w-20 bg-brand-500 mt-3" />
             </h2>
             <div className="mt-6 space-y-4 text-ink-700 leading-relaxed">
               <p>
-                {isEs ? (
-                  <>
-                    <strong className="text-ink-900">IPE del Perú SAC</strong> es
-                    un agente de carga con amplia experiencia en logística
-                    internacional, incluyendo operaciones de importación y
-                    exportación.
-                  </>
-                ) : (
-                  <>
-                    <strong className="text-ink-900">IPE del Perú SAC</strong> is
-                    a freight forwarder with extensive experience in
-                    international logistics, including import and export
-                    operations.
-                  </>
-                )}
+                {isEs
+                  ? "Con más de 30 años en el rubro, nuestra trayectoria se refleja en operaciones internacionales, incluyendo consolidaciones aéreas y marítimas."
+                  : "With over 30 years in the industry, our track record is reflected in international operations, including air and sea consolidations."}
               </p>
               <p>
                 {isEs
-                  ? "Contamos con una red global de agentes y un equipo capacitado que nos permite brindar soluciones logísticas de calidad a nuestros clientes."
-                  : "We have a global network of agents and a qualified team that allows us to provide quality logistics solutions to our clients."}
+                  ? "Nuestro equipo atiende cada embarque con eficiencia y eficacia, brindando soluciones orientadas a las necesidades del cliente."
+                  : "Our team handles each shipment with efficiency and efficacy, providing solutions oriented to the client's needs."}
               </p>
             </div>
 
-            <div className="mt-6 flex flex-wrap gap-2">
-              <span className="rounded-full bg-brand-50 px-3 py-1 text-xs font-medium text-brand-800 ring-1 ring-brand-200">
-                {isEs ? "Trayectoria logística" : "Logistics track record"}
-              </span>
-              <span className="rounded-full bg-brand-50 px-3 py-1 text-xs font-medium text-brand-800 ring-1 ring-brand-200">
-                {isEs ? "Calidad operativa" : "Operational quality"}
-              </span>
-            </div>
-
-            <div className="mt-8 border-t border-ink-200 pt-6">
-              <h3 className="text-lg font-semibold text-ink-900">
-                {isEs ? "Servicios logísticos" : "Logistics services"}
-              </h3>
-              <div className="mt-3 space-y-3 text-ink-700 leading-relaxed">
-                <p>
-                  {isEs
-                    ? "Con más de 30 años en el rubro, nuestra trayectoria se refleja en operaciones internacionales, incluyendo consolidaciones aéreas y marítimas."
-                    : "With over 30 years in the industry, our track record is reflected in international operations, including air and sea consolidations."}
-                </p>
-                <p>
-                  {isEs
-                    ? "Nuestro equipo atiende cada embarque con eficiencia y eficacia, brindando soluciones orientadas a las necesidades del cliente."
-                    : "Our team handles each shipment with efficiency and efficacy, providing solutions oriented to the client's needs."}
-                </p>
-              </div>
-            </div>
-
-            {/* Row de stats — el cliente pidio ELIMINAR solo el cuarto
-                ("JP - especialidad"). Los otros 3 quedan. */}
             <div className="mt-8 grid grid-cols-3 gap-4 border-t border-ink-200 pt-8">
               <Stat value="30+" label={isEs ? "Años" : "Years"} />
               <Stat value="40+" label={isEs ? "Países" : "Countries"} />
