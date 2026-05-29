@@ -216,7 +216,20 @@ export default async function ImportacionesPage({
           }}
         />
         <div className="container-page relative">
-          <div className="relative">
+          {/* Header: chip + titulo. El subtitulo 'Cuatro etapas con
+              responsable...' fue removido por pedido del cliente
+              (ELIMINAR en PDF). */}
+          <div className="mx-auto max-w-3xl text-center">
+            <span className="inline-flex items-center gap-2 rounded-full border border-brand-200 bg-white px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-brand-700 shadow-sm">
+              <span className="inline-block h-1.5 w-1.5 rounded-full bg-brand-500" />
+              {isEs ? "Nuestro proceso" : "Our process"}
+            </span>
+            <h2 className="mt-5 text-balance text-3xl font-semibold leading-tight tracking-tight text-ink-900 sm:text-4xl lg:text-5xl">
+              {isEs ? "Cómo trabajamos contigo" : "How we work with you"}
+            </h2>
+          </div>
+
+          <div className="relative mt-14">
             <span
               aria-hidden="true"
               className="pointer-events-none absolute left-[8%] right-[8%] top-[36px] hidden h-px bg-gradient-to-r from-brand-300/40 via-brand-500/60 to-brand-300/40 lg:block"
