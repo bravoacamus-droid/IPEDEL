@@ -1,9 +1,13 @@
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import {
+  Award,
   Compass,
+  Globe2,
+  Handshake,
   Headset,
   Layers,
+  ShieldCheck,
   Sparkles,
 } from "lucide-react";
 import { isLocale, type Locale } from "@/lib/i18n/config";
@@ -32,11 +36,144 @@ export default async function ImportacionesPage({
         backgroundAlt={isEs ? "Importaciones IPEDEL" : "IPEDEL imports"}
       />
 
-      {/* Sección 1 — Agente de carga internacional */}
+      {/* Seccion 1 — Consolidaciones aereas desde Asia.
+          Mantiene la estructura original con cuatro bullets renombrados
+          segun el PDF (Coordinacion internacional / Trayectoria
+          logistica / Red global de agentes / Calidad operativa).
+          Se elimino el parrafo "Empleamos un sistema de seguimiento..."
+          y la card chip "Especialistas Japon -> Peru" por pedido del
+          cliente. */}
       <section className="container-page py-16 lg:py-24">
         <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
           <div className="lg:col-span-7">
-            <h2 className="text-3xl font-semibold leading-tight tracking-tight text-ink-900 sm:text-4xl">
+            <span className="text-xs font-semibold uppercase tracking-[0.18em] text-brand-600">
+              {isEs ? "Servicio principal" : "Flagship service"}
+            </span>
+            <h2 className="mt-3 text-3xl font-semibold leading-tight tracking-tight text-ink-900 sm:text-4xl">
+              {isEs
+                ? "Consolidaciones aéreas desde Asia"
+                : "Air consolidations from Asia"}
+              <span className="block h-1 w-20 bg-brand-500 mt-3" />
+            </h2>
+            <div className="mt-6 space-y-4 text-ink-700 leading-relaxed">
+              <p>
+                {isEs ? (
+                  <>
+                    <strong className="text-ink-900">IPE del Perú SAC</strong> es
+                    Consolidador Aéreo y Marítimo, está en la capacidad de
+                    desarrollar y ejecutar el conjunto de acciones necesarias
+                    para prestar un servicio de calidad.
+                  </>
+                ) : (
+                  <>
+                    <strong className="text-ink-900">IPE del Perú SAC</strong> is
+                    an Air and Maritime Consolidator, fully capable of
+                    developing and executing every action needed to deliver a
+                    quality service.
+                  </>
+                )}
+              </p>
+              <p>
+                {isEs
+                  ? "Siendo representantes de grandes transnacionales japonesas en Perú, contamos con gran experiencia en consolidaciones aéreas provenientes de Japón en su mayoría y de los distintos lugares del mundo."
+                  : "As representatives of major Japanese multinationals in Peru, we have extensive experience consolidating air cargo, primarily from Japan and from various worldwide origins."}
+              </p>
+            </div>
+
+            <ul className="mt-8 grid gap-3 sm:grid-cols-2">
+              {[
+                {
+                  icon: Handshake,
+                  es: "Coordinación internacional",
+                  en: "International coordination",
+                },
+                {
+                  icon: Award,
+                  es: "Trayectoria logística",
+                  en: "Logistics track record",
+                },
+                {
+                  icon: Globe2,
+                  es: "Red global de agentes",
+                  en: "Global agent network",
+                },
+                {
+                  icon: ShieldCheck,
+                  es: "Calidad operativa",
+                  en: "Operational quality",
+                },
+              ].map((b, i) => {
+                const Icon = b.icon;
+                return (
+                  <li
+                    key={i}
+                    className="flex items-start gap-3 rounded-lg border border-ink-100 bg-white p-3"
+                  >
+                    <span className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-brand-50 text-brand-700">
+                      <Icon className="h-4 w-4" strokeWidth={1.6} />
+                    </span>
+                    <span className="pt-1 text-sm text-ink-800">
+                      {isEs ? b.es : b.en}
+                    </span>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+
+          <div className="lg:col-span-5">
+            <div className="group relative aspect-[4/5] overflow-hidden rounded-2xl shadow-lg ring-1 ring-black/5">
+              <Image
+                src="/importacionesconsolidacion2.webp"
+                alt={
+                  isEs
+                    ? "Consolidación aérea — IPEDEL"
+                    : "Air consolidation — IPEDEL"
+                }
+                fill
+                priority
+                sizes="(min-width: 1024px) 40vw, 100vw"
+                className="object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.06]"
+              />
+              <div
+                aria-hidden="true"
+                className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/40 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Seccion 2 — Agente de carga internacional + subseccion
+          "Servicios logisticos" inline (no como card nueva, segun el
+          pedido del cliente: "no quiero una seccion nueva, copiar y
+          pegar"). */}
+      <section className="bg-ink-50 py-16 lg:py-24">
+        <div className="container-page grid gap-12 lg:grid-cols-12 lg:gap-16">
+          <div className="lg:col-span-5 lg:order-last">
+            <div className="group relative aspect-[4/5] overflow-hidden rounded-2xl shadow-lg ring-1 ring-black/5">
+              <Image
+                src="/importacionesagente2.webp"
+                alt={
+                  isEs
+                    ? "Agente de carga internacional — IPE del Perú"
+                    : "International freight forwarder — IPE del Perú"
+                }
+                fill
+                sizes="(min-width: 1024px) 40vw, 100vw"
+                className="object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.06]"
+              />
+              <div
+                aria-hidden="true"
+                className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/40 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+              />
+            </div>
+          </div>
+          <div className="lg:col-span-7">
+            <span className="text-xs font-semibold uppercase tracking-[0.18em] text-brand-600">
+              {isEs ? "Quiénes somos en importaciones" : "Who we are in imports"}
+            </span>
+            <h2 className="mt-3 text-3xl font-semibold leading-tight tracking-tight text-ink-900 sm:text-4xl">
               {isEs ? "Agente de carga internacional" : "International freight forwarder"}
               <span className="block h-1 w-20 bg-brand-500 mt-3" />
             </h2>
@@ -73,69 +210,23 @@ export default async function ImportacionesPage({
                 {isEs ? "Calidad operativa" : "Operational quality"}
               </span>
             </div>
-          </div>
 
-          <div className="lg:col-span-5">
-            <div className="group relative aspect-[4/5] overflow-hidden rounded-2xl shadow-lg ring-1 ring-black/5">
-              <Image
-                src="/importacionesconsolidacion2.webp"
-                alt={
-                  isEs
-                    ? "Agente de carga internacional — IPE del Perú"
-                    : "International freight forwarder — IPE del Perú"
-                }
-                fill
-                priority
-                sizes="(min-width: 1024px) 40vw, 100vw"
-                className="object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.06]"
-              />
-              <div
-                aria-hidden="true"
-                className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/40 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-              />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Sección 2 — Servicios logísticos */}
-      <section className="bg-ink-50 py-16 lg:py-24">
-        <div className="container-page grid gap-12 lg:grid-cols-12 lg:gap-16">
-          <div className="lg:col-span-5 lg:order-last">
-            <div className="group relative aspect-[4/5] overflow-hidden rounded-2xl shadow-lg ring-1 ring-black/5">
-              <Image
-                src="/importacionesagente2.webp"
-                alt={
-                  isEs
-                    ? "Servicios logísticos — IPE del Perú"
-                    : "Logistics services — IPE del Perú"
-                }
-                fill
-                sizes="(min-width: 1024px) 40vw, 100vw"
-                className="object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.06]"
-              />
-              <div
-                aria-hidden="true"
-                className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/40 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-              />
-            </div>
-          </div>
-          <div className="lg:col-span-7">
-            <h2 className="text-3xl font-semibold leading-tight tracking-tight text-ink-900 sm:text-4xl">
-              {isEs ? "Servicios logísticos" : "Logistics services"}
-              <span className="block h-1 w-20 bg-brand-500 mt-3" />
-            </h2>
-            <div className="mt-6 space-y-4 text-ink-700 leading-relaxed">
-              <p>
-                {isEs
-                  ? "Con más de 30 años en el rubro, nuestra trayectoria se refleja en operaciones internacionales, incluyendo consolidaciones aéreas y marítimas."
-                  : "With over 30 years in the industry, our track record is reflected in international operations, including air and sea consolidations."}
-              </p>
-              <p>
-                {isEs
-                  ? "Nuestro equipo atiende cada embarque con eficiencia y eficacia, brindando soluciones orientadas a las necesidades del cliente."
-                  : "Our team handles each shipment with efficiency and efficacy, providing solutions oriented to the client's needs."}
-              </p>
+            <div className="mt-8 border-t border-ink-200 pt-6">
+              <h3 className="text-lg font-semibold text-ink-900">
+                {isEs ? "Servicios logísticos" : "Logistics services"}
+              </h3>
+              <div className="mt-3 space-y-3 text-ink-700 leading-relaxed">
+                <p>
+                  {isEs
+                    ? "Con más de 30 años en el rubro, nuestra trayectoria se refleja en operaciones internacionales, incluyendo consolidaciones aéreas y marítimas."
+                    : "With over 30 years in the industry, our track record is reflected in international operations, including air and sea consolidations."}
+                </p>
+                <p>
+                  {isEs
+                    ? "Nuestro equipo atiende cada embarque con eficiencia y eficacia, brindando soluciones orientadas a las necesidades del cliente."
+                    : "Our team handles each shipment with efficiency and efficacy, providing solutions oriented to the client's needs."}
+                </p>
+              </div>
             </div>
           </div>
         </div>
