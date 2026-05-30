@@ -1,18 +1,22 @@
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowLeft, KeyRound, ShieldCheck } from "lucide-react";
-import { createClient } from "@/lib/supabase/server";
-import { ResetForm } from "./ResetForm";
+import { RecoveryGate } from "./RecoveryGate";
 
 export const metadata = { title: "Nueva contraseña · IPE del Perú" };
 export const dynamic = "force-dynamic";
 
-export default async function ResetPasswordPage() {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
+// Por que esta page es server-component pero la logica que decide si
+// el link es valido vive en <RecoveryGate /> (client):
+//
+// El correo de recuperacion redirige a esta URL con los tokens en el
+// HASH (#access_token=...). El hash es client-side puro — nunca llega
+// al servidor — asi que el `supabase.auth.getUser()` server lo lee
+// como null y rendereaba "Enlace expirado" siempre. RecoveryGate hace
+// el parseo del hash y llama setSession() antes de pintar el form;
+// recien ahi las cookies de sesion existen y el server action puede
+// updateUser().
+export default function ResetPasswordPage() {
   return (
     <main className="min-h-screen bg-white lg:grid lg:grid-cols-12">
       <section className="flex min-h-screen flex-col px-6 py-10 sm:px-10 lg:col-span-5 lg:px-12">
@@ -31,36 +35,9 @@ export default async function ResetPasswordPage() {
           <h1 className="mt-6 text-2xl font-semibold tracking-tight text-ink-900 sm:text-3xl">
             Crear nueva contraseña
           </h1>
-          {user?.email ? (
-            <p className="mt-2 text-sm text-ink-600">
-              Definí una contraseña nueva para{" "}
-              <span className="font-mono text-ink-900">{user.email}</span>.
-              Mínimo 8 caracteres.
-            </p>
-          ) : (
-            <p className="mt-2 text-sm text-ink-600">
-              Definí tu nueva contraseña. Mínimo 8 caracteres.
-            </p>
-          )}
 
           <div className="mt-8">
-            {user ? (
-              <ResetForm />
-            ) : (
-              <div className="rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
-                <p className="font-semibold">Enlace expirado o inválido</p>
-                <p className="mt-1 text-xs">
-                  El link de recuperación ya no es válido. Pedí uno nuevo desde
-                  la página de recuperación.
-                </p>
-                <Link
-                  href="/admin/recuperar"
-                  className="mt-3 inline-flex items-center gap-1.5 rounded-lg bg-brand-500 px-4 py-2 text-xs font-semibold text-black hover:bg-brand-400"
-                >
-                  Solicitar nuevo enlace
-                </Link>
-              </div>
-            )}
+            <RecoveryGate />
           </div>
         </div>
 
